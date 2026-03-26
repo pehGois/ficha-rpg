@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ficha de Personagem</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=Spectral+SC:wght@400;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <nav>
+    <div class="actions-bar">
+      <button class="btn-action btn-save" onclick="saveData()">Salvar Ficha</button>
+      <button class="btn-action btn-download" onclick="downloadJSON()">Exportar JSON</button>
+      <button class="btn-action btn-import" onclick="triggerImport()">Importar JSON</button>
+      <input type="file" id="importInput" accept=".json,application/json" style="display:none">
+      <button class="btn-action btn-clear" onclick="clearData()">Limpar Tudo</button>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <div class="page-title">Ficha de Personagem</div>
+    <div class="page-subtitle">Convergência RPG — 0.2</div>
+  </header>
+
+  <div class="sheet-grid">
+
+    <!-- IDENTIDADE -->
+    <div class="card full-width">
+      <div class="section-title">Identidade</div>
+      <div class="identity-grid">
+        <div class="photo-upload" id="photoUpload" title="Clique para adicionar foto">
+          <div class="photo-placeholder" id="photoPlaceholder">
+            <span class="icon">☽</span>
+            <span>Retrato</span>
+          </div>
+          <img id="photoImg" style="display:none">
+          <input type="file" id="photoInput" accept="image/*">
+        </div>
+        <div>
+          <div class="row3">
+            <div class="field"><label>Nome</label><input type="text" id="nome" placeholder="Nome do personagem"></div>
+            <div class="field"><label>XP</label><input type="number" id="xp" placeholder="0" min="0"></div>
+            <div class="field"><label>Inspiração</label><input type="number" id="inspiracao" placeholder="0" min="0">
+            </div>
+          </div>
+          <div class="field"><label>Origem</label><input type="text" id="origem" placeholder="De onde você veio"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ATRIBUTOS -->
+    <div class="card">
+      <div class="section-title">Atributos</div>
+      <div class="attrs-grid">
+        <div class="attr-box"><label>Corpo</label><input type="number" id="corpo" placeholder="4" min="4" value="4">
+        </div>
+        <div class="attr-box"><label>Mente</label><input type="number" id="mente" placeholder="4" min="4" value="4">
+        </div>
+        <div class="attr-box"><label>Espírito</label><input type="number" id="espirito" placeholder="4" min="4"
+            value="4"></div>
+        <div class="attr-box"><label>PV</label><input type="number" id="pv" placeholder="—" readonly></div>
+        <div class="attr-box"><label>PS</label><input type="number" id="ps" placeholder="—" readonly></div>
+        <div class="attr-box"><label>PD</label><input type="number" id="pd" placeholder="—" readonly></div>
+      </div>
+    </div>
+
+    <!-- CONDIÇÕES -->
+    <div class="card">
+      <div class="section-title">Condições</div>
+      <div class="conditions-grid" id="conditionsGrid"></div>
+      <div class="add-condition">
+        <input type="text" id="newConditionInput" placeholder="Nova condição...">
+        <button type="button" class="btn-add" onclick="addCondition()">+</button>
+      </div>
+    </div>
+
+    <!-- ARMADURA -->
+    <div class="card">
+      <div class="section-title">Armadura</div>
+      <div class="row2">
+        <div class="field"><label>Nome</label><input type="text" id="armaduraNome" placeholder="Nome da armadura"></div>
+        <div class="field"><label>Dado de Armadura</label><input type="text" id="armaduraValor" placeholder="1d4"></div>
+      </div>
+      <div class="field"><label>Propriedades</label><textarea id="armaduraProps"
+          placeholder="Resistências, penalidades..." style="min-height:72px;"></textarea></div>
+    </div>
+
+    <!-- ARSENAL -->
+    <div class="card">
+      <div class="section-title">Arsenal</div>
+      <div class="weapon-block">
+        <div class="weapon-header">Arma Primária</div>
+        <div class="weapon-row">
+          <div class="field"><label>Nome</label><input type="text" id="arma1nome" placeholder="Nome da arma"></div>
+          <div class="field"><label>Bônus de Dano</label><input type="text" id="arma1bonus" placeholder="+0"></div>
+        </div>
+        <div class="field"><label>Propriedades</label><input type="text" id="arma1props"
+            placeholder="Perfurante, Longa..."></div>
+      </div>
+      <div class="weapon-block">
+        <div class="weapon-header">Arma Secundária</div>
+        <div class="weapon-row">
+          <div class="field"><label>Nome</label><input type="text" id="arma2nome" placeholder="Nome da arma"></div>
+          <div class="field"><label>Bônus de Dano</label><input type="text" id="arma2bonus" placeholder="+0"></div>
+        </div>
+        <div class="field"><label>Propriedades</label><input type="text" id="arma2props"
+            placeholder="Oculta, Rápida..."></div>
+      </div>
+    </div>
+
+    <!-- MARCA & FALHAS -->
+    <div class="card full-width">
+      <div class="section-title">Marca & Falhas</div>
+      <div class="row2">
+        <div>
+          <div class="field"><label>XP de Marca</label><input type="number" id="mark-xp" placeholder="0" min="0"></div>
+          <div class="field"><label>Descrição da Marca</label><textarea id="marcaDesc"
+              placeholder="Como a marca se manifesta em você"></textarea></div>
+        </div>
+        <div>
+          <label>Falhas</label>
+          <div class="marks-row" id="falhasMarks"></div>
+          <div class="field">
+            <label>Registro de Falhas</label>
+            <textarea id="falhasTexto" placeholder="1ª Falha&#10;2ª Falha&#10;3ª Falha&#10;4ª Falha&#10;5ª Falha"
+              style="min-height:90px;font-size:13px;"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TREINAMENTOS -->
+    <div class="card full-width">
+      <div class="section-title">Treinamentos</div>
+      <div id="trainingList"></div>
+      <button class="btn-add" onclick="addTraining()">+ Adicionar Treinamento</button>
+    </div>
+
+    <!-- ANTECEDENTE -->
+    <div class="card full-width">
+      <div class="section-title">Antecedente & Notas</div>
+      <div class="field"><label>História</label><textarea id="antecedente"
+          placeholder="O mundo acabou. Você sobreviveu. Mas a que custo?" style="min-height:120px;"></textarea></div>
+      <div class="field"><label>Notas</label><textarea id="notas" placeholder="Missões, contatos, segredos, dívidas..."
+          style="min-height:90px;"></textarea></div>
+    </div>
+
+    <!-- EFEITOS -->
+    <div class="card full-width">
+      <div class="section-title">Efeitos Ativos</div>
+      <div id="effectsList"></div>
+      <button class="btn-add" onclick="addEffect()">+ Adicionar Efeito</button>
+    </div>
+
+    <!-- HABILIDADES -->
+    <div class="card full-width">
+      <div class="section-title">Habilidades</div>
+      <div id="abilityList"></div>
+      <button class="btn-add" onclick="addAbility()">+ Adicionar Habilidade</button>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
