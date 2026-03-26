@@ -35,9 +35,13 @@ function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTi
 // ── DERIVED STATS ─────────────────────────────────────────────
 function calcDerived() {
   const toInt = (id, fb=0) => { const n = parseInt(document.getElementById(id)?.value, 10); return isNaN(n) ? fb : n; };
-  const pv = document.getElementById('pv'); if (pv) pv.value = 8 + 3 * toInt('espirito');
-  const ps = document.getElementById('ps'); if (ps) ps.value = 2 * toInt('mente');
-  const pd = document.getElementById('pd'); if (pd) pd.value = 3 * toInt('corpo');
+  const pvCalc = 8 + 3 * toInt('espirito');
+  const psCalc = 2 * toInt('mente');
+  const pdCalc = 3 * toInt('corpo');
+
+  const pvLabel = document.getElementById('pvLabel'); if (pvLabel) pvLabel.textContent = `PV [${pvCalc}]`;
+  const psLabel = document.getElementById('psLabel'); if (psLabel) psLabel.textContent = `PS [${psCalc}]`;
+  const pdLabel = document.getElementById('pdLabel'); if (pdLabel) pdLabel.textContent = `PD [${pdCalc}]`;
 }
 function bindDerivedStats() {
   ['corpo','mente','espirito'].forEach(id => {
@@ -226,13 +230,14 @@ function applyData(d) {
 
   s('nome', d.nome); s('xp', d.xp); s('inspiracao', d.inspiracao); s('origem', d.origem);
   s('corpo', d.corpo); s('mente', d.mente); s('espirito', d.espirito);
+  s('pv', d.pv); s('ps', d.ps); s('pd', d.pd);
   s('armaduraNome', d.armaduraNome); s('armaduraValor', d.armaduraValor); s('armaduraProps', d.armaduraProps);
   s('arma1nome', d.arma1?.nome); s('arma1bonus', d.arma1?.bonus); s('arma1props', d.arma1?.props);
   s('arma2nome', d.arma2?.nome); s('arma2bonus', d.arma2?.bonus); s('arma2props', d.arma2?.props);
   s('mark-xp', d.markXp); s('marcaDesc', d.marcaDesc); s('falhasTexto', d.falhasTexto);
   s('antecedente', d.antecedente); s('notas', d.notas);
 
-  // Derived stats are readonly — recalculate from base attrs
+  // Keep bracketed derived hints in sync with base attributes
   calcDerived();
 
   // Conditions
