@@ -1,5 +1,7 @@
 function setupAutoSave() {
   document.querySelectorAll('input:not([readonly]),textarea').forEach(el => {
+    if (el.dataset.autosaveBound === '1') return;
+    el.dataset.autosaveBound = '1';
     el.addEventListener('change', _save);
     el.addEventListener('input', debounce(_save, 1200));
   });
@@ -100,6 +102,12 @@ function applyData(d) {
 }
 
 function _save() {
+  if (Array.isArray(sheets) && sheets.length && typeof updateActiveSheetFromForm === 'function' && typeof persistSheets === 'function') {
+    updateActiveSheetFromForm();
+    if (typeof renderTabs === 'function') renderTabs();
+    persistSheets();
+    return;
+  }
   localStorage.setItem(STORAGE_KEY, JSON.stringify(collectData()));
 }
 
@@ -109,6 +117,14 @@ function saveData() {
 }
 
 function loadData() {
+  if (Array.isArray(sheets) && sheets.length && activeSheetId) {
+    const active = sheets.find(sheet => sheet.id === activeSheetId);
+    if (active?.data) {
+      applyData(active.data);
+      return;
+    }
+  }
+
   const raw = localStorage.getItem(STORAGE_KEY);
   if (!raw) return;
 
@@ -148,9 +164,14 @@ function setupImportInput() {
     r.onload = ev => {
       try {
         const d = JSON.parse(ev.target.result);
-        applyData(d);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
-        showToast('Ficha importada');
+        if (typeof addSheetTab === 'function') {
+          addSheetTab(d);
+          showToast('Ficha importada em nova aba');
+        } else {
+          applyData(d);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
+          showToast('Ficha importada');
+        }
       } catch {
         alert('Arquivo inválido. Certifique-se de que é um JSON exportado por esta ficha.');
       }
@@ -189,6 +210,6 @@ function clearData() {
   renderClocks();
   clearPhoto();
 
-  localStorage.removeItem(STORAGE_KEY);
+  _save();
   showToast('Ficha limpa');
 }

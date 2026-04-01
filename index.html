@@ -17,7 +17,7 @@
     <div class="actions-bar">
       <button class="btn-action btn-save" onclick="saveData()">Salvar Ficha</button>
       <button class="btn-action btn-download" onclick="downloadJSON()">Exportar JSON</button>
-      <button class="btn-action btn-import" onclick="triggerImport()">Importar JSON</button>
+      <button class="btn-action btn-import" onclick="triggerImport()">Importar JSON (Nova Aba)</button>
       <input type="file" id="importInput" accept=".json,application/json" style="display:none">
       <button class="btn-action btn-clear" onclick="clearData()">Limpar Tudo</button>
     </div>
@@ -27,6 +27,11 @@
     <div class="page-title">Ficha de Personagem</div>
     <div class="page-subtitle">Convergência RPG — 0.2</div>
   </header>
+
+  <section class="tabs-wrap">
+    <div class="tabs-list" id="tabsList"></div>
+    <button type="button" class="btn-tab-add" onclick="addSheetTab()">+ Nova Ficha</button>
+  </section>
 
   <div class="sheet-grid">
 
@@ -182,6 +187,7 @@
   <script src="assets/js/derived.js"></script>
   <script src="assets/js/features.js"></script>
   <script src="assets/js/persistence.js"></script>
+  <script src="assets/js/tabs.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
 
