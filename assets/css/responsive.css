@@ -1,0 +1,26 @@
+@media (max-width: 640px) {
+    .sheet-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .identity-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .photo-upload {
+        width: 100%;
+        height: 160px;
+    }
+
+    .row3 {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .weapon-row {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .spell-grid {
+        grid-template-columns: 1fr;
+    }
+}
