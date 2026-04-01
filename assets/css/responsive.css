@@ -1,0 +1,50 @@
+@media (max-width: 640px) {
+    .docs-panel {
+        --docs-crop-top: 90px;
+        --docs-frame-height: 78vh;
+    }
+
+    .docs-head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .docs-open-link {
+        width: 100%;
+        text-align: center;
+    }
+
+    .tabs-wrap {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-tab-add {
+        width: 100%;
+    }
+
+    .sheet-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .identity-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .photo-upload {
+        width: 100%;
+        height: 160px;
+    }
+
+    .row3 {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .weapon-row {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .spell-grid {
+        grid-template-columns: 1fr;
+    }
+}

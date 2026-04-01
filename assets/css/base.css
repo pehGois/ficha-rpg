@@ -1,0 +1,107 @@
+:root {
+    --bg: #1a1a1a;
+    --bg-card: #222;
+    --bg-input: #161616;
+    --border: #3a3a3a;
+    --border-focus: #666;
+    --accent: #c0392b;
+    --accent-dim: #7a2520;
+    --text: #e8e8e8;
+    --text-label: #aaa;
+    --text-head: #e8e8e8;
+    --text-dim: #555;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Spectral', serif;
+    font-size: 15px;
+    line-height: 1.5;
+    padding-bottom: 48px;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #444;
+}
+
+label {
+    display: block;
+    font-family: 'Spectral SC', serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-label);
+    margin-bottom: 3px;
+}
+
+input[type=text],
+input[type=number],
+textarea {
+    width: 100%;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 0;
+    color: var(--text);
+    font-family: 'Spectral', serif;
+    font-size: 14px;
+    padding: 6px 8px;
+    outline: none;
+    transition: border-color 0.15s;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input[type=text]:focus,
+input[type=number]:focus,
+textarea:focus {
+    border-color: var(--border-focus);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.6;
+    display: block;
+}
+
+.field {
+    margin-bottom: 10px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
