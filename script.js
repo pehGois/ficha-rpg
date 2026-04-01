@@ -1,16 +1,17 @@
 // ── CONSTANTS ────────────────────────────────────────────────
 const STORAGE_KEY = 'ficha_rpg';
-const FALHAS_MAX  = 5;
-const DEFAULT_CONDITIONS = ['Debilitado', 'Enfeitiçado', 'Exausto'];
+const FALHAS_MAX = 5;
+const DEFAULT_CONDITIONS = ['Nos Portões da Morte', 'Louco', 'Inconsciente'];
 
 // ── STATE ────────────────────────────────────────────────────
 let customConditions = [];
-let activeConditions  = new Set();
-let trainings  = [];
-let abilities  = [];
-let effects    = [];
+let activeConditions = new Set();
+let trainings = [];
+let abilities = [];
+let effects = [];
+let clocks = [];
 let falhasFilled = 0;
-let photoData    = null;
+let photoData = null;
 
 // ── BOOT ─────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
@@ -34,7 +35,7 @@ function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTi
 
 // ── DERIVED STATS ─────────────────────────────────────────────
 function calcDerived() {
-  const toInt = (id, fb=0) => { const n = parseInt(document.getElementById(id)?.value, 10); return isNaN(n) ? fb : n; };
+  const toInt = (id, fb = 0) => { const n = parseInt(document.getElementById(id)?.value, 10); return isNaN(n) ? fb : n; };
   const pvCalc = 8 + 3 * toInt('espirito');
   const psCalc = 2 * toInt('mente');
   const pdCalc = 3 * toInt('corpo');
@@ -44,7 +45,7 @@ function calcDerived() {
   const pdLabel = document.getElementById('pdLabel'); if (pdLabel) pdLabel.textContent = `PD [${pdCalc}]`;
 }
 function bindDerivedStats() {
-  ['corpo','mente','espirito'].forEach(id => {
+  ['corpo', 'mente', 'espirito'].forEach(id => {
     const el = document.getElementById(id);
     if (el) { el.addEventListener('input', calcDerived); el.addEventListener('change', calcDerived); }
   });
@@ -157,7 +158,7 @@ function renderTrainings() {
 
 // ── ABILITIES ─────────────────────────────────────────────────
 function addAbility(data = {}) {
-  abilities.push({ id: uid(), nome:'', custo:'', forma:'', duracao:'', alcance:'', intensidade:'', area:'', transfig:'', descricao:'', ...data });
+  abilities.push({ id: uid(), nome: '', custo: '', forma: '', duracao: '', alcance: '', intensidade: '', area: '', transfig: '', descricao: '', ...data });
   renderAbilities();
 }
 function renderAbilities() {
@@ -185,7 +186,7 @@ function renderAbilities() {
 
 // ── EFFECTS ───────────────────────────────────────────────────
 function addEffect(data = {}) {
-  effects.push({ id: uid(), nome:'', tipo:'', descricao:'', ...data });
+  effects.push({ id: uid(), nome: '', tipo: '', descricao: '', ...data });
   renderEffects();
 }
 function renderEffects() {
@@ -218,7 +219,7 @@ function collectData() {
     arma1: { nome: g('arma1nome'), bonus: g('arma1bonus'), props: g('arma1props') },
     arma2: { nome: g('arma2nome'), bonus: g('arma2bonus'), props: g('arma2props') },
     markXp: g('mark-xp'), falhasFilled, marcaDesc: g('marcaDesc'), falhasTexto: g('falhasTexto'),
-    trainings, abilities, effects,
+    trainings, abilities, effects, clocks,
     antecedente: g('antecedente'), notas: g('notas'),
     photoData
   };
@@ -263,10 +264,18 @@ function applyData(d) {
     return t;
   });
   abilities = d.abilities ?? [];
-  effects   = d.effects   ?? [];
+  effects = d.effects ?? [];
+  clocks = (d.clocks ?? []).map(c => ({
+    id: c.id ?? uid(),
+    nome: c.nome ?? '',
+    segments: Math.min(20, Math.max(2, parseInt(c.segments) || 6)),
+    filled: Math.min(c.filled ?? 0, c.segments ?? 6)
+  }));
+
   renderTrainings();
   renderAbilities();
   renderEffects();
+  renderClocks();
 
   // Photo
   if (d.photoData) { photoData = d.photoData; showPhoto(photoData); }
@@ -276,21 +285,21 @@ function applyData(d) {
 }
 
 // ── SAVE / LOAD ───────────────────────────────────────────────
-function _save()    { localStorage.setItem(STORAGE_KEY, JSON.stringify(collectData())); }
+function _save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(collectData())); }
 function saveData() { _save(); showToast('Ficha salva'); }
 
 function loadData() {
   const raw = localStorage.getItem(STORAGE_KEY);
   if (!raw) return;
-  try { applyData(JSON.parse(raw)); } catch(e) { console.error('Erro ao carregar ficha:', e); }
+  try { applyData(JSON.parse(raw)); } catch (e) { console.error('Erro ao carregar ficha:', e); }
 }
 
 // ── EXPORT / IMPORT ───────────────────────────────────────────
 function downloadJSON() {
   const data = collectData();
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
   a.href = url;
   a.download = `ficha_${(data.nome || 'personagem').replace(/\s+/g, '_')}.json`;
   a.click();
@@ -328,18 +337,19 @@ function clearData() {
 
   // Reset all state variables in memory
   customConditions = [];
-  activeConditions  = new Set();
-  trainings  = [];
-  abilities  = [];
-  effects    = [];
+  activeConditions = new Set();
+  trainings = [];
+  abilities = [];
+  effects = [];
+  clocks = [];
   falhasFilled = 0;
-  photoData    = null;
+  photoData = null;
 
   // Clear all simple inputs and textareas
   document.querySelectorAll('input[type=text], input[type=number]:not([readonly]), textarea').forEach(el => { el.value = ''; });
 
   // Reset base attrs to default
-  ['corpo','mente','espirito'].forEach(id => { const el = document.getElementById(id); if (el) el.value = '4'; });
+  ['corpo', 'mente', 'espirito'].forEach(id => { const el = document.getElementById(id); if (el) el.value = '4'; });
 
   // Re-render dynamic sections
   calcDerived();
@@ -348,10 +358,165 @@ function clearData() {
   renderTrainings();
   renderAbilities();
   renderEffects();
+  renderClocks();
   clearPhoto();
 
   localStorage.removeItem(STORAGE_KEY);
   showToast('Ficha limpa');
+}
+
+// ── CLOCKS ─────────────────────────────────────────────────────
+function addClock(data = {}) {
+  clocks.push({
+    id: uid(),
+    nome: '',
+    segments: 6,
+    filled: 0,
+    ...data
+  });
+  renderClocks();
+  _save();
+}
+
+function renderClocks() {
+  const grid = document.getElementById('clocksGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  clocks.forEach((c, i) => renderClockCard(grid, c, i));
+}
+
+function renderClockCard(grid, c, i) {
+  const card = document.createElement('div');
+  card.className = 'clock-card';
+
+  // ── Name row
+  const nameRow = document.createElement('div');
+  nameRow.className = 'clock-name-row';
+  const nameInp = document.createElement('input');
+  nameInp.type = 'text';
+  nameInp.value = c.nome;
+  nameInp.placeholder = 'Nome do relógio...';
+  nameInp.addEventListener('input', e => { clocks[i].nome = e.target.value; _save(); });
+  const removeBtn = document.createElement('button');
+  removeBtn.className = 'btn-remove';
+  removeBtn.textContent = '×';
+  removeBtn.title = 'Remover relógio';
+  removeBtn.addEventListener('click', () => { clocks.splice(i, 1); renderClocks(); _save(); });
+  nameRow.appendChild(nameInp);
+  nameRow.appendChild(removeBtn);
+  card.appendChild(nameRow);
+
+  // ── SVG clock face
+  const svgWrap = document.createElement('div');
+  svgWrap.className = 'clock-svg-wrap';
+  svgWrap.appendChild(buildClockSVG(c, i));
+  const counter = document.createElement('div');
+  counter.className = 'clock-counter';
+  counter.id = `clock-counter-${c.id}`;
+  counter.textContent = `${c.filled}/${c.segments}`;
+  svgWrap.appendChild(counter);
+  card.appendChild(svgWrap);
+
+  // ── Meta row: size + reset
+  const meta = document.createElement('div');
+  meta.className = 'clock-meta';
+
+  const sizeWrap = document.createElement('div');
+  sizeWrap.style.cssText = 'display:flex;align-items:center;gap:4px;';
+  const sizeLbl = document.createElement('label');
+  sizeLbl.textContent = 'Seg.';
+  const sizeInp = document.createElement('input');
+  sizeInp.type = 'number';
+  sizeInp.className = 'clock-size-input';
+  sizeInp.value = c.segments;
+  sizeInp.min = 2; sizeInp.max = 20;
+  sizeInp.addEventListener('change', e => {
+    const v = Math.min(20, Math.max(2, parseInt(e.target.value) || 6));
+    clocks[i].segments = v;
+    clocks[i].filled = Math.min(clocks[i].filled, v);
+    e.target.value = v;
+    renderClocks(); _save();
+  });
+  sizeWrap.appendChild(sizeLbl);
+  sizeWrap.appendChild(sizeInp);
+
+  const resetBtn = document.createElement('button');
+  resetBtn.className = 'clock-reset-btn';
+  resetBtn.textContent = 'Reset';
+  resetBtn.addEventListener('click', () => { clocks[i].filled = 0; renderClocks(); _save(); });
+
+  meta.appendChild(sizeWrap);
+  meta.appendChild(resetBtn);
+  card.appendChild(meta);
+
+  grid.appendChild(card);
+}
+
+function buildClockSVG(c, i) {
+  const SIZE = 120;
+  const cx = SIZE / 2, cy = SIZE / 2;
+  const R = 48, rInner = 14; // outer and inner radius for donut hole
+  const n = c.segments;
+  const gap = 0.03; // radians gap between segments
+  const svgNS = 'http://www.w3.org/2000/svg';
+
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('width', SIZE);
+  svg.setAttribute('height', SIZE);
+  svg.setAttribute('viewBox', `0 0 ${SIZE} ${SIZE}`);
+
+  // Background circle
+  const bg = document.createElementNS(svgNS, 'circle');
+  bg.setAttribute('cx', cx); bg.setAttribute('cy', cy); bg.setAttribute('r', R);
+  bg.setAttribute('fill', '#111'); bg.setAttribute('stroke', '#3a3a3a'); bg.setAttribute('stroke-width', '1');
+  svg.appendChild(bg);
+
+  for (let s = 0; s < n; s++) {
+    const startAngle = (2 * Math.PI / n) * s - Math.PI / 2 + gap / 2;
+    const endAngle = (2 * Math.PI / n) * (s + 1) - Math.PI / 2 - gap / 2;
+    const isFilled = s < c.filled;
+
+    const path = document.createElementNS(svgNS, 'path');
+    path.setAttribute('d', describeSegment(cx, cy, rInner, R, startAngle, endAngle));
+    path.setAttribute('fill', isFilled ? '#c0392b' : '#2a2a2a');
+    path.setAttribute('stroke', '#1a1a1a');
+    path.setAttribute('stroke-width', '1.5');
+    path.setAttribute('stroke-linejoin', 'round');
+    path.classList.add('clock-segment');
+
+    path.addEventListener('click', () => {
+      const target = s + 1;
+      // clicking the last filled segment unfills it; otherwise fill up to s+1
+      clocks[i].filled = (clocks[i].filled === target) ? s : target;
+      renderClocks();
+      _save();
+    });
+
+    svg.appendChild(path);
+  }
+
+  // Center hole cover
+  const hole = document.createElementNS(svgNS, 'circle');
+  hole.setAttribute('cx', cx); hole.setAttribute('cy', cy); hole.setAttribute('r', rInner);
+  hole.setAttribute('fill', '#1a1a1a'); hole.setAttribute('pointer-events', 'none');
+  svg.appendChild(hole);
+
+  return svg;
+}
+
+function describeSegment(cx, cy, r1, r2, startA, endA) {
+  const x1 = cx + r2 * Math.cos(startA), y1 = cy + r2 * Math.sin(startA);
+  const x2 = cx + r2 * Math.cos(endA), y2 = cy + r2 * Math.sin(endA);
+  const x3 = cx + r1 * Math.cos(endA), y3 = cy + r1 * Math.sin(endA);
+  const x4 = cx + r1 * Math.cos(startA), y4 = cy + r1 * Math.sin(startA);
+  const large = (endA - startA) > Math.PI ? 1 : 0;
+  return [
+    `M ${x1} ${y1}`,
+    `A ${r2} ${r2} 0 ${large} 1 ${x2} ${y2}`,
+    `L ${x3} ${y3}`,
+    `A ${r1} ${r1} 0 ${large} 0 ${x4} ${y4}`,
+    'Z'
+  ].join(' ');
 }
 
 // ── TOAST ─────────────────────────────────────────────────────
@@ -365,5 +530,5 @@ function showToast(msg) {
 function uid() { return Date.now() + Math.random(); }
 function esc(s) {
   if (!s) return '';
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }

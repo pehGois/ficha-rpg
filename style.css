@@ -603,6 +603,122 @@ textarea {
     }
 }
 
+/* ── CLOCKS ── */
+.clocks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.clock-card {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-left: 2px solid #3a4a6a;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    animation: fadeIn 0.2s;
+}
+
+.clock-name-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+.clock-name-row input[type=text] {
+    flex: 1;
+    font-size: 12px;
+    padding: 4px 6px;
+    border-color: transparent;
+    background: transparent;
+    color: var(--text);
+    font-family: 'Spectral SC', serif;
+    letter-spacing: 1px;
+}
+
+.clock-name-row input[type=text]:focus {
+    border-color: var(--border-focus);
+    background: var(--bg-input);
+}
+
+.clock-svg-wrap {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+}
+
+.clock-svg-wrap svg {
+    display: block;
+    overflow: visible;
+}
+
+.clock-segment {
+    transition: fill 0.12s;
+    cursor: pointer;
+}
+
+.clock-segment:hover {
+    opacity: 0.78;
+}
+
+.clock-counter {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Spectral SC', serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-label);
+    pointer-events: none;
+}
+
+.clock-meta {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+.clock-meta label {
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    margin: 0;
+}
+
+.clock-size-input {
+    width: 44px !important;
+    font-size: 12px !important;
+    padding: 3px 5px !important;
+    text-align: center;
+}
+
+.clock-reset-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: 'Spectral SC', serif;
+    font-size: 9px;
+    letter-spacing: 1px;
+    padding: 3px 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.clock-reset-btn:hover {
+    border-color: var(--border-focus);
+    color: var(--text-label);
+}
+
 @media (max-width: 640px) {
     .sheet-grid {
         grid-template-columns: 1fr;
