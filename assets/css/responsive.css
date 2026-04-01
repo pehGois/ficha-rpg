@@ -1,4 +1,18 @@
 @media (max-width: 640px) {
+    .dice-fab {
+        right: 14px;
+        bottom: 14px;
+    }
+
+    .dice-chat-panel {
+        right: 12px;
+        left: 12px;
+        width: auto;
+        bottom: 78px;
+        height: 62vh;
+        max-height: 70vh;
+    }
+
     .docs-panel {
         --docs-crop-top: 90px;
         --docs-frame-height: 78vh;

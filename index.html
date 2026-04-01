@@ -200,6 +200,31 @@
 
   <div class="toast" id="toast"></div>
 
+  <button id="fab" class="dice-fab" type="button" title="Abrir rolagem de dados" aria-label="Abrir rolagem de dados">🎲</button>
+
+  <section id="chatPanel" class="dice-chat-panel" aria-label="Chat de rolagem de dados">
+    <div class="dice-chat-header">
+      <strong>Rolagem de Dados</strong>
+      <button id="clearBtn" type="button" class="dice-clear-btn">Limpar</button>
+    </div>
+
+    <div id="messages" class="dice-messages">
+      <div class="msg-system">Digite uma rolagem, por exemplo: <code>1d20+5</code></div>
+    </div>
+
+    <div id="suggestions" class="dice-suggestions">
+      <button type="button" class="chip" data-roll="1d20">1d20</button>
+      <button type="button" class="chip" data-roll="1d20+5">1d20+5</button>
+      <button type="button" class="chip" data-roll="2d6+1d4+3">2d6+1d4+3</button>
+      <button type="button" class="chip" data-roll="3d6--1">3d6--1</button>
+    </div>
+
+    <div class="dice-input-row">
+      <input id="rollInput" type="text" placeholder="Ex.: 1d20+5" autocomplete="off">
+      <button id="sendBtn" type="button">Rolar</button>
+    </div>
+  </section>
+
   <script src="assets/js/state.js"></script>
   <script src="assets/js/utils.js"></script>
   <script src="assets/js/derived.js"></script>
@@ -207,6 +232,7 @@
   <script src="assets/js/persistence.js"></script>
   <script src="assets/js/tabs.js"></script>
   <script src="assets/js/docs.js"></script>
+  <script src="assets/js/dice-widget.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
 
