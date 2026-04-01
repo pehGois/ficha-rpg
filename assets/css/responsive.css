@@ -1,4 +1,19 @@
 @media (max-width: 640px) {
+    .docs-panel {
+        --docs-crop-top: 90px;
+        --docs-frame-height: 78vh;
+    }
+
+    .docs-head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .docs-open-link {
+        width: 100%;
+        text-align: center;
+    }
+
     .tabs-wrap {
         flex-direction: column;
         align-items: stretch;

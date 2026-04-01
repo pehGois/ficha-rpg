@@ -4,4 +4,5 @@ document.addEventListener('DOMContentLoaded', () => {
   bindDerivedStats();
   setupAutoSave();
   initTabsSystem();
+  initDocsView();
 });
