@@ -69,9 +69,9 @@
       let keepCountRaw = null;
       let perDieAdjust = 0;
 
-      const keepMatch = source.slice(idx).match(/^(kh|kl)(\d+)/);
+      const keepMatch = source.slice(idx).match(/^(kh|kl|dh|dl)(\d+)/);
       if (keepMatch) {
-        keepMode = keepMatch[1];
+        keepMode = keepMatch[1] === 'dh' ? 'kh' : keepMatch[1] === 'dl' ? 'kl' : keepMatch[1];
         keepCountRaw = parseInt(keepMatch[2], 10);
         idx += keepMatch[0].length;
       }
