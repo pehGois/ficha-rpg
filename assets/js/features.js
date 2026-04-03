@@ -145,7 +145,7 @@ function renderTrainings() {
 }
 
 function addAbility(data = {}) {
-  abilities.push({ id: uid(), nome: '', custo: '', forma: '', duracao: '', alcance: '', intensidade: '', area: '', transfig: '', descricao: '', ...data });
+  abilities.push({ id: uid(), nome: '', fundament: '', custo: '', forma: '', duracao: '', alcance: '', intensidade: '', area: '', transfig: '', descricao: '', ...data });
   renderAbilities();
 }
 
@@ -154,14 +154,21 @@ function renderAbilities() {
   list.innerHTML = '';
 
   abilities.forEach((a, i) => {
+    const fundament = a.fundament ?? a.fundamento ?? '';
     const d = document.createElement('div');
     d.className = 'ability-card';
     d.innerHTML = `
       <div class="card-header"><span class="card-label">Habilidade ${i + 1}</span><button class="btn-remove">× Remover</button></div>
       <div class="spell-grid">
         <div class="field"><label>Nome</label><input type="text" value="${esc(a.nome)}" placeholder="Nome da habilidade" data-field="nome"></div>
-        <div class="field"><label>Custo</label><input type="text" value="${esc(a.custo)}" placeholder="Custo" data-field="custo"></div>
-        <div class="field"><label>Forma</label><input type="text" value="${esc(a.forma)}" placeholder="Ativa / Passiva / Reação" data-field="forma"></div>
+        <div class="field"><label>Fundamento</label><select placeholder="Nome do Fundamento" data-field="fundament">
+          <option value="">Selecione...</option>
+          <option value="Corpo"${fundament === 'Corpo' ? ' selected' : ''}>Corpo</option>
+          <option value="Mente"${fundament === 'Mente' ? ' selected' : ''}>Mente</option>
+          <option value="Espirito"${fundament === 'Espirito' ? ' selected' : ''}>Espirito</option>
+        </select></div>
+        <div class="field"><label>Custo</label><input type="text" value="${esc(a.custo)}" placeholder="X PS" data-field="custo"></div>
+        <div class="field"><label>Forma</label><input type="text" value="${esc(a.forma)}" placeholder="Gestual Duas Mãos, Ritual ..." data-field="forma"></div>
         <div class="field"><label>Duração</label><input type="text" value="${esc(a.duracao)}" placeholder="Duração" data-field="duracao"></div>
         <div class="field"><label>Alcance</label><input type="text" value="${esc(a.alcance)}" placeholder="Alcance" data-field="alcance"></div>
         <div class="field"><label>Intensidade</label><input type="text" value="${esc(a.intensidade)}" placeholder="Intensidade" data-field="intensidade"></div>
@@ -177,10 +184,12 @@ function renderAbilities() {
     });
 
     d.querySelectorAll('[data-field]').forEach(el => {
-      el.addEventListener('input', e => {
+      const syncField = e => {
         abilities[i][e.target.dataset.field] = e.target.value;
         _save();
-      });
+      };
+      el.addEventListener('input', syncField);
+      el.addEventListener('change', syncField);
     });
 
     list.appendChild(d);
@@ -203,7 +212,6 @@ function renderEffects() {
       <div class="card-header"><span class="card-label">Efeito ${i + 1}</span><button class="btn-remove">× Remover</button></div>
       <div class="spell-grid">
         <div class="field"><label>Nome</label><input type="text" value="${esc(ef.nome)}" placeholder="Nome do efeito" data-field="nome"></div>
-        <div class="field"><label>Tipo / Fonte</label><input type="text" value="${esc(ef.tipo)}" placeholder="Magia / Veneno..." data-field="tipo"></div>
         <div class="field full"><label>Descrição</label><textarea data-field="descricao" placeholder="O que este efeito faz..." style="min-height:60px;">${esc(ef.descricao)}</textarea></div>
       </div>`;
 

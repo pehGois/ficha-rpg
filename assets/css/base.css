@@ -59,9 +59,14 @@ label {
     color: var(--text-label);
     margin-bottom: 3px;
 }
+option {
+    background: var(--bg-input);
+    color: var(--text-dim);
+}
 
 input[type=text],
 input[type=number],
+select,
 textarea {
     width: 100%;
     background: var(--bg-input);

@@ -13,7 +13,7 @@ function collectData() {
     nome: g('nome'),
     xp: g('xp'),
     inspiracao: g('inspiracao'),
-    origem: g('origem'),
+    lema: g('lema'),
     corpo: g('corpo'),
     mente: g('mente'),
     espirito: g('espirito'),
@@ -47,7 +47,7 @@ function applyData(d) {
     if (el && v !== undefined) el.value = v;
   };
 
-  s('nome', d.nome); s('xp', d.xp); s('inspiracao', d.inspiracao); s('origem', d.origem);
+  s('nome', d.nome); s('xp', d.xp); s('inspiracao', d.inspiracao); s('lema', d.lema);
   s('corpo', d.corpo); s('mente', d.mente); s('espirito', d.espirito);
   s('pv', d.pv); s('ps', d.ps); s('pd', d.pd);
   s('armaduraNome', d.armaduraNome); s('armaduraValor', d.armaduraValor); s('armaduraProps', d.armaduraProps);
@@ -77,7 +77,10 @@ function applyData(d) {
     return t;
   });
 
-  abilities = d.abilities ?? [];
+  abilities = (d.abilities ?? []).map(a => ({
+    ...a,
+    fundament: a?.fundament ?? a?.fundamento ?? ''
+  }));
   effects = d.effects ?? [];
   clocks = (d.clocks ?? []).map(c => ({
     id: c.id ?? uid(),

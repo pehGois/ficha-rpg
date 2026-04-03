@@ -3,7 +3,7 @@ function createDefaultSheetData() {
     nome: '',
     xp: '',
     inspiracao: '',
-    origem: '',
+    lema: '',
     corpo: '4',
     mente: '4',
     espirito: '4',

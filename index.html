@@ -58,7 +58,7 @@
             <div class="field"><label>Inspiração</label><input type="number" id="inspiracao" placeholder="0" min="0">
             </div>
           </div>
-          <div class="field"><label>Origem</label><input type="text" id="origem" placeholder="De onde você veio"></div>
+          <div class="field"><label>Lema</label><input type="text" id="lema" placeholder="Seu personagem em uma frase"></div>
         </div>
       </div>
     </div>
@@ -96,8 +96,8 @@
         <div class="field"><label>Nome</label><input type="text" id="armaduraNome" placeholder="Nome da armadura"></div>
         <div class="field"><label>Dado de Armadura</label><input type="text" id="armaduraValor" placeholder="1d4"></div>
       </div>
-      <div class="field"><label>Propriedades</label><textarea id="armaduraProps"
-          placeholder="Resistências, penalidades..." style="min-height:72px;"></textarea></div>
+      <div class="field"><label>Efeito</label><textarea id="armaduraProps"
+          placeholder="Efeito da armadura..." style="min-height:72px;"></textarea></div>
     </div>
 
     
@@ -118,7 +118,7 @@
           <div class="field"><label>Bônus de Dano</label><input type="text" id="arma1bonus" placeholder="+0"></div>
         </div>
         <div class="field"><label>Propriedades</label><input type="text" id="arma1props"
-            placeholder="Perfurante, Longa..."></div>
+            placeholder="Perfurante, Arremessável II..."></div>
       </div>
       <div class="weapon-block">
         <div class="weapon-header">Arma Secundária</div>
@@ -127,7 +127,7 @@
           <div class="field"><label>Bônus de Dano</label><input type="text" id="arma2bonus" placeholder="+0"></div>
         </div>
         <div class="field"><label>Propriedades</label><input type="text" id="arma2props"
-            placeholder="Oculta, Rápida..."></div>
+            placeholder="Perfurante, Arremessável II..."></div>
       </div>
     </div>
 
@@ -163,14 +163,14 @@
     <div class="card full-width">
       <div class="section-title">Antecedente & Notas</div>
       <div class="field"><label>História</label><textarea id="antecedente"
-          placeholder="O mundo acabou. Você sobreviveu. Mas a que custo?" style="min-height:120px;"></textarea></div>
+          placeholder="Quem é você?" style="min-height:120px;"></textarea></div>
       <div class="field"><label>Notas</label><textarea id="notas" placeholder="Missões, contatos, segredos, dívidas..."
           style="min-height:90px;"></textarea></div>
     </div>
 
     <!-- EFEITOS -->
     <div class="card full-width">
-      <div class="section-title">Efeitos Ativos</div>
+      <div class="section-title">Efeitos Aprendidos</div>
       <div id="effectsList"></div>
       <button class="btn-add" onclick="addEffect()">+ Adicionar Efeito</button>
     </div>
