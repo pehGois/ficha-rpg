@@ -35,22 +35,57 @@ function renderConditions() {
   if (!grid) return;
 
   grid.innerHTML = '';
+
+  const toggleCondition = (name, item) => {
+    if (activeConditions.has(name)) {
+      activeConditions.delete(name);
+      delete conditionCounters[name];
+    } else {
+      activeConditions.add(name);
+      conditionCounters[name] = conditionCounters[name] ?? '';
+    }
+
+    item.classList.toggle('active', activeConditions.has(name));
+    renderConditions();
+    _save();
+  };
+
   [...DEFAULT_CONDITIONS, ...customConditions].forEach(name => {
     const isCustom = !DEFAULT_CONDITIONS.includes(name);
     const isActive = activeConditions.has(name);
 
     const item = document.createElement('div');
     item.className = 'condition-item' + (isActive ? ' active' : '');
-    item.addEventListener('click', () => {
-      activeConditions.has(name) ? activeConditions.delete(name) : activeConditions.add(name);
-      item.classList.toggle('active');
-      _save();
+    item.addEventListener('click', e => {
+      if (e.target.closest('.cond-remove') || e.target.closest('.cond-counter-wrap')) return;
+      toggleCondition(name, item);
     });
 
     const main = document.createElement('div');
     main.className = 'condition-main';
     main.innerHTML = `<span class="cond-dot"></span><span class="cond-name">${name}</span>`;
     item.appendChild(main);
+
+    const actions = document.createElement('div');
+    actions.className = 'condition-actions';
+
+    if (isActive) {
+      const counterWrap = document.createElement('div');
+      counterWrap.className = 'cond-counter-wrap';
+
+      const counterInput = document.createElement('input');
+      counterInput.type = 'number';
+      counterInput.className = 'cond-counter-input';
+      counterInput.placeholder = '0';
+      counterInput.value = conditionCounters[name] ?? '';
+      counterInput.addEventListener('input', e => {
+        conditionCounters[name] = e.target.value;
+        _save();
+      });
+
+      counterWrap.appendChild(counterInput);
+      actions.appendChild(counterWrap);
+    }
 
     if (isCustom) {
       const btn = document.createElement('button');
@@ -61,7 +96,11 @@ function renderConditions() {
         e.stopPropagation();
         removeCondition(name);
       });
-      item.appendChild(btn);
+      actions.appendChild(btn);
+    }
+
+    if (actions.children.length) {
+      item.appendChild(actions);
     }
 
     grid.appendChild(item);
@@ -82,6 +121,7 @@ function addCondition() {
 function removeCondition(name) {
   customConditions = customConditions.filter(c => c !== name);
   activeConditions.delete(name);
+  delete conditionCounters[name];
   renderConditions();
   _save();
 }

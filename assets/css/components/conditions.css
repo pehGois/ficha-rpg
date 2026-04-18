@@ -31,6 +31,24 @@
     gap: 8px;
 }
 
+.condition-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cond-counter-wrap {
+    display: flex;
+    align-items: center;
+}
+
+.cond-counter-input {
+    width: 56px !important; 
+    font-size: 12px;
+    text-align: center;
+    padding: 2px 4px;
+}
+
 .cond-dot {
     width: 8px;
     height: 8px;

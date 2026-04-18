@@ -7,6 +7,25 @@ function setupAutoSave() {
   });
 }
 
+function normalizeImportedData(d) {
+  if (!d || typeof d !== 'object') return {};
+
+  const toArray = v => (Array.isArray(v) ? v : []);
+  const toObject = v => (v && typeof v === 'object' && !Array.isArray(v) ? v : {});
+
+  return {
+    ...d,
+    customConditions: toArray(d.customConditions ?? d.conditions),
+    activeConditions: toArray(d.activeConditions),
+    conditionCounters: toObject(d.conditionCounters ?? d.condicoesContadores),
+    trainings: toArray(d.trainings),
+    abilities: toArray(d.abilities),
+    effects: toArray(d.effects),
+    clocks: toArray(d.clocks),
+    counters: toArray(d.counters)
+  };
+}
+
 function collectData() {
   const g = id => document.getElementById(id)?.value ?? '';
   const selectedAtributo = document.querySelector('input[name="atributoPrincipal"]:checked')?.value ?? '';
@@ -17,6 +36,7 @@ function collectData() {
     lema: g('lema'),
     sheetPane: activeSheetPane,
     selectedAtributo,
+    fundamento_principal: selectedAtributo,
     corpo: g('corpo'),
     mente: g('mente'),
     espirito: g('espirito'),
@@ -24,6 +44,7 @@ function collectData() {
     ps: g('ps'),
     customConditions: [...customConditions],
     activeConditions: [...activeConditions],
+    conditionCounters: { ...conditionCounters },
     armaduraNome: g('armaduraNome'),
     armaduraValor: g('armaduraValor'),
     armaduraProps: g('armaduraProps'),
@@ -54,8 +75,9 @@ function applyData(d) {
   s('corpo', d.corpo); s('mente', d.mente); s('espirito', d.espirito);
   s('pv', d.pv); s('ps', d.ps);
 
+  const atributoSelecionado = d.selectedAtributo ?? d.fundamento_principal ?? '';
   document.querySelectorAll('input[name="atributoPrincipal"]').forEach(el => {
-    el.checked = !!d.selectedAtributo && el.value === d.selectedAtributo;
+    el.checked = !!atributoSelecionado && el.value === atributoSelecionado;
   });
 
   s('armaduraNome', d.armaduraNome); s('armaduraValor', d.armaduraValor); s('armaduraProps', d.armaduraProps);
@@ -77,7 +99,31 @@ function applyData(d) {
   } else {
     customConditions = [];
   }
-  activeConditions = new Set(Array.isArray(d.activeConditions) ? d.activeConditions : []);
+  const importedActiveConditions = Array.isArray(d.activeConditions) ? d.activeConditions : [];
+  activeConditions = new Set(
+    importedActiveConditions
+      .map(c => (typeof c === 'string' ? c : c?.nome))
+      .filter(Boolean)
+  );
+
+  const importedConditionCounters =
+    d.conditionCounters && typeof d.conditionCounters === 'object' && !Array.isArray(d.conditionCounters)
+      ? d.conditionCounters
+      : {};
+
+  const countersFromLegacyActive = importedActiveConditions.reduce((acc, c) => {
+    if (c && typeof c === 'object' && c.nome && c.contador !== undefined) {
+      acc[c.nome] = c.contador;
+    }
+    return acc;
+  }, {});
+
+  conditionCounters = { ...countersFromLegacyActive, ...importedConditionCounters };
+
+  Object.keys(conditionCounters).forEach(name => {
+    if (!activeConditions.has(name)) delete conditionCounters[name];
+  });
+
   renderConditions();
 
   falhasFilled = d.falhasFilled ?? 0;
@@ -193,8 +239,17 @@ function setupImportInput() {
 
     const r = new FileReader();
     r.onload = ev => {
+      let parsed;
       try {
-        const d = JSON.parse(ev.target.result);
+        const rawText = String(ev.target.result ?? '').replace(/^\uFEFF/, '').trim();
+        parsed = JSON.parse(rawText);
+      } catch {
+        alert('Arquivo inválido. Certifique-se de que é um JSON exportado por esta ficha.');
+        return;
+      }
+
+      try {
+        const d = normalizeImportedData(parsed);
         if (typeof addSheetTab === 'function') {
           addSheetTab(d);
           showToast('Ficha importada em nova aba');
@@ -203,8 +258,9 @@ function setupImportInput() {
           localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
           showToast('Ficha importada');
         }
-      } catch {
-        alert('Arquivo inválido. Certifique-se de que é um JSON exportado por esta ficha.');
+      } catch (err) {
+        console.error('Erro ao importar ficha:', err);
+        alert('Não foi possível importar esta ficha. Verifique o arquivo JSON e tente novamente.');
       }
     };
     r.readAsText(file);
@@ -216,6 +272,7 @@ function clearData() {
 
   customConditions = [];
   activeConditions = new Set();
+  conditionCounters = {};
   trainings = [];
   abilities = [];
   effects = [];

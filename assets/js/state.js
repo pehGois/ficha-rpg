@@ -5,6 +5,7 @@ const DEFAULT_CONDITIONS = ['Nos Portões da Morte', 'Louco', 'Inconsciente'];
 
 let customConditions = [];
 let activeConditions = new Set();
+let conditionCounters = {};
 let trainings = [];
 let abilities = [];
 let effects = [];

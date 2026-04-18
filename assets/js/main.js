@@ -1,5 +1,5 @@
 function setActiveSheetPane(pane, save = true) {
-  const normalizedPane = ['book', 'sword', 'magic'].includes(pane) ? pane : 'book';
+  const normalizedPane = ['sword','book','magic'].includes(pane) ? pane : 'book';
   activeSheetPane = normalizedPane;
 
   document.querySelectorAll('.sheet-section-tab').forEach(tab => {
