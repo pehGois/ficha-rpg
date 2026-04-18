@@ -29,7 +29,7 @@
     <section id="sheetWorkspace">
       <header class="page-header">
         <div class="page-title">Ficha de Personagem</div>
-        <div class="page-subtitle">Convergência RPG — 0.2</div>
+        <div class="page-subtitle">Convergência RPG — 0.1.2</div>
       </header>
 
       <section class="tabs-wrap">
@@ -52,11 +52,9 @@
           <input type="file" id="photoInput" accept="image/*">
         </div>
         <div>
-          <div class="row3">
+          <div class="row2">
             <div class="field"><label>Nome</label><input type="text" id="nome" placeholder="Nome do personagem"></div>
             <div class="field"><label>XP</label><input type="number" id="xp" placeholder="0" min="0"></div>
-            <div class="field"><label>Inspiração</label><input type="number" id="inspiracao" placeholder="0" min="0">
-            </div>
           </div>
           <div class="field"><label>Lema</label><input type="text" id="lema" placeholder="Seu personagem em uma frase"></div>
         </div>
@@ -67,16 +65,29 @@
     <div class="card">
       <div class="section-title">Atributos</div>
       <div class="attrs-grid">
-        <div class="attr-box"><label>Corpo</label><input type="number" id="corpo" placeholder="4" min="4" value="4">
+        <div class="attr-box">
+          <div class="attr-select"><input type="radio" name="atributoPrincipal" id="attrCorpoSelect" value="corpo" aria-label="Selecionar Corpo"></div>
+          <label>Corpo</label><input type="number" id="corpo" placeholder="4" min="4" value="4">
         </div>
-        <div class="attr-box"><label>Mente</label><input type="number" id="mente" placeholder="4" min="4" value="4">
+        <div class="attr-box">
+          <div class="attr-select"><input type="radio" name="atributoPrincipal" id="attrMenteSelect" value="mente" aria-label="Selecionar Mente"></div>
+          <label>Mente</label><input type="number" id="mente" placeholder="4" min="4" value="4">
         </div>
-        <div class="attr-box"><label>Espírito</label><input type="number" id="espirito" placeholder="4" min="4"
-            value="4"></div>
+        <div class="attr-box">
+          <div class="attr-select"><input type="radio" name="atributoPrincipal" id="attrEspiritoSelect" value="espirito" aria-label="Selecionar Espírito"></div>
+          <label>Espírito</label><input type="number" id="espirito" placeholder="4" min="4" value="4">
+        </div>
         <div class="attr-box"><label id="pvLabel">PV [0]</label><input type="number" id="pv" placeholder="0"></div>
         <div class="attr-box"><label id="psLabel">PS [0]</label><input type="number" id="ps" placeholder="0"></div>
-        <div class="attr-box"><label id="pdLabel">PD [0]</label><input type="number" id="pd" placeholder="0"></div>
+        <div class="attr-box"><label id="inspiracaoLabel">Inspiração [1d4]</label><input type="text" id="inspiracao" placeholder="1d4"></div>
       </div>
+    </div>
+
+    <!-- CONTADORES -->
+    <div class="card">
+      <div class="section-title">Contadores</div>
+      <div id="countersList"></div>
+      <button class="btn-add" onclick="addCounter()">+ Adicionar Contador</button>
     </div>
 
     <!-- CONDIÇÕES -->
@@ -102,7 +113,7 @@
 
     
     <!-- RELÓGIOS DE PROGRESSO -->
-    <div class="card">
+    <div class="card full-width">
       <div class="section-title">Relógios de Progresso</div>
       <div class="clocks-grid" id="clocksGrid"></div>
       <button class="btn-add" onclick="addClock()">+ Adicionar Relógio</button>

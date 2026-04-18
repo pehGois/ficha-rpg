@@ -1,0 +1,34 @@
+/* GENERIC BUTTONS */
+.btn-add {
+    width: 100%;
+    background: none;
+    border: 1px dashed var(--border);
+    color: var(--text-dim);
+    font-family: 'Spectral SC', serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-top: 6px;
+}
+
+.btn-add:hover {
+    border-color: var(--border-focus);
+    color: var(--text-label);
+}
+
+.btn-remove {
+    background: none;
+    border: none;
+    color: #555;
+    cursor: pointer;
+    font-size: 15px;
+    padding: 0 4px;
+    transition: color 0.15s;
+    line-height: 1;
+}
+
+.btn-remove:hover {
+    color: var(--accent);
+}

@@ -1,0 +1,73 @@
+/* DYNAMIC CARDS */
+.training-card,
+.ability-card,
+.effect-item {
+    border: 1px solid var(--border);
+    padding: 12px;
+    margin-bottom: 8px;
+    background: var(--bg-input);
+    animation: fadeIn 0.2s;
+}
+
+.training-card {
+    border-left: 2px solid #3a4a5a;
+}
+
+.ability-card {
+    border-left: 2px solid #4a5a3a;
+}
+
+.effect-item {
+    border-left: 2px solid var(--accent-dim);
+}
+
+.counter-item {
+    border: 1px solid var(--border);
+    border-left: 2px solid #4a4a6a;
+    padding: 12px;
+    margin-bottom: 8px;
+    background: var(--bg-input);
+    animation: fadeIn 0.2s;
+}
+
+.counter-grid {
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    gap: 8px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.card-label {
+    font-family: 'Spectral SC', serif;
+    font-size: 10px;
+    color: var(--text-label);
+    letter-spacing: 2px;
+}
+
+.spell-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.spell-grid .full {
+    grid-column: 1/-1;
+}
+
+.spell-grid .full textarea {
+    min-height: 90px;
+}
+
+.effect-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 8px;
+    align-items: end;
+    margin-bottom: 6px;
+}

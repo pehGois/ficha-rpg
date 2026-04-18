@@ -61,4 +61,8 @@
     .spell-grid {
         grid-template-columns: 1fr;
     }
+
+    .counter-grid {
+        grid-template-columns: 1fr;
+    }
 }

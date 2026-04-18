@@ -9,17 +9,18 @@ function setupAutoSave() {
 
 function collectData() {
   const g = id => document.getElementById(id)?.value ?? '';
+  const selectedAtributo = document.querySelector('input[name="atributoPrincipal"]:checked')?.value ?? '';
   return {
     nome: g('nome'),
     xp: g('xp'),
     inspiracao: g('inspiracao'),
     lema: g('lema'),
+    selectedAtributo,
     corpo: g('corpo'),
     mente: g('mente'),
     espirito: g('espirito'),
     pv: g('pv'),
     ps: g('ps'),
-    pd: g('pd'),
     customConditions: [...customConditions],
     activeConditions: [...activeConditions],
     armaduraNome: g('armaduraNome'),
@@ -35,6 +36,7 @@ function collectData() {
     abilities,
     effects,
     clocks,
+    counters,
     antecedente: g('antecedente'),
     notas: g('notas'),
     photoData
@@ -49,7 +51,12 @@ function applyData(d) {
 
   s('nome', d.nome); s('xp', d.xp); s('inspiracao', d.inspiracao); s('lema', d.lema);
   s('corpo', d.corpo); s('mente', d.mente); s('espirito', d.espirito);
-  s('pv', d.pv); s('ps', d.ps); s('pd', d.pd);
+  s('pv', d.pv); s('ps', d.ps);
+
+  document.querySelectorAll('input[name="atributoPrincipal"]').forEach(el => {
+    el.checked = !!d.selectedAtributo && el.value === d.selectedAtributo;
+  });
+
   s('armaduraNome', d.armaduraNome); s('armaduraValor', d.armaduraValor); s('armaduraProps', d.armaduraProps);
   s('arma1nome', d.arma1?.nome); s('arma1bonus', d.arma1?.bonus); s('arma1props', d.arma1?.props);
   s('arma2nome', d.arma2?.nome); s('arma2bonus', d.arma2?.bonus); s('arma2props', d.arma2?.props);
@@ -88,11 +95,17 @@ function applyData(d) {
     segments: Math.min(20, Math.max(2, parseInt(c.segments, 10) || 6)),
     filled: Math.min(c.filled ?? 0, c.segments ?? 6)
   }));
+  counters = (d.counters ?? []).map(c => ({
+    id: c.id ?? uid(),
+    nome: c.nome ?? '',
+    valor: c.valor ?? ''
+  }));
 
   renderTrainings();
   renderAbilities();
   renderEffects();
   renderClocks();
+  renderCounters();
 
   if (d.photoData) {
     photoData = d.photoData;
@@ -192,6 +205,7 @@ function clearData() {
   abilities = [];
   effects = [];
   clocks = [];
+  counters = [];
   falhasFilled = 0;
   photoData = null;
 
@@ -204,6 +218,10 @@ function clearData() {
     if (el) el.value = '4';
   });
 
+  document.querySelectorAll('input[name="atributoPrincipal"]').forEach(el => {
+    el.checked = false;
+  });
+
   calcDerived();
   renderConditions();
   renderFalhasMarks();
@@ -211,6 +229,7 @@ function clearData() {
   renderAbilities();
   renderEffects();
   renderClocks();
+  renderCounters();
   clearPhoto();
 
   _save();

@@ -1,0 +1,54 @@
+/* ATTRIBUTES */
+.attrs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.attr-box {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    padding: 10px 6px;
+    text-align: center;
+}
+
+.attr-select {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 4px;
+}
+
+.attr-select input[type=radio] {
+    width: 14px;
+    height: 14px;
+    accent-color: #b55b4f;
+    cursor: pointer;
+}
+
+.attr-box label {
+    font-size: 10px;
+    color: var(--text-label);
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.attr-box input {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    padding: 2px;
+    width: 100%;
+}
+
+.attr-box input:focus {
+    border-bottom-color: var(--border-focus);
+    outline: none;
+}
+
+.attr-box input[readonly] {
+    color: var(--text-label);
+    cursor: default;
+}

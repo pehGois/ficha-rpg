@@ -9,6 +9,7 @@ let trainings = [];
 let abilities = [];
 let effects = [];
 let clocks = [];
+let counters = [];
 let falhasFilled = 0;
 let photoData = null;
 

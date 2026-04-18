@@ -1,0 +1,22 @@
+/* TOAST */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-label);
+    font-family: 'Spectral SC', serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 8px 16px;
+    transform: translateY(50px);
+    opacity: 0;
+    transition: all 0.25s;
+    z-index: 999;
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}

@@ -1,0 +1,63 @@
+/* ACTION BUTTONS */
+.btn-action {
+    font-family: 'Spectral SC', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 7px 18px;
+    border: 1px solid;
+    cursor: pointer;
+    background: none;
+    transition: all 0.15s;
+}
+
+.btn-save {
+    border-color: #555;
+    color: #999;
+}
+
+.btn-save:hover {
+    border-color: #888;
+    color: #ccc;
+}
+
+.btn-download {
+    border-color: #4a3a6a;
+    color: #9b7fd4;
+}
+
+.btn-download:hover {
+    background: rgba(90, 58, 138, 0.1);
+}
+
+.btn-import {
+    border-color: #2a4a3a;
+    color: #5a9a7a;
+}
+
+.btn-import:hover {
+    background: rgba(58, 138, 90, 0.08);
+}
+
+.btn-clear {
+    border-color: var(--accent-dim);
+    color: #c05050;
+}
+
+.btn-clear:hover {
+    background: rgba(192, 57, 43, 0.08);
+}
+
+.btn-docs {
+    border-color: #35516a;
+    color: #8bb3d1;
+}
+
+.btn-docs:hover {
+    background: rgba(53, 81, 106, 0.12);
+}
+
+.btn-docs.active {
+    border-color: #8bb3d1;
+    background: rgba(53, 81, 106, 0.22);
+    color: #d4e8f6;
+}

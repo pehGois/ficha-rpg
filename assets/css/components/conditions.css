@@ -1,0 +1,88 @@
+/* CONDITIONS */
+.conditions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+}
+
+.condition-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 6px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+}
+
+.condition-item:hover {
+    border-color: var(--border);
+}
+
+.condition-item.active {
+    background: rgba(192, 57, 43, 0.12);
+    border-color: var(--accent-dim);
+}
+
+.condition-main {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cond-dot {
+    width: 8px;
+    height: 8px;
+    border: 1px solid #555;
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: all 0.15s;
+}
+
+.condition-item.active .cond-dot {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.cond-name {
+    font-family: 'Spectral SC', serif;
+    font-size: 11px;
+    color: var(--text-label);
+    transition: color 0.15s;
+}
+
+.condition-item.active .cond-name {
+    color: #e07060;
+}
+
+.cond-remove {
+    background: none;
+    border: none;
+    color: #444;
+    cursor: pointer;
+    font-size: 11px;
+    padding: 0 2px;
+    line-height: 1;
+    transition: color 0.15s;
+}
+
+.cond-remove:hover {
+    color: var(--accent);
+}
+
+.add-condition {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.add-condition input {
+    font-size: 13px;
+}
+
+.add-condition .btn-add {
+    width: auto;
+    padding: 6px 12px;
+    margin-top: 0;
+}

@@ -413,3 +413,45 @@ function describeSegment(cx, cy, r1, r2, startA, endA) {
     'Z'
   ].join(' ');
 }
+
+function addCounter(data = {}) {
+  counters.push({ id: uid(), nome: '', valor: '', ...data });
+  renderCounters();
+  _save();
+}
+
+function renderCounters() {
+  const list = document.getElementById('countersList');
+  if (!list) return;
+
+  list.innerHTML = '';
+
+  counters.forEach((counter, i) => {
+    const d = document.createElement('div');
+    d.className = 'counter-item';
+    d.innerHTML = `
+      <div class="card-header">
+        <span class="card-label">Contador ${i + 1}</span>
+        <button class="btn-remove">× Remover</button>
+      </div>
+      <div class="counter-grid">
+        <div class="field"><label>Nome</label><input type="text" value="${esc(counter.nome)}" placeholder="Nome do contador" data-field="nome"></div>
+        <div class="field"><label>Valor</label><input type="number" value="${esc(counter.valor)}" placeholder="0" data-field="valor"></div>
+      </div>`;
+
+    d.querySelector('.btn-remove').addEventListener('click', () => {
+      counters.splice(i, 1);
+      renderCounters();
+      _save();
+    });
+
+    d.querySelectorAll('[data-field]').forEach(el => {
+      el.addEventListener('input', e => {
+        counters[i][e.target.dataset.field] = e.target.value;
+        _save();
+      });
+    });
+
+    list.appendChild(d);
+  });
+}
