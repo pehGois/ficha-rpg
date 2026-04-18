@@ -1,0 +1,33 @@
+/* SHEET SECTION TABS */
+.sheet-section-tabs {
+    position: sticky;
+    top: 82px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-self: start;
+}
+
+.sheet-section-tab {
+    width: 52px;
+    height: 52px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-dim);
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.sheet-section-tab:hover {
+    border-color: var(--border-focus);
+    color: var(--text-label);
+    transform: translateX(1px);
+}
+
+.sheet-section-tab.active {
+    border-color: var(--accent-dim);
+    color: #e8c7c4;
+    background: rgba(192, 57, 43, 0.12);
+}

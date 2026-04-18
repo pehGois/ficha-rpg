@@ -197,7 +197,7 @@ function renderAbilities() {
 }
 
 function addEffect(data = {}) {
-  effects.push({ id: uid(), nome: '', tipo: '', descricao: '', ...data });
+  effects.push({ id: uid(), nome: '', custo: '', intensidade: '', area: '', duracao: '', alcance: '', transfig: '', descricao: '', ...data });
   renderEffects();
 }
 
@@ -212,6 +212,12 @@ function renderEffects() {
       <div class="card-header"><span class="card-label">Efeito ${i + 1}</span><button class="btn-remove">× Remover</button></div>
       <div class="spell-grid">
         <div class="field"><label>Nome</label><input type="text" value="${esc(ef.nome)}" placeholder="Nome do efeito" data-field="nome"></div>
+        <div class="field"><label>Custo de Conjuração</label><input type="text" value="${esc(ef.custo)}" placeholder="X PS" data-field="custo"></div>
+        <div class="field"><label>Intensidade</label><input type="text" value="${esc(ef.intensidade)}" placeholder="Intensidade" data-field="intensidade"></div>
+        <div class="field"><label>Área de Efeito</label><input type="text" value="${esc(ef.area)}" placeholder="Área de efeito" data-field="area"></div>
+        <div class="field"><label>Duração</label><input type="text" value="${esc(ef.duracao)}" placeholder="Duração" data-field="duracao"></div>
+        <div class="field"><label>Alcance</label><input type="text" value="${esc(ef.alcance)}" placeholder="Alcance" data-field="alcance"></div>
+        <div class="field full"><label>Transfigurações</label><input type="text" value="${esc(ef.transfig)}" placeholder="Modificadores" data-field="transfig"></div>
         <div class="field full"><label>Descrição</label><textarea data-field="descricao" placeholder="O que este efeito faz..." style="min-height:60px;">${esc(ef.descricao)}</textarea></div>
       </div>`;
 

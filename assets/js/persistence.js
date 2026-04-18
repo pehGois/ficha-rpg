@@ -15,6 +15,7 @@ function collectData() {
     xp: g('xp'),
     inspiracao: g('inspiracao'),
     lema: g('lema'),
+    sheetPane: activeSheetPane,
     selectedAtributo,
     corpo: g('corpo'),
     mente: g('mente'),
@@ -63,6 +64,10 @@ function applyData(d) {
   s('mark-xp', d.markXp); s('marcaDesc', d.marcaDesc); s('falhasTexto', d.falhasTexto);
   s('antecedente', d.antecedente); s('notas', d.notas);
 
+  if (typeof setActiveSheetPane === 'function') {
+    setActiveSheetPane(d.sheetPane, false);
+  }
+
   calcDerived();
 
   if (Array.isArray(d.customConditions)) {
@@ -88,7 +93,17 @@ function applyData(d) {
     ...a,
     fundament: a?.fundament ?? a?.fundamento ?? ''
   }));
-  effects = d.effects ?? [];
+  effects = (d.effects ?? []).map(ef => ({
+    id: ef?.id ?? uid(),
+    nome: ef?.nome ?? '',
+    custo: ef?.custo ?? ef?.custoConjuracao ?? '',
+    intensidade: ef?.intensidade ?? '',
+    area: ef?.area ?? ef?.areaEfeito ?? '',
+    duracao: ef?.duracao ?? '',
+    alcance: ef?.alcance ?? '',
+    transfig: ef?.transfig ?? ef?.transfiguracoes ?? '',
+    descricao: ef?.descricao ?? ''
+  }));
   clocks = (d.clocks ?? []).map(c => ({
     id: c.id ?? uid(),
     nome: c.nome ?? '',

@@ -37,6 +37,13 @@
         <button type="button" class="btn-tab-add" onclick="addSheetTab()">+ Nova Ficha</button>
       </section>
 
+      <div class="sheet-content-layout">
+        <aside class="sheet-section-tabs" aria-label="Organização da ficha">
+          <button type="button" class="sheet-section-tab active" data-sheet-pane="book" aria-pressed="true" title="Contadores, relógios, marcas e notas">📚</button>
+          <button type="button" class="sheet-section-tab" data-sheet-pane="sword" aria-pressed="false" title="Condições, armadura e arsenal">⚔️</button>
+          <button type="button" class="sheet-section-tab" data-sheet-pane="magic" aria-pressed="false" title="Efeitos e habilidades">📖</button>
+        </aside>
+
       <div class="sheet-grid">
 
     <!-- IDENTIDADE -->
@@ -62,7 +69,7 @@
     </div>
 
     <!-- ATRIBUTOS -->
-    <div class="card">
+    <div class="card" data-sheet-pane="sword">
       <div class="section-title">Atributos</div>
       <div class="attrs-grid">
         <div class="attr-box">
@@ -84,14 +91,14 @@
     </div>
 
     <!-- CONTADORES -->
-    <div class="card">
+    <div class="card" data-sheet-pane="book">
       <div class="section-title">Contadores</div>
       <div id="countersList"></div>
       <button class="btn-add" onclick="addCounter()">+ Adicionar Contador</button>
     </div>
 
     <!-- CONDIÇÕES -->
-    <div class="card">
+    <div class="card" data-sheet-pane="sword">
       <div class="section-title">Condições</div>
       <div class="conditions-grid" id="conditionsGrid"></div>
       <div class="add-condition">
@@ -101,7 +108,7 @@
     </div>
 
     <!-- ARMADURA -->
-    <div class="card">
+    <div class="card" data-sheet-pane="sword">
       <div class="section-title">Armadura</div>
       <div class="row2">
         <div class="field"><label>Nome</label><input type="text" id="armaduraNome" placeholder="Nome da armadura"></div>
@@ -113,14 +120,14 @@
 
     
     <!-- RELÓGIOS DE PROGRESSO -->
-    <div class="card full-width">
+    <div class="card" data-sheet-pane="book">
       <div class="section-title">Relógios de Progresso</div>
       <div class="clocks-grid" id="clocksGrid"></div>
       <button class="btn-add" onclick="addClock()">+ Adicionar Relógio</button>
     </div>
 
     <!-- ARSENAL -->
-    <div class="card full-width">
+    <div class="card" data-sheet-pane="sword">
       <div class="section-title">Arsenal</div>
       <div class="weapon-block">
         <div class="weapon-header">Arma Primária</div>
@@ -143,7 +150,7 @@
     </div>
 
     <!-- MARCA & FALHAS -->
-    <div class="card full-width">
+    <div class="card full-width" data-sheet-pane="book">
       <div class="section-title">Marca & Falhas</div>
       <div class="row2">
         <div>
@@ -164,14 +171,14 @@
     </div>
 
     <!-- TREINAMENTOS -->
-    <div class="card full-width">
+    <div class="card full-width" data-sheet-pane="sword">
       <div class="section-title">Treinamentos</div>
       <div id="trainingList"></div>
       <button class="btn-add" onclick="addTraining()">+ Adicionar Treinamento</button>
     </div>
 
     <!-- ANTECEDENTE -->
-    <div class="card full-width">
+    <div class="card full-width" data-sheet-pane="book">
       <div class="section-title">Antecedente & Notas</div>
       <div class="field"><label>História</label><textarea id="antecedente"
           placeholder="Quem é você?" style="min-height:120px;"></textarea></div>
@@ -180,19 +187,20 @@
     </div>
 
     <!-- EFEITOS -->
-    <div class="card full-width">
+    <div class="card full-width" data-sheet-pane="magic">
       <div class="section-title">Efeitos Aprendidos</div>
       <div id="effectsList"></div>
       <button class="btn-add" onclick="addEffect()">+ Adicionar Efeito</button>
     </div>
 
     <!-- HABILIDADES -->
-    <div class="card full-width">
+    <div class="card full-width" data-sheet-pane="magic">
       <div class="section-title">Habilidades</div>
       <div id="abilityList"></div>
       <button class="btn-add" onclick="addAbility()">+ Adicionar Habilidade</button>
     </div>
 
+      </div>
       </div>
     </section>
 

@@ -37,6 +37,21 @@
         width: 100%;
     }
 
+    .sheet-content-layout {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .sheet-section-tabs {
+        position: static;
+        flex-direction: row;
+    }
+
+    .sheet-section-tab {
+        width: 100%;
+        height: 44px;
+    }
+
     .sheet-grid {
         grid-template-columns: 1fr;
     }

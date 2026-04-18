@@ -41,13 +41,20 @@ nav {
 }
 
 /* GRID */
+.sheet-content-layout {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 12px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 16px;
+    align-items: start;
+}
+
 .sheet-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 16px;
 }
 
 .full-width {

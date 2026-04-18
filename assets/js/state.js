@@ -12,6 +12,7 @@ let clocks = [];
 let counters = [];
 let falhasFilled = 0;
 let photoData = null;
+let activeSheetPane = 'book';
 
 let sheets = [];
 let activeSheetId = null;

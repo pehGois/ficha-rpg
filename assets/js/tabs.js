@@ -4,6 +4,7 @@ function createDefaultSheetData() {
     xp: '',
     inspiracao: '',
     lema: '',
+    sheetPane: 'book',
     selectedAtributo: '',
     corpo: '4',
     mente: '4',
