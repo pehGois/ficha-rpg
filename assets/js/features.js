@@ -548,7 +548,10 @@ function renderCounters() {
 
       const title = document.createElement('div');
       title.className = 'pericias-group-title';
-      title.textContent = group;
+      // show attribute die next to group name, e.g. "Corpo [1d4]"
+      const attrId = group === 'Corpo' ? 'corpo' : group === 'Mente' ? 'mente' : group === 'Espirito' ? 'espirito' : null;
+      const attrVal = attrId ? (document.getElementById(attrId)?.value || '') : '';
+      title.textContent = attrVal ? `${group} [1d${attrVal}]` : group;
       col.appendChild(title);
 
       Object.keys(pericias[group] || {}).forEach(skill => {

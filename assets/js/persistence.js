@@ -4,7 +4,19 @@ function setupAutoSave() {
     el.dataset.autosaveBound = '1';
     el.addEventListener('change', _save);
     el.addEventListener('input', debounce(_save, 1200));
+    // Update Perícias titles when attribute values change
+    if (['corpo', 'mente', 'espirito'].includes(el.id)) {
+      if (typeof renderPericias === 'function') {
+        el.addEventListener('input', debounce(() => { try { renderPericias(); } catch (e) {} }, 150));
+        el.addEventListener('change', () => { try { renderPericias(); } catch (e) {} });
+      }
+    }
   });
+
+  // Initial render of pericias titles
+  if (typeof renderPericias === 'function') {
+    try { renderPericias(); } catch (e) {}
+  }
 }
 
 function normalizeImportedData(d) {
