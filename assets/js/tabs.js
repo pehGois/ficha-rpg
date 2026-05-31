@@ -18,6 +18,10 @@ function createDefaultSheetData() {
     armaduraNome: '',
     armaduraValor: '',
     armaduraProps: '',
+    weapons: [
+      { id: uid(), nome: '', bonus: '', props: '', collapsed: false },
+      { id: uid(), nome: '', bonus: '', props: '', collapsed: false }
+    ],
     arma1: { nome: '', bonus: '', props: '' },
     arma2: { nome: '', bonus: '', props: '' },
     markXp: '',

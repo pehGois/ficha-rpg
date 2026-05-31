@@ -533,6 +533,63 @@ function renderCounters() {
   });
 }
 
+function addWeapon(data = {}) {
+  const source = (data && typeof data === 'object' && !Array.isArray(data)) ? data : {};
+  if (!Array.isArray(weapons)) weapons = [];
+  weapons.push({ id: uid(), nome: '', bonus: '', props: '', collapsed: false, ...source });
+  renderWeapons();
+  _save();
+}
+
+function renderWeapons() {
+  const list = document.getElementById('weaponsList');
+  if (!list) return;
+
+  list.innerHTML = '';
+
+  if (!Array.isArray(weapons)) weapons = [];
+
+  weapons.forEach((weapon, i) => {
+    const d = document.createElement('div');
+    d.className = 'weapon-item accordion-card' + (weapon.collapsed ? ' collapsed' : '');
+    const weaponLabel = (weapon.nome && weapon.nome.trim()) ? esc(weapon.nome) : `Arma ${i + 1}`;
+    d.innerHTML = `
+      <div class="card-header accordion-header">
+        <button class="accordion-toggle" type="button">${weapon.collapsed ? '▸' : '▾'}</button>
+        <span class="card-label">${weaponLabel}</span>
+        <button class="btn-remove">× Remover</button>
+      </div>
+      <div class="accordion-body">
+        <div class="weapon-row">
+          <div class="field"><label>Nome</label><input type="text" value="${esc(weapon.nome)}" placeholder="Nome da arma" data-field="nome"></div>
+          <div class="field"><label>Bônus de Dano</label><input type="text" value="${esc(weapon.bonus)}" placeholder="+0" data-field="bonus"></div>
+        </div>
+        <div class="field"><label>Propriedades</label><input type="text" value="${esc(weapon.props)}" placeholder="Perfurante, Arremessável II..." data-field="props"></div>
+      </div>`;
+
+    d.querySelector('.accordion-toggle').addEventListener('click', () => {
+      weapons[i].collapsed = !weapons[i].collapsed;
+      renderWeapons();
+      _save();
+    });
+
+    d.querySelector('.btn-remove').addEventListener('click', () => {
+      weapons.splice(i, 1);
+      renderWeapons();
+      _save();
+    });
+
+    d.querySelectorAll('[data-field]').forEach(el => {
+      el.addEventListener('input', e => {
+        weapons[i][e.target.dataset.field] = e.target.value;
+        _save();
+      });
+    });
+
+    list.appendChild(d);
+  });
+}
+
   function renderPericias() {
     const container = document.getElementById('periciasList');
     if (!container) return;

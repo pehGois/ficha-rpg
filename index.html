@@ -136,24 +136,8 @@
     <!-- ARSENAL -->
     <div class="card" data-sheet-pane="sword">
       <div class="section-title">Arsenal</div>
-      <div class="weapon-block">
-        <div class="weapon-header">Arma Primária</div>
-        <div class="weapon-row">
-          <div class="field"><label>Nome</label><input type="text" id="arma1nome" placeholder="Nome da arma"></div>
-          <div class="field"><label>Bônus de Dano</label><input type="text" id="arma1bonus" placeholder="+0"></div>
-        </div>
-        <div class="field"><label>Propriedades</label><input type="text" id="arma1props"
-            placeholder="Perfurante, Arremessável II..."></div>
-      </div>
-      <div class="weapon-block">
-        <div class="weapon-header">Arma Secundária</div>
-        <div class="weapon-row">
-          <div class="field"><label>Nome</label><input type="text" id="arma2nome" placeholder="Nome da arma"></div>
-          <div class="field"><label>Bônus de Dano</label><input type="text" id="arma2bonus" placeholder="+0"></div>
-        </div>
-        <div class="field"><label>Propriedades</label><input type="text" id="arma2props"
-            placeholder="Perfurante, Arremessável II..."></div>
-      </div>
+      <div id="weaponsList"></div>
+      <button class="btn-add" type="button" onclick="addWeapon()">+ Adicionar Arma</button>
     </div>
 
     <!-- MARCA & FALHAS -->

@@ -31,6 +31,7 @@ function normalizeImportedData(d) {
     activeConditions: toArray(d.activeConditions),
     conditionCounters: toObject(d.conditionCounters ?? d.condicoesContadores),
     pericias: toObject(d.pericias),
+    weapons: toArray(d.weapons),
     trainings: toArray(d.trainings),
     abilities: toArray(d.abilities),
     effects: toArray(d.effects),
@@ -61,8 +62,23 @@ function collectData() {
     armaduraNome: g('armaduraNome'),
     armaduraValor: g('armaduraValor'),
     armaduraProps: g('armaduraProps'),
-    arma1: { nome: g('arma1nome'), bonus: g('arma1bonus'), props: g('arma1props') },
-    arma2: { nome: g('arma2nome'), bonus: g('arma2bonus'), props: g('arma2props') },
+    weapons: Array.isArray(weapons) ? weapons.map(w => ({
+      id: w.id ?? uid(),
+      nome: w.nome ?? '',
+      bonus: w.bonus ?? '',
+      props: w.props ?? '',
+      collapsed: w.collapsed ?? false
+    })) : [],
+    arma1: {
+      nome: weapons?.[0]?.nome ?? '',
+      bonus: weapons?.[0]?.bonus ?? '',
+      props: weapons?.[0]?.props ?? ''
+    },
+    arma2: {
+      nome: weapons?.[1]?.nome ?? '',
+      bonus: weapons?.[1]?.bonus ?? '',
+      props: weapons?.[1]?.props ?? ''
+    },
     markXp: g('mark-xp'),
     falhasFilled,
     marcaDesc: g('marcaDesc'),
@@ -95,8 +111,6 @@ function applyData(d) {
   });
 
   s('armaduraNome', d.armaduraNome); s('armaduraValor', d.armaduraValor); s('armaduraProps', d.armaduraProps);
-  s('arma1nome', d.arma1?.nome); s('arma1bonus', d.arma1?.bonus); s('arma1props', d.arma1?.props);
-  s('arma2nome', d.arma2?.nome); s('arma2bonus', d.arma2?.bonus); s('arma2props', d.arma2?.props);
   s('mark-xp', d.markXp); s('marcaDesc', d.marcaDesc); s('falhasTexto', d.falhasTexto);
   s('antecedente', d.antecedente); s('notas', d.notas);
 
@@ -178,6 +192,29 @@ function applyData(d) {
     valor: c.valor ?? ''
   }));
 
+  const legacyWeapons = [];
+  if (d.arma1 && (d.arma1.nome || d.arma1.bonus || d.arma1.props)) {
+    legacyWeapons.push({ id: uid(), nome: d.arma1.nome ?? '', bonus: d.arma1.bonus ?? '', props: d.arma1.props ?? '', collapsed: false });
+  }
+  if (d.arma2 && (d.arma2.nome || d.arma2.bonus || d.arma2.props)) {
+    legacyWeapons.push({ id: uid(), nome: d.arma2.nome ?? '', bonus: d.arma2.bonus ?? '', props: d.arma2.props ?? '', collapsed: false });
+  }
+
+  weapons = (d.weapons ?? legacyWeapons).map(w => ({
+    id: w.id ?? uid(),
+    nome: w.nome ?? '',
+    bonus: w.bonus ?? '',
+    props: w.props ?? '',
+    collapsed: w.collapsed ?? false
+  }));
+
+  if (!weapons.length) {
+    weapons = [
+      { id: uid(), nome: '', bonus: '', props: '', collapsed: false },
+      { id: uid(), nome: '', bonus: '', props: '', collapsed: false }
+    ];
+  }
+
   // Perícias: normalize to default structure and coerce values to ints
   const defaultPericias = (typeof createDefaultSheetData === 'function' ? createDefaultSheetData().pericias : {
     Corpo: { Forca: 0, Destreza: 0, Resistencia: 0, Furtividade: 0 },
@@ -200,6 +237,7 @@ function applyData(d) {
   renderEffects();
   renderClocks();
   renderCounters();
+  renderWeapons();
   renderPericias();
 
   if (d.photoData) {
@@ -312,6 +350,10 @@ function clearData() {
   effects = [];
   clocks = [];
   counters = [];
+  weapons = [
+    { id: uid(), nome: '', bonus: '', props: '', collapsed: false },
+    { id: uid(), nome: '', bonus: '', props: '', collapsed: false }
+  ];
   pericias = (typeof createDefaultSheetData === 'function' ? createDefaultSheetData().pericias : {});
   falhasFilled = 0;
   photoData = null;
@@ -337,6 +379,7 @@ function clearData() {
   renderEffects();
   renderClocks();
   renderCounters();
+  renderWeapons();
   clearPhoto();
 
   _save();
