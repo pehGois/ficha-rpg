@@ -11,6 +11,7 @@ let abilities = [];
 let effects = [];
 let clocks = [];
 let counters = [];
+let pericias = {};
 let falhasFilled = 0;
 let photoData = null;
 let activeSheetPane = 'book';

@@ -501,3 +501,51 @@ function renderCounters() {
     list.appendChild(d);
   });
 }
+
+  function renderPericias() {
+    const container = document.getElementById('periciasList');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    const grid = document.createElement('div');
+    grid.className = 'pericias-grid';
+
+    Object.keys(pericias || {}).forEach(group => {
+      const col = document.createElement('div');
+      col.className = 'pericias-group';
+
+      const title = document.createElement('div');
+      title.className = 'pericias-group-title';
+      title.textContent = group;
+      col.appendChild(title);
+
+      Object.keys(pericias[group] || {}).forEach(skill => {
+        const row = document.createElement('div');
+        row.className = 'pericia-item';
+
+        const lbl = document.createElement('label');
+        lbl.textContent = skill;
+
+        const inp = document.createElement('input');
+        inp.type = 'number';
+        inp.min = 0;
+        inp.max = 3;
+        inp.value = pericias[group][skill] ?? 0;
+        inp.addEventListener('input', e => {
+          const v = Math.min(3, Math.max(0, parseInt(e.target.value, 10) || 0));
+          e.target.value = v;
+          pericias[group][skill] = v;
+          _save();
+        });
+
+        row.appendChild(lbl);
+        row.appendChild(inp);
+        col.appendChild(row);
+      });
+
+      grid.appendChild(col);
+    });
+
+    container.appendChild(grid);
+  }

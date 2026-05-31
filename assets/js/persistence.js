@@ -18,6 +18,7 @@ function normalizeImportedData(d) {
     customConditions: toArray(d.customConditions ?? d.conditions),
     activeConditions: toArray(d.activeConditions),
     conditionCounters: toObject(d.conditionCounters ?? d.condicoesContadores),
+    pericias: toObject(d.pericias),
     trainings: toArray(d.trainings),
     abilities: toArray(d.abilities),
     effects: toArray(d.effects),
@@ -59,6 +60,7 @@ function collectData() {
     effects,
     clocks,
     counters,
+    pericias,
     antecedente: g('antecedente'),
     notas: g('notas'),
     photoData
@@ -162,11 +164,29 @@ function applyData(d) {
     valor: c.valor ?? ''
   }));
 
+  // Perícias: normalize to default structure and coerce values to ints
+  const defaultPericias = (typeof createDefaultSheetData === 'function' ? createDefaultSheetData().pericias : {
+    Corpo: { Forca: 0, Destreza: 0, Resistencia: 0, Furtividade: 0 },
+    Mente: { Recordar: 0, Analisar: 0, Aprender: 0, Criar: 0 },
+    Espirito: { Convencer: 0, Enganar: 0, Perceber: 0, Impor: 0 }
+  });
+
+  const importedPericias = d.pericias && typeof d.pericias === 'object' ? d.pericias : {};
+  pericias = JSON.parse(JSON.stringify(defaultPericias));
+  Object.keys(defaultPericias).forEach(group => {
+    Object.keys(defaultPericias[group]).forEach(skill => {
+      let v = importedPericias?.[group]?.[skill];
+      if (v === undefined) v = importedPericias?.[skill];
+      pericias[group][skill] = Math.min(3, Math.max(0, parseInt(v, 10) || 0));
+    });
+  });
+
   renderTrainings();
   renderAbilities();
   renderEffects();
   renderClocks();
   renderCounters();
+  renderPericias();
 
   if (d.photoData) {
     photoData = d.photoData;
@@ -278,6 +298,7 @@ function clearData() {
   effects = [];
   clocks = [];
   counters = [];
+  pericias = (typeof createDefaultSheetData === 'function' ? createDefaultSheetData().pericias : {});
   falhasFilled = 0;
   photoData = null;
 
