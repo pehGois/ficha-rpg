@@ -132,14 +132,15 @@ function applyData(d) {
   renderFalhasMarks();
 
   trainings = (d.trainings ?? []).map(t => {
-    if (typeof t === 'string') return { id: uid(), nome: t, descricao: '' };
-    if (t.value !== undefined) return { id: uid(), nome: t.value, descricao: '' };
-    return t;
+    if (typeof t === 'string') return { id: uid(), nome: t, descricao: '', collapsed: false };
+    if (t.value !== undefined) return { id: uid(), nome: t.value, descricao: '', collapsed: false };
+    return { ...t, collapsed: t.collapsed ?? false };
   });
 
   abilities = (d.abilities ?? []).map(a => ({
     ...a,
-    fundament: a?.fundament ?? a?.fundamento ?? ''
+    fundament: a?.fundament ?? a?.fundamento ?? '',
+    collapsed: a?.collapsed ?? false
   }));
   effects = (d.effects ?? []).map(ef => ({
     id: ef?.id ?? uid(),
@@ -150,7 +151,8 @@ function applyData(d) {
     duracao: ef?.duracao ?? '',
     alcance: ef?.alcance ?? '',
     transfig: ef?.transfig ?? ef?.transfiguracoes ?? '',
-    descricao: ef?.descricao ?? ''
+    descricao: ef?.descricao ?? '',
+    collapsed: ef?.collapsed ?? false
   }));
   clocks = (d.clocks ?? []).map(c => ({
     id: c.id ?? uid(),

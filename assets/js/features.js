@@ -145,7 +145,7 @@ function renderFalhasMarks() {
 }
 
 function addTraining(data = {}) {
-  trainings.push({ id: uid(), nome: '', descricao: '', ...data });
+  trainings.push({ id: uid(), nome: '', descricao: '', collapsed: false, ...data });
   renderTrainings();
   _save();
 }
@@ -156,16 +156,27 @@ function renderTrainings() {
 
   trainings.forEach((t, i) => {
     const d = document.createElement('div');
-    d.className = 'training-card';
+    d.className = 'training-card accordion-card' + (t.collapsed ? ' collapsed' : '');
+    const trainingLabel = (t.nome && t.nome.trim()) ? esc(t.nome) : `Treinamento ${i + 1}`;
     d.innerHTML = `
-      <div class="card-header">
-        <span class="card-label">Treinamento ${i + 1}</span>
+      <div class="card-header accordion-header">
+        <button class="accordion-toggle" type="button">${t.collapsed ? '▸' : '▾'}</button>
+        <span class="card-label">${trainingLabel}</span>
         <button class="btn-remove">× Remover</button>
       </div>
-      <div class="spell-grid">
-        <div class="field full"><label>Nome</label><input type="text" value="${esc(t.nome)}" placeholder="Nome do treinamento..." data-field="nome"></div>
-        <div class="field full"><label>Descrição</label><textarea placeholder="Detalhes do treinamento..." data-field="descricao" style="min-height:70px;">${esc(t.descricao)}</textarea></div>
+      <div class="accordion-body">
+        <div class="spell-grid">
+          <div class="field full"><label>Nome</label><input type="text" value="${esc(t.nome)}" placeholder="Nome do treinamento..." data-field="nome"></div>
+          <div class="field full"><label>Descrição</label><textarea placeholder="Detalhes do treinamento..." data-field="descricao" style="min-height:70px;">${esc(t.descricao)}</textarea></div>
+        </div>
       </div>`;
+
+    const toggleBtn = d.querySelector('.accordion-toggle');
+    toggleBtn.addEventListener('click', () => {
+      trainings[i].collapsed = !trainings[i].collapsed;
+      renderTrainings();
+      _save();
+    });
 
     d.querySelector('.btn-remove').addEventListener('click', () => {
       trainings.splice(i, 1);
@@ -185,7 +196,7 @@ function renderTrainings() {
 }
 
 function addAbility(data = {}) {
-  abilities.push({ id: uid(), nome: '', fundament: '', custo: '', forma: '', duracao: '', alcance: '', intensidade: '', area: '', transfig: '', descricao: '', ...data });
+  abilities.push({ id: uid(), nome: '', fundament: '', custo: '', forma: '', duracao: '', alcance: '', intensidade: '', area: '', transfig: '', descricao: '', collapsed: false, ...data });
   renderAbilities();
 }
 
@@ -196,9 +207,11 @@ function renderAbilities() {
   abilities.forEach((a, i) => {
     const fundament = a.fundament ?? a.fundamento ?? '';
     const d = document.createElement('div');
-    d.className = 'ability-card';
+    d.className = 'ability-card accordion-card' + (a.collapsed ? ' collapsed' : '');
+    const abilityLabel = (a.nome && a.nome.trim()) ? esc(a.nome) : `Habilidade ${i + 1}`;
     d.innerHTML = `
-      <div class="card-header"><span class="card-label">Habilidade ${i + 1}</span><button class="btn-remove">× Remover</button></div>
+      <div class="card-header accordion-header"><button class="accordion-toggle" type="button">${a.collapsed ? '▸' : '▾'}</button><span class="card-label">${abilityLabel}</span><button class="btn-remove">× Remover</button></div>
+      <div class="accordion-body">
       <div class="spell-grid">
         <div class="field"><label>Nome</label><input type="text" value="${esc(a.nome)}" placeholder="Nome da habilidade" data-field="nome"></div>
         <div class="field"><label>Fundamento</label><select placeholder="Nome do Fundamento" data-field="fundament">
@@ -215,7 +228,15 @@ function renderAbilities() {
         <div class="field"><label>Área de Efeito</label><input type="text" value="${esc(a.area)}" placeholder="Área de efeito" data-field="area"></div>
         <div class="field"><label>Transfigurações</label><input type="text" value="${esc(a.transfig)}" placeholder="Modificadores" data-field="transfig"></div>
         <div class="field full"><label>Descrição</label><textarea placeholder="Como esta habilidade funciona..." data-field="descricao">${esc(a.descricao)}</textarea></div>
+      </div>
       </div>`;
+
+    const toggleBtn = d.querySelector('.accordion-toggle');
+    toggleBtn.addEventListener('click', () => {
+      abilities[i].collapsed = !abilities[i].collapsed;
+      renderAbilities();
+      _save();
+    });
 
     d.querySelector('.btn-remove').addEventListener('click', () => {
       abilities.splice(i, 1);
@@ -237,7 +258,7 @@ function renderAbilities() {
 }
 
 function addEffect(data = {}) {
-  effects.push({ id: uid(), nome: '', custo: '', intensidade: '', area: '', duracao: '', alcance: '', transfig: '', descricao: '', ...data });
+  effects.push({ id: uid(), nome: '', custo: '', intensidade: '', area: '', duracao: '', alcance: '', transfig: '', descricao: '', collapsed: false, ...data });
   renderEffects();
 }
 
@@ -247,9 +268,11 @@ function renderEffects() {
 
   effects.forEach((ef, i) => {
     const d = document.createElement('div');
-    d.className = 'effect-item';
+    d.className = 'effect-item accordion-card' + (ef.collapsed ? ' collapsed' : '');
+    const effectLabel = (ef.nome && ef.nome.trim()) ? esc(ef.nome) : `Efeito ${i + 1}`;
     d.innerHTML = `
-      <div class="card-header"><span class="card-label">Efeito ${i + 1}</span><button class="btn-remove">× Remover</button></div>
+      <div class="card-header accordion-header"><button class="accordion-toggle" type="button">${ef.collapsed ? '▸' : '▾'}</button><span class="card-label">${effectLabel}</span><button class="btn-remove">× Remover</button></div>
+      <div class="accordion-body">
       <div class="spell-grid">
         <div class="field"><label>Nome</label><input type="text" value="${esc(ef.nome)}" placeholder="Nome do efeito" data-field="nome"></div>
         <div class="field"><label>Custo de Conjuração</label><input type="text" value="${esc(ef.custo)}" placeholder="X PS" data-field="custo"></div>
@@ -259,7 +282,15 @@ function renderEffects() {
         <div class="field"><label>Alcance</label><input type="text" value="${esc(ef.alcance)}" placeholder="Alcance" data-field="alcance"></div>
         <div class="field full"><label>Transfigurações</label><input type="text" value="${esc(ef.transfig)}" placeholder="Modificadores" data-field="transfig"></div>
         <div class="field full"><label>Descrição</label><textarea data-field="descricao" placeholder="O que este efeito faz..." style="min-height:60px;">${esc(ef.descricao)}</textarea></div>
+      </div>
       </div>`;
+
+    const toggleBtn = d.querySelector('.accordion-toggle');
+    toggleBtn.addEventListener('click', () => {
+      effects[i].collapsed = !effects[i].collapsed;
+      renderEffects();
+      _save();
+    });
 
     d.querySelector('.btn-remove').addEventListener('click', () => {
       effects.splice(i, 1);
