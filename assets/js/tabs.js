@@ -52,12 +52,12 @@ function persistSheets() {
     sheets
   };
 
+  // Persist full tabs payload under the tabs key
   localStorage.setItem(STORAGE_TABS_KEY, JSON.stringify(payload));
 
-  const active = sheets.find(sheet => sheet.id === activeSheetId);
-  if (active?.data) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(active.data));
-  }
+  // For compatibility and to ensure all open sheets are saved,
+  // also store the full payload under the legacy STORAGE_KEY.
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
 }
 
 function updateActiveSheetFromForm() {
@@ -183,15 +183,28 @@ function initTabsSystem() {
 
     if (oldRaw) {
       try {
-        initialData = JSON.parse(oldRaw);
+        const parsed = JSON.parse(oldRaw);
+        // If the legacy STORAGE_KEY contains a full payload with sheets, restore from it
+        if (parsed && Array.isArray(parsed.sheets)) {
+          sheets = parsed.sheets.map(sheet => ({ id: sheet.id, data: sheet.data || createDefaultSheetData() }));
+          activeSheetId = parsed.activeSheetId || (sheets[0] && sheets[0].id) || null;
+        } else {
+          initialData = parsed;
+          const firstSheet = { id: uid(), data: initialData };
+          sheets = [firstSheet];
+          activeSheetId = firstSheet.id;
+        }
       } catch {
-        initialData = createDefaultSheetData();
+        const firstSheet = { id: uid(), data: createDefaultSheetData() };
+        sheets = [firstSheet];
+        activeSheetId = firstSheet.id;
       }
+    } else {
+      const firstSheet = { id: uid(), data: createDefaultSheetData() };
+      sheets = [firstSheet];
+      activeSheetId = firstSheet.id;
     }
 
-    const firstSheet = { id: uid(), data: initialData };
-    sheets = [firstSheet];
-    activeSheetId = firstSheet.id;
     persistSheets();
   }
 
