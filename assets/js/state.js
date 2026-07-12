@@ -12,6 +12,7 @@ let effects = [];
 let clocks = [];
 let counters = [];
 let weapons = [];
+let inventory = [];
 let pericias = {};
 let falhasFilled = 0;
 let photoData = null;

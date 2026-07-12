@@ -533,6 +533,63 @@ function renderCounters() {
   });
 }
 
+function addInventoryItem(data = {}) {
+  const source = (data && typeof data === 'object' && !Array.isArray(data)) ? data : {};
+  if (!Array.isArray(inventory)) inventory = [];
+  inventory.push({ id: uid(), nome: '', descricao: '', collapsed: false, ...source });
+  renderInventory();
+  _save();
+}
+
+function renderInventory() {
+  const list = document.getElementById('inventoryList');
+  if (!list) return;
+
+  list.innerHTML = '';
+
+  if (!Array.isArray(inventory)) inventory = [];
+
+  inventory.forEach((item, i) => {
+    const d = document.createElement('div');
+    d.className = 'accordion-card' + (item.collapsed ? ' collapsed' : '');
+
+    const itemLabel = (item.nome && item.nome.trim()) ? esc(item.nome) : `Item ${i + 1}`;
+    d.innerHTML = `
+      <div class="card-header accordion-header">
+        <button class="accordion-toggle" type="button">${item.collapsed ? '▸' : '▾'}</button>
+        <span class="card-label">${itemLabel}</span>
+        <button class="btn-remove">× Remover</button>
+      </div>
+      <div class="accordion-body">
+        <div class="spell-grid">
+          <div class="field full"><label>Nome</label><input type="text" value="${esc(item.nome)}" placeholder="Nome do item" data-field="nome"></div>
+          <div class="field full"><label>Descrição</label><textarea placeholder="Descrição do item..." data-field="descricao" style="min-height:70px;">${esc(item.descricao)}</textarea></div>
+        </div>
+      </div>`;
+
+    d.querySelector('.accordion-toggle').addEventListener('click', () => {
+      inventory[i].collapsed = !inventory[i].collapsed;
+      renderInventory();
+      _save();
+    });
+
+    d.querySelector('.btn-remove').addEventListener('click', () => {
+      inventory.splice(i, 1);
+      renderInventory();
+      _save();
+    });
+
+    d.querySelectorAll('[data-field]').forEach(el => {
+      el.addEventListener('input', e => {
+        inventory[i][e.target.dataset.field] = e.target.value;
+        _save();
+      });
+    });
+
+    list.appendChild(d);
+  });
+}
+
 function addWeapon(data = {}) {
   const source = (data && typeof data === 'object' && !Array.isArray(data)) ? data : {};
   if (!Array.isArray(weapons)) weapons = [];

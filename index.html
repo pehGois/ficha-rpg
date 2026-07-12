@@ -168,15 +168,6 @@
       <button class="btn-add" onclick="addTraining()">+ Adicionar Treinamento</button>
     </div>
 
-    <!-- ANTECEDENTE -->
-    <div class="card full-width" data-sheet-pane="book">
-      <div class="section-title">Antecedente & Notas</div>
-      <div class="field"><label>História</label><textarea id="antecedente"
-          placeholder="Quem é você?" style="min-height:120px;"></textarea></div>
-      <div class="field"><label>Notas</label><textarea id="notas" placeholder="Missões, contatos, segredos, dívidas..."
-          style="min-height:90px;"></textarea></div>
-    </div>
-
     <!-- EFEITOS -->
     <div class="card full-width" data-sheet-pane="magic">
       <div class="section-title">Efeitos Aprendidos</div>
@@ -184,11 +175,28 @@
       <button class="btn-add" onclick="addEffect()">+ Adicionar Efeito</button>
     </div>
 
+    <!-- INVENTÁRIO -->
+    <div class="card full-width" data-sheet-pane="book">
+      <div class="section-title">Inventário</div>
+      <div id="inventoryList"></div>
+      <button class="btn-add" type="button" onclick="addInventoryItem()">+ Adicionar Item</button>
+    </div>
+
     <!-- HABILIDADES -->
     <div class="card full-width" data-sheet-pane="magic">
       <div class="section-title">Habilidades</div>
       <div id="abilityList"></div>
       <button class="btn-add" onclick="addAbility()">+ Adicionar Habilidade</button>
+    </div>
+
+
+    <!-- ANTECEDENTE -->
+    <div class="card full-width" data-sheet-pane="book">
+      <div class="section-title">Antecedente & Notas</div>
+      <div class="field"><label>História</label><textarea id="antecedente"
+          placeholder="Quem é você?" style="min-height:120px;"></textarea></div>
+      <div class="field"><label>Notas</label><textarea id="notas" placeholder="Missões, contatos, segredos, dívidas..."
+          style="min-height:90px;"></textarea></div>
     </div>
 
       </div>

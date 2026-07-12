@@ -32,6 +32,7 @@ function normalizeImportedData(d) {
     conditionCounters: toObject(d.conditionCounters ?? d.condicoesContadores),
     pericias: toObject(d.pericias),
     weapons: toArray(d.weapons),
+    inventory: toArray(d.inventory),
     trainings: toArray(d.trainings),
     abilities: toArray(d.abilities),
     effects: toArray(d.effects),
@@ -68,6 +69,12 @@ function collectData() {
       bonus: w.bonus ?? '',
       props: w.props ?? '',
       collapsed: w.collapsed ?? false
+    })) : [],
+    inventory: Array.isArray(inventory) ? inventory.map(item => ({
+      id: item.id ?? uid(),
+      nome: item.nome ?? '',
+      descricao: item.descricao ?? '',
+      collapsed: item.collapsed ?? false
     })) : [],
     arma1: {
       nome: weapons?.[0]?.nome ?? '',
@@ -192,6 +199,13 @@ function applyData(d) {
     valor: c.valor ?? ''
   }));
 
+  inventory = (d.inventory ?? []).map(item => ({
+    id: item.id ?? uid(),
+    nome: item.nome ?? '',
+    descricao: item.descricao ?? '',
+    collapsed: item.collapsed ?? false
+  }));
+
   const legacyWeapons = [];
   if (d.arma1 && (d.arma1.nome || d.arma1.bonus || d.arma1.props)) {
     legacyWeapons.push({ id: uid(), nome: d.arma1.nome ?? '', bonus: d.arma1.bonus ?? '', props: d.arma1.props ?? '', collapsed: false });
@@ -237,6 +251,7 @@ function applyData(d) {
   renderEffects();
   renderClocks();
   renderCounters();
+  renderInventory();
   renderWeapons();
   renderPericias();
 
@@ -350,6 +365,7 @@ function clearData() {
   effects = [];
   clocks = [];
   counters = [];
+  inventory = [];
   weapons = [
     { id: uid(), nome: '', bonus: '', props: '', collapsed: false },
     { id: uid(), nome: '', bonus: '', props: '', collapsed: false }
@@ -379,6 +395,7 @@ function clearData() {
   renderEffects();
   renderClocks();
   renderCounters();
+  renderInventory();
   renderWeapons();
   clearPhoto();
 
