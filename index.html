@@ -73,15 +73,12 @@
       <div class="section-title">Atributos</div>
       <div class="attrs-grid">
         <div class="attr-box">
-          <div class="attr-select"><input type="radio" name="atributoPrincipal" id="attrCorpoSelect" value="corpo" aria-label="Selecionar Corpo"></div>
           <label>Corpo</label><input type="number" id="corpo" placeholder="4" min="4" value="4">
         </div>
         <div class="attr-box">
-          <div class="attr-select"><input type="radio" name="atributoPrincipal" id="attrMenteSelect" value="mente" aria-label="Selecionar Mente"></div>
           <label>Mente</label><input type="number" id="mente" placeholder="4" min="4" value="4">
         </div>
         <div class="attr-box">
-          <div class="attr-select"><input type="radio" name="atributoPrincipal" id="attrEspiritoSelect" value="espirito" aria-label="Selecionar Espírito"></div>
           <label>Espírito</label><input type="number" id="espirito" placeholder="4" min="4" value="4">
         </div>
         <div class="attr-box"><label id="pvLabel">PV [0]</label><input type="number" id="pv" placeholder="0"></div>
@@ -102,16 +99,6 @@
       <div class="section-title">Contadores</div>
       <div id="countersList"></div>
       <button class="btn-add" onclick="addCounter()">+ Adicionar Contador</button>
-    </div>
-
-    <!-- CONDIÇÕES -->
-    <div class="card" data-sheet-pane="sword">
-      <div class="section-title">Condições</div>
-      <div class="conditions-grid" id="conditionsGrid"></div>
-      <div class="add-condition">
-        <input type="text" id="newConditionInput" placeholder="Nova condição...">
-        <button type="button" class="btn-add" onclick="addCondition()">+</button>
-      </div>
     </div>
 
     <!-- ARMADURA -->

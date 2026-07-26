@@ -27,9 +27,6 @@ function normalizeImportedData(d) {
 
   return {
     ...d,
-    customConditions: toArray(d.customConditions ?? d.conditions),
-    activeConditions: toArray(d.activeConditions),
-    conditionCounters: toObject(d.conditionCounters ?? d.condicoesContadores),
     pericias: toObject(d.pericias),
     weapons: toArray(d.weapons),
     inventory: toArray(d.inventory),
@@ -43,23 +40,17 @@ function normalizeImportedData(d) {
 
 function collectData() {
   const g = id => document.getElementById(id)?.value ?? '';
-  const selectedAtributo = document.querySelector('input[name="atributoPrincipal"]:checked')?.value ?? '';
   return {
     nome: g('nome'),
     xp: g('xp'),
     inspiracao: g('inspiracao'),
     lema: g('lema'),
     sheetPane: activeSheetPane,
-    selectedAtributo,
-    fundamento_principal: selectedAtributo,
     corpo: g('corpo'),
     mente: g('mente'),
     espirito: g('espirito'),
     pv: g('pv'),
     ps: g('ps'),
-    customConditions: [...customConditions],
-    activeConditions: [...activeConditions],
-    conditionCounters: { ...conditionCounters },
     armaduraNome: g('armaduraNome'),
     armaduraValor: g('armaduraValor'),
     armaduraProps: g('armaduraProps'),
@@ -112,11 +103,6 @@ function applyData(d) {
   s('corpo', d.corpo); s('mente', d.mente); s('espirito', d.espirito);
   s('pv', d.pv); s('ps', d.ps);
 
-  const atributoSelecionado = d.selectedAtributo ?? d.fundamento_principal ?? '';
-  document.querySelectorAll('input[name="atributoPrincipal"]').forEach(el => {
-    el.checked = !!atributoSelecionado && el.value === atributoSelecionado;
-  });
-
   s('armaduraNome', d.armaduraNome); s('armaduraValor', d.armaduraValor); s('armaduraProps', d.armaduraProps);
   s('mark-xp', d.markXp); s('marcaDesc', d.marcaDesc); s('falhasTexto', d.falhasTexto);
   s('antecedente', d.antecedente); s('notas', d.notas);
@@ -126,40 +112,6 @@ function applyData(d) {
   }
 
   calcDerived();
-
-  if (Array.isArray(d.customConditions)) {
-    customConditions = d.customConditions;
-  } else if (Array.isArray(d.conditions)) {
-    customConditions = d.conditions.filter(c => !DEFAULT_CONDITIONS.includes(c));
-  } else {
-    customConditions = [];
-  }
-  const importedActiveConditions = Array.isArray(d.activeConditions) ? d.activeConditions : [];
-  activeConditions = new Set(
-    importedActiveConditions
-      .map(c => (typeof c === 'string' ? c : c?.nome))
-      .filter(Boolean)
-  );
-
-  const importedConditionCounters =
-    d.conditionCounters && typeof d.conditionCounters === 'object' && !Array.isArray(d.conditionCounters)
-      ? d.conditionCounters
-      : {};
-
-  const countersFromLegacyActive = importedActiveConditions.reduce((acc, c) => {
-    if (c && typeof c === 'object' && c.nome && c.contador !== undefined) {
-      acc[c.nome] = c.contador;
-    }
-    return acc;
-  }, {});
-
-  conditionCounters = { ...countersFromLegacyActive, ...importedConditionCounters };
-
-  Object.keys(conditionCounters).forEach(name => {
-    if (!activeConditions.has(name)) delete conditionCounters[name];
-  });
-
-  renderConditions();
 
   falhasFilled = d.falhasFilled ?? 0;
   renderFalhasMarks();
@@ -357,9 +309,6 @@ function setupImportInput() {
 function clearData() {
   if (!confirm('Apagar toda a ficha? Esta ação não pode ser desfeita.')) return;
 
-  customConditions = [];
-  activeConditions = new Set();
-  conditionCounters = {};
   trainings = [];
   abilities = [];
   effects = [];
@@ -383,12 +332,7 @@ function clearData() {
     if (el) el.value = '4';
   });
 
-  document.querySelectorAll('input[name="atributoPrincipal"]').forEach(el => {
-    el.checked = false;
-  });
-
   calcDerived();
-  renderConditions();
   renderFalhasMarks();
   renderTrainings();
   renderAbilities();

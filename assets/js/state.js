@@ -1,11 +1,6 @@
 const STORAGE_KEY = 'ficha_rpg';
 const STORAGE_TABS_KEY = 'ficha_rpg_tabs_v1';
 const FALHAS_MAX = 5;
-const DEFAULT_CONDITIONS = ['Nos Portões da Morte', 'Louco', 'Inconsciente'];
-
-let customConditions = [];
-let activeConditions = new Set();
-let conditionCounters = {};
 let trainings = [];
 let abilities = [];
 let effects = [];
