@@ -148,7 +148,8 @@ function applyData(d) {
   counters = (d.counters ?? []).map(c => ({
     id: c.id ?? uid(),
     nome: c.nome ?? '',
-    valor: c.valor ?? ''
+    valor: c.valor ?? '',
+    collapsed: c.collapsed ?? false
   }));
 
   inventory = (d.inventory ?? []).map(item => ({

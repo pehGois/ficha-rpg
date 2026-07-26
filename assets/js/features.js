@@ -396,7 +396,7 @@ function describeSegment(cx, cy, r1, r2, startA, endA) {
 }
 
 function addCounter(data = {}) {
-  counters.push({ id: uid(), nome: '', valor: '', ...data });
+  counters.push({ id: uid(), nome: '', valor: '', collapsed: false, ...data });
   renderCounters();
   _save();
 }
@@ -409,16 +409,27 @@ function renderCounters() {
 
   counters.forEach((counter, i) => {
     const d = document.createElement('div');
-    d.className = 'counter-item';
+    d.className = 'counter-item accordion-card' + (counter.collapsed ? ' collapsed' : '');
+    const counterLabel = (counter.nome && counter.nome.trim()) ? esc(counter.nome) : `Contador ${i + 1}`;
     d.innerHTML = `
-      <div class="card-header">
-        <span class="card-label">Contador ${i + 1}</span>
+      <div class="card-header accordion-header">
+        <button class="accordion-toggle" type="button">${counter.collapsed ? '▸' : '▾'}</button>
+        <span class="card-label">${counterLabel}</span>
         <button class="btn-remove">× Remover</button>
       </div>
-      <div class="counter-grid">
-        <div class="field"><label>Nome</label><input type="text" value="${esc(counter.nome)}" placeholder="Nome do contador" data-field="nome"></div>
-        <div class="field"><label>Valor</label><input type="number" value="${esc(counter.valor)}" placeholder="0" data-field="valor"></div>
+      <div class="accordion-body">
+        <div class="counter-grid">
+          <div class="field"><label>Nome</label><input type="text" value="${esc(counter.nome)}" placeholder="Nome do contador" data-field="nome"></div>
+          <div class="field"><label>Valor</label><input type="number" value="${esc(counter.valor)}" placeholder="0" data-field="valor"></div>
+        </div>
       </div>`;
+
+    const toggleBtn = d.querySelector('.accordion-toggle');
+    toggleBtn.addEventListener('click', () => {
+      counters[i].collapsed = !counters[i].collapsed;
+      renderCounters();
+      _save();
+    });
 
     d.querySelector('.btn-remove').addEventListener('click', () => {
       counters.splice(i, 1);
@@ -428,6 +439,10 @@ function renderCounters() {
 
     d.querySelectorAll('[data-field]').forEach(el => {
       el.addEventListener('input', e => {
+        counters[i][e.target.dataset.field] = e.target.value;
+        _save();
+      });
+      el.addEventListener('change', e => {
         counters[i][e.target.dataset.field] = e.target.value;
         _save();
       });
