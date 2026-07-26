@@ -140,27 +140,6 @@
       <button class="btn-add" type="button" onclick="addWeapon()">+ Adicionar Arma</button>
     </div>
 
-    <!-- MARCA & FALHAS -->
-    <div class="card full-width" data-sheet-pane="book">
-      <div class="section-title">Marca & Falhas</div>
-      <div class="row2">
-        <div>
-          <div class="field"><label>XP de Marca</label><input type="number" id="mark-xp" placeholder="0" min="0"></div>
-          <div class="field"><label>Descrição da Marca</label><textarea id="marcaDesc"
-              placeholder="Como a marca se manifesta em você"></textarea></div>
-        </div>
-        <div>
-          <label>Falhas</label>
-          <div class="marks-row" id="falhasMarks"></div>
-          <div class="field">
-            <label>Registro de Falhas</label>
-            <textarea id="falhasTexto" placeholder="1ª Falha&#10;2ª Falha&#10;3ª Falha&#10;4ª Falha&#10;5ª Falha"
-              style="min-height:90px;font-size:13px;"></textarea>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- TREINAMENTOS -->
     <div class="card full-width" data-sheet-pane="sword">
       <div class="section-title">Treinamentos</div>
@@ -218,31 +197,6 @@
   </main>
 
   <div class="toast" id="toast"></div>
-
-  <button id="fab" class="dice-fab" type="button" title="Abrir rolagem de dados" aria-label="Abrir rolagem de dados">🎲</button>
-
-  <section id="chatPanel" class="dice-chat-panel" aria-label="Chat de rolagem de dados">
-    <div class="dice-chat-header">
-      <strong>Rolagem de Dados</strong>
-      <button id="clearBtn" type="button" class="dice-clear-btn">Limpar</button>
-    </div>
-
-    <div id="messages" class="dice-messages">
-      <div class="msg-system">Digite uma rolagem, por exemplo: <code>1d20+5</code></div>
-    </div>
-
-    <div id="suggestions" class="dice-suggestions">
-      <button type="button" class="chip" data-roll="1d20">1d20</button>
-      <button type="button" class="chip" data-roll="1d20+5">1d20+5</button>
-      <button type="button" class="chip" data-roll="2d6+1d4+3">2d6+1d4+3</button>
-      <button type="button" class="chip" data-roll="3d6--1">3d6--1</button>
-    </div>
-
-    <div class="dice-input-row">
-      <input id="rollInput" type="text" placeholder="Ex.: 1d20+5" autocomplete="off">
-      <button id="sendBtn" type="button">Rolar</button>
-    </div>
-  </section>
 
   <script src="assets/js/state.js"></script>
   <script src="assets/js/utils.js"></script>
