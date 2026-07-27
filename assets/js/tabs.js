@@ -4,7 +4,7 @@ function createDefaultSheetData() {
     xp: '',
     inspiracao: '',
     lema: '',
-    sheetPane: 'sword',
+    sheetPane: 'book',
     corpo: '4',
     mente: '4',
     espirito: '4',

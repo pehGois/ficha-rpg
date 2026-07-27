@@ -29,7 +29,7 @@
     <section id="sheetWorkspace">
       <header class="page-header">
         <div class="page-title">Ficha de Personagem</div>
-        <div class="page-subtitle">Convergência RPG — 0.1.2</div>
+        <div class="page-subtitle">Convergência RPG — 0.3.0</div>
       </header>
 
       <section class="tabs-wrap">
@@ -39,8 +39,8 @@
 
       <div class="sheet-content-layout">
         <aside class="sheet-section-tabs" aria-label="Organização da ficha">
-          <button type="button" class="sheet-section-tab" data-sheet-pane="sword" aria-pressed="false" title="Condições, armadura e arsenal">⚔️</button>
           <button type="button" class="sheet-section-tab active" data-sheet-pane="book" aria-pressed="true" title="Contadores, relógios, marcas e notas">📚</button>
+          <button type="button" class="sheet-section-tab" data-sheet-pane="sword" aria-pressed="false" title="Condições, armadura e arsenal">⚔️</button>
           <button type="button" class="sheet-section-tab" data-sheet-pane="magic" aria-pressed="false" title="Efeitos e habilidades">📖</button>
           <button type="button" class="sheet-section-tab" data-sheet-pane="archetype" aria-pressed="false" title="Arquétipo">👤</button>
         </aside>
@@ -48,7 +48,7 @@
       <div class="sheet-grid">
 
     <!-- IDENTIDADE -->
-    <div class="card full-width">
+    <div class="card full-width" data-sheet-pane="book">
       <div class="section-title">Identidade</div>
       <div class="identity-grid">
         <div class="photo-upload" id="photoUpload" title="Clique para adicionar foto">
@@ -102,17 +102,6 @@
       <button class="btn-add" onclick="addCounter()">+ Adicionar Contador</button>
     </div>
 
-    <!-- ARMADURA -->
-    <div class="card" data-sheet-pane="sword">
-      <div class="section-title">Armadura</div>
-      <div class="row2">
-        <div class="field"><label>Nome</label><input type="text" id="armaduraNome" placeholder="Nome da armadura"></div>
-        <div class="field"><label>Dado de Armadura</label><input type="text" id="armaduraValor" placeholder="1d4"></div>
-      </div>
-      <div class="field"><label>Efeito</label><textarea id="armaduraProps"
-          placeholder="Efeito da armadura..." style="min-height:72px;"></textarea></div>
-    </div>
-
     
     <!-- RELÓGIOS DE PROGRESSO -->
     <div class="card" data-sheet-pane="book">
@@ -129,10 +118,21 @@
     </div>
 
     <!-- TREINAMENTOS -->
-    <div class="card full-width" data-sheet-pane="sword">
+    <div class="card" data-sheet-pane="sword">
       <div class="section-title">Treinamentos</div>
       <div id="trainingList"></div>
       <button class="btn-add" onclick="addTraining()">+ Adicionar Treinamento</button>
+    </div>
+
+    <!-- ARMADURA -->
+    <div class="card full-width" data-sheet-pane="sword">
+      <div class="section-title">Armadura</div>
+      <div class="row2">
+        <div class="field"><label>Nome</label><input type="text" id="armaduraNome" placeholder="Nome da armadura"></div>
+        <div class="field"><label>Dado de Armadura</label><input type="text" id="armaduraValor" placeholder="1d4"></div>
+      </div>
+      <div class="field"><label>Efeito</label><textarea id="armaduraProps"
+          placeholder="Efeito da armadura..." style="min-height:72px;"></textarea></div>
     </div>
 
     <!-- EFEITOS -->
@@ -199,7 +199,7 @@
           <label>Sombra</label>
           <table class="archetype-shadow-table">
             <thead>
-              <tr><th>Marcação</th><th>Descrição</th></tr>
+              <tr><th>Xp de Arquétipo</th><th>Descrição</th></tr>
             </thead>
             <tbody id="archetypeShadowBody"></tbody>
           </table>

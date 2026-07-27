@@ -171,7 +171,7 @@ function renderArchetypeSection() {
       const row = document.createElement('tr');
       row.innerHTML = `
         <td>${esc(marcacao.label || `Marcação ${index + 1}`)}</td>
-        <td><input type="text" value="${esc(marcacao.descricao || '')}" placeholder="Descrição da marcação" data-index="${index}"></td>`;
+        <td><input type="text" value="${esc(marcacao.descricao || '')}" placeholder="Descrição" data-index="${index}"></td>`;
       row.querySelector('input').addEventListener('input', e => {
         archetype.sombra.marcacoes[index].descricao = e.target.value;
         _save();

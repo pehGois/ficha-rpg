@@ -57,6 +57,9 @@
     color: var(--text);
     font-size: 13px;
     line-height: 1.4;
+    font-family: 'Spectral', serif;
+    letter-spacing: normal;
+    text-transform: none;
 }
 
 .archetype-ideals-maiores label:hover {
