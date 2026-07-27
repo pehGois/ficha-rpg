@@ -16,7 +16,7 @@ function calcDerived() {
 
   const pvCalc = 8 + 4 * toInt('corpo');
   const psCalc = 2 * toInt('mente');
-  const inspiracaoMax = Math.max(1, toInt('espirito', 4));
+  const peCalc = 2 * toInt('espirito', 4);
 
   const pvLabel = document.getElementById('pvLabel');
   if (pvLabel) pvLabel.textContent = `PV [${pvCalc}]`;
@@ -24,18 +24,19 @@ function calcDerived() {
   const psLabel = document.getElementById('psLabel');
   if (psLabel) psLabel.textContent = `PS [${psCalc}]`;
 
-  const inspiracaoLabel = document.getElementById('inspiracaoLabel');
-  if (inspiracaoLabel) inspiracaoLabel.textContent = `Inspiração [1d${inspiracaoMax}]`;
+  const peLabel = document.getElementById('inspiracaoLabel');
+  if (peLabel) peLabel.textContent = `PE [${peCalc}]`;
 
-  const inspiracaoInput = document.getElementById('inspiracao');
-  if (inspiracaoInput) {
-    inspiracaoInput.placeholder = `1d${inspiracaoMax}`;
-
-    const dice = parseDice(inspiracaoInput.value);
-    if (dice) {
-      const faces = Math.min(inspiracaoMax, Math.max(1, dice.faces));
-      if (dice.qtd !== 1 || faces !== dice.faces) {
-        inspiracaoInput.value = `1d${faces}`;
+  const peInput = document.getElementById('inspiracao');
+  if (peInput) {
+    peInput.placeholder = `${peCalc}`;
+    const currentValue = String(peInput.value ?? '').trim();
+    if (!currentValue) {
+      peInput.value = `${peCalc}`;
+    } else {
+      const numericValue = parseInt(currentValue, 10);
+      if (!Number.isNaN(numericValue)) {
+        peInput.value = `${Math.min(peCalc, Math.max(0, numericValue))}`;
       }
     }
   }
