@@ -5,14 +5,21 @@
 }
 
 .pericias-group {
-    background: linear-gradient(180deg, #0e0e0e, #0b0b0b);
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--accent-dim);
     padding: 10px;
-    border-radius: 6px
+    border-radius: 6px;
+    margin-bottom: 8px;
 }
 
 .pericias-group-title {
-    font-weight: 700;
-    margin-bottom: 8px
+    font-family: 'Spectral SC', serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--text-label);
+    margin-bottom: 8px;
+    text-transform: uppercase;
 }
 
 .pericia-item {
