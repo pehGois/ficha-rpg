@@ -41,6 +41,34 @@
     gap: 12px;
 }
 
+.archetype-ideals-maiores {
+    display: grid;
+    gap: 8px;
+}
+
+.archetype-ideals-maiores label {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-input);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.archetype-ideals-maiores label:hover {
+    border-color: var(--accent-dim);
+}
+
+.archetype-ideals-maiores input[type="checkbox"] {
+    margin-top: 3px;
+    accent-color: var(--accent-dim);
+    flex-shrink: 0;
+}
+
 .archetype-idea-row,
 .archetype-power-item {
     display: grid;
