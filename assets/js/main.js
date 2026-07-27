@@ -9,7 +9,8 @@ function setActiveSheetPane(pane, save = true) {
   });
 
   document.querySelectorAll('.sheet-grid .card[data-sheet-pane]').forEach(card => {
-    card.style.display = card.dataset.sheetPane === normalizedPane ? '' : 'none';
+    const panes = (card.dataset.sheetPane || '').split(/\s+/).filter(Boolean);
+    card.style.display = panes.includes(normalizedPane) ? '' : 'none';
   });
 
   if (save && typeof _save === 'function') {
