@@ -27,6 +27,27 @@ function normalizeImportedData(d) {
 
   return {
     ...d,
+    archetype: {
+      ...createDefaultArchetypeData(),
+      ...(d.archetype || {}),
+      ideaisMaiores: {
+        desafio: !!(d.archetype?.ideaisMaiores?.desafio),
+        antecedente: !!(d.archetype?.ideaisMaiores?.antecedente),
+        dificuldade: !!(d.archetype?.ideaisMaiores?.dificuldade)
+      },
+      ideaisMenores: Array.isArray(d.archetype?.ideaisMenores) ? d.archetype.ideaisMenores : [],
+      poderes: Array.isArray(d.archetype?.poderes) ? d.archetype.poderes : [],
+      peculiaridade: {
+        nome: d.archetype?.peculiaridade?.nome ?? '',
+        custoXp: d.archetype?.peculiaridade?.custoXp ?? '',
+        descricao: d.archetype?.peculiaridade?.descricao ?? ''
+      },
+      sombra: {
+        marcacoes: Array.isArray(d.archetype?.sombra?.marcacoes) && d.archetype.sombra.marcacoes.length
+          ? d.archetype.sombra.marcacoes
+          : createDefaultArchetypeData().sombra.marcacoes
+      }
+    },
     pericias: toObject(d.pericias),
     weapons: toArray(d.weapons),
     inventory: toArray(d.inventory),
@@ -81,6 +102,7 @@ function collectData() {
     falhasFilled,
     marcaDesc: g('marcaDesc'),
     falhasTexto: g('falhasTexto'),
+    archetype,
     trainings,
     abilities,
     effects,
@@ -115,6 +137,9 @@ function applyData(d) {
 
   falhasFilled = d.falhasFilled ?? 0;
   renderFalhasMarks();
+
+  archetype = normalizeImportedData(d).archetype || createDefaultArchetypeData();
+  renderArchetypeSection();
 
   trainings = (d.trainings ?? []).map(t => {
     if (typeof t === 'string') return { id: uid(), nome: t, descricao: '', collapsed: false };
@@ -199,6 +224,7 @@ function applyData(d) {
     });
   });
 
+  renderArchetypeSection();
   renderTrainings();
   renderAbilities();
   renderEffects();
@@ -322,6 +348,7 @@ function clearData() {
   ];
   pericias = (typeof createDefaultSheetData === 'function' ? createDefaultSheetData().pericias : {});
   falhasFilled = 0;
+  archetype = createDefaultArchetypeData();
   photoData = null;
 
   document.querySelectorAll('input[type=text], input[type=number]:not([readonly]), textarea').forEach(el => {
@@ -335,6 +362,7 @@ function clearData() {
 
   calcDerived();
   renderFalhasMarks();
+  renderArchetypeSection();
   renderTrainings();
   renderAbilities();
   renderEffects();

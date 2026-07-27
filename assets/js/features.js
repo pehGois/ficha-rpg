@@ -48,6 +48,209 @@ function renderFalhasMarks() {
   }
 }
 
+function renderArchetypeSection() {
+  if (!document.getElementById('archetypeSection')) return;
+
+  const currentArchetype = archetype && typeof archetype === 'object' ? archetype : createDefaultArchetypeData();
+  archetype = {
+    ...createDefaultArchetypeData(),
+    ...currentArchetype,
+    ideaisMaiores: {
+      desafio: !!currentArchetype?.ideaisMaiores?.desafio,
+      antecedente: !!currentArchetype?.ideaisMaiores?.antecedente,
+      dificuldade: !!currentArchetype?.ideaisMaiores?.dificuldade
+    },
+    ideaisMenores: Array.isArray(currentArchetype?.ideaisMenores) ? currentArchetype.ideaisMenores : [],
+    poderes: Array.isArray(currentArchetype?.poderes) ? currentArchetype.poderes : [],
+    peculiaridade: {
+      nome: currentArchetype?.peculiaridade?.nome ?? '',
+      custoXp: currentArchetype?.peculiaridade?.custoXp ?? '',
+      descricao: currentArchetype?.peculiaridade?.descricao ?? ''
+    },
+    sombra: {
+      marcacoes: Array.isArray(currentArchetype?.sombra?.marcacoes) && currentArchetype.sombra.marcacoes.length
+        ? currentArchetype.sombra.marcacoes
+        : [
+            { id: `${Date.now()}-0`, label: 'XP ≤ 0', descricao: '' },
+            { id: `${Date.now()}-1`, label: 'XP ≤ 5', descricao: '' },
+            { id: `${Date.now()}-2`, label: 'XP ≤ 10', descricao: '' }
+          ]
+    }
+  };
+
+  const nameInput = document.getElementById('archetypeNome');
+  if (nameInput && nameInput.value !== (archetype.nome ?? '')) {
+    nameInput.value = archetype.nome ?? '';
+  }
+
+  const xpInput = document.getElementById('archetypeXp');
+  if (xpInput && xpInput.value !== (archetype.xp ?? '')) {
+    xpInput.value = archetype.xp ?? '';
+  }
+
+  document.querySelectorAll('.archetype-ideal-checkbox').forEach(cb => {
+    const key = cb.dataset.archetypeIdeal;
+    cb.checked = !!archetype.ideaisMaiores?.[key];
+  });
+
+  const minorList = document.getElementById('archetypeMinorIdealsList');
+  if (minorList) {
+    minorList.innerHTML = '';
+    archetype.ideaisMenores.forEach((item, index) => {
+      const row = document.createElement('div');
+      row.className = 'archetype-idea-row';
+      row.innerHTML = `
+        <input type="checkbox" class="archetype-minor-checkbox" ${item.checked ? 'checked' : ''}>
+        <input type="text" value="${esc(item.texto || '')}" placeholder="Ideal menor ${index + 1}" data-field="texto">
+        <button type="button" class="btn-remove" data-action="remove-minor">×</button>`;
+
+      row.querySelector('.archetype-minor-checkbox').addEventListener('change', e => {
+        archetype.ideaisMenores[index].checked = e.target.checked;
+        _save();
+      });
+      row.querySelector('[data-field="texto"]').addEventListener('input', e => {
+        archetype.ideaisMenores[index].texto = e.target.value;
+        _save();
+      });
+      row.querySelector('[data-action="remove-minor"]').addEventListener('click', () => {
+        archetype.ideaisMenores.splice(index, 1);
+        renderArchetypeSection();
+        _save();
+      });
+      minorList.appendChild(row);
+    });
+  }
+
+  const powersList = document.getElementById('archetypePowersList');
+  if (powersList) {
+    powersList.innerHTML = '';
+    archetype.poderes.forEach((power, index) => {
+      const item = document.createElement('div');
+      item.className = 'archetype-power-item';
+      item.innerHTML = `
+        <div class="field full"><label>Nome</label><input type="text" value="${esc(power.nome || '')}" placeholder="Nome do poder" data-field="nome"></div>
+        <div class="field full"><label>Descrição</label><textarea placeholder="Descrição do poder..." data-field="descricao">${esc(power.descricao || '')}</textarea></div>
+        <button type="button" class="btn-remove" data-action="remove-power">×</button>`;
+
+      item.querySelector('[data-field="nome"]').addEventListener('input', e => {
+        archetype.poderes[index].nome = e.target.value;
+        _save();
+      });
+      item.querySelector('[data-field="descricao"]').addEventListener('input', e => {
+        archetype.poderes[index].descricao = e.target.value;
+        _save();
+      });
+      item.querySelector('[data-action="remove-power"]').addEventListener('click', () => {
+        archetype.poderes.splice(index, 1);
+        renderArchetypeSection();
+        _save();
+      });
+      powersList.appendChild(item);
+    });
+  }
+
+  const pecNome = document.getElementById('archetypePeculiaridadeNome');
+  if (pecNome && pecNome.value !== (archetype.peculiaridade?.nome ?? '')) {
+    pecNome.value = archetype.peculiaridade?.nome ?? '';
+  }
+
+  const pecCusto = document.getElementById('archetypePeculiaridadeCusto');
+  if (pecCusto && pecCusto.value !== (archetype.peculiaridade?.custoXp ?? '')) {
+    pecCusto.value = archetype.peculiaridade?.custoXp ?? '';
+  }
+
+  const pecDescricao = document.getElementById('archetypePeculiaridadeDescricao');
+  if (pecDescricao && pecDescricao.value !== (archetype.peculiaridade?.descricao ?? '')) {
+    pecDescricao.value = archetype.peculiaridade?.descricao ?? '';
+  }
+
+  const shadowBody = document.getElementById('archetypeShadowBody');
+  if (shadowBody) {
+    shadowBody.innerHTML = '';
+    (archetype.sombra?.marcacoes || []).forEach((marcacao, index) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${esc(marcacao.label || `Marcação ${index + 1}`)}</td>
+        <td><input type="text" value="${esc(marcacao.descricao || '')}" placeholder="Descrição da marcação" data-index="${index}"></td>`;
+      row.querySelector('input').addEventListener('input', e => {
+        archetype.sombra.marcacoes[index].descricao = e.target.value;
+        _save();
+      });
+      shadowBody.appendChild(row);
+    });
+  }
+}
+
+function attachArchetypeEvents() {
+  const nameInput = document.getElementById('archetypeNome');
+  if (nameInput) {
+    nameInput.addEventListener('input', e => {
+      archetype.nome = e.target.value;
+      _save();
+    });
+  }
+
+  const xpInput = document.getElementById('archetypeXp');
+  if (xpInput) {
+    xpInput.addEventListener('input', e => {
+      archetype.xp = e.target.value;
+      _save();
+    });
+  }
+
+  document.querySelectorAll('.archetype-ideal-checkbox').forEach(cb => {
+    cb.addEventListener('change', e => {
+      const key = e.target.dataset.archetypeIdeal;
+      if (key) {
+        archetype.ideaisMaiores[key] = e.target.checked;
+        _save();
+      }
+    });
+  });
+
+  const addMinorBtn = document.getElementById('addArchetypeMinorIdeal');
+  if (addMinorBtn) {
+    addMinorBtn.addEventListener('click', () => {
+      archetype.ideaisMenores.push({ id: `arq-${Date.now()}-${Math.random().toString(16).slice(2)}`, texto: '', checked: false });
+      renderArchetypeSection();
+      _save();
+    });
+  }
+
+  const addPowerBtn = document.getElementById('addArchetypePower');
+  if (addPowerBtn) {
+    addPowerBtn.addEventListener('click', () => {
+      archetype.poderes.push({ id: `arq-${Date.now()}-${Math.random().toString(16).slice(2)}`, nome: '', descricao: '' });
+      renderArchetypeSection();
+      _save();
+    });
+  }
+
+  const pecNome = document.getElementById('archetypePeculiaridadeNome');
+  if (pecNome) {
+    pecNome.addEventListener('input', e => {
+      archetype.peculiaridade.nome = e.target.value;
+      _save();
+    });
+  }
+
+  const pecCusto = document.getElementById('archetypePeculiaridadeCusto');
+  if (pecCusto) {
+    pecCusto.addEventListener('input', e => {
+      archetype.peculiaridade.custoXp = e.target.value;
+      _save();
+    });
+  }
+
+  const pecDescricao = document.getElementById('archetypePeculiaridadeDescricao');
+  if (pecDescricao) {
+    pecDescricao.addEventListener('input', e => {
+      archetype.peculiaridade.descricao = e.target.value;
+      _save();
+    });
+  }
+}
+
 function addTraining(data = {}) {
   trainings.push({ id: uid(), nome: '', descricao: '', collapsed: false, ...data });
   renderTrainings();

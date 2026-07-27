@@ -24,6 +24,7 @@ function createDefaultSheetData() {
     falhasFilled: 0,
     marcaDesc: '',
     falhasTexto: '',
+    archetype: createDefaultArchetypeData(),
     trainings: [],
     abilities: [],
     effects: [],

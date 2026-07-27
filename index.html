@@ -42,6 +42,7 @@
           <button type="button" class="sheet-section-tab" data-sheet-pane="sword" aria-pressed="false" title="Condições, armadura e arsenal">⚔️</button>
           <button type="button" class="sheet-section-tab active" data-sheet-pane="book" aria-pressed="true" title="Contadores, relógios, marcas e notas">📚</button>
           <button type="button" class="sheet-section-tab" data-sheet-pane="magic" aria-pressed="false" title="Efeitos e habilidades">📖</button>
+          <button type="button" class="sheet-section-tab" data-sheet-pane="archetype" aria-pressed="false" title="Arquétipo">👤</button>
         </aside>
 
       <div class="sheet-grid">
@@ -155,6 +156,56 @@
       <button class="btn-add" onclick="addAbility()">+ Adicionar Habilidade</button>
     </div>
 
+    <!-- ARQUÉTIPO -->
+    <div class="card full-width" id="archetypeSection" data-sheet-pane="archetype">
+      <div class="section-title">Arquétipo 👤</div>
+      <div class="archetype-section-grid">
+        <div class="row2">
+          <div class="field"><label>Nome do Arquétipo</label><input type="text" id="archetypeNome" placeholder="Nome do arquétipo"></div>
+          <div class="field"><label>XP de Arquétipo</label><input type="number" id="archetypeXp" placeholder="0" min="0"></div>
+        </div>
+
+        <div class="field full">
+          <label>Ideais Maiores</label>
+          <div class="archetype-ideals-maiores">
+            <label><input type="checkbox" class="archetype-ideal-checkbox" data-archetype-ideal="desafio"> Enfrentei um desafio de forma diferente do usual, mas seguindo os meus ideais.</label>
+            <label><input type="checkbox" class="archetype-ideal-checkbox" data-archetype-ideal="antecedente"> Expressei meu Antecedente ou minhas crenças através das minhas ações.</label>
+            <label><input type="checkbox" class="archetype-ideal-checkbox" data-archetype-ideal="dificuldade"> Deixei meu Antecedente, Personalidade ou minha Falha tornar algo mais difícil para mim.</label>
+          </div>
+        </div>
+
+        <div class="field full">
+          <label>Ideais Menores</label>
+          <div id="archetypeMinorIdealsList"></div>
+          <button type="button" class="btn-add" id="addArchetypeMinorIdeal">+ Adicionar Ideal Menor</button>
+        </div>
+
+        <div class="field full">
+          <label>Poderes</label>
+          <div id="archetypePowersList"></div>
+          <button type="button" class="btn-add" id="addArchetypePower">+ Adicionar Poder</button>
+        </div>
+
+        <div class="field full">
+          <label>Peculiaridade</label>
+          <div class="row2">
+            <div class="field"><label>Nome</label><input type="text" id="archetypePeculiaridadeNome" placeholder="Nome da peculiaridade"></div>
+            <div class="field"><label>Custo de XP</label><input type="number" id="archetypePeculiaridadeCusto" placeholder="0" min="0"></div>
+          </div>
+          <div class="field full"><label>Descrição</label><textarea id="archetypePeculiaridadeDescricao" placeholder="Descrição da peculiaridade..." style="min-height:70px;"></textarea></div>
+        </div>
+
+        <div class="field full">
+          <label>Sombra</label>
+          <table class="archetype-shadow-table">
+            <thead>
+              <tr><th>Marcação</th><th>Descrição</th></tr>
+            </thead>
+            <tbody id="archetypeShadowBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 
     <!-- ANTECEDENTE -->
     <div class="card full-width" data-sheet-pane="book">

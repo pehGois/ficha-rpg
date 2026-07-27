@@ -36,6 +36,39 @@
     gap: 8px;
 }
 
+.archetype-section-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.archetype-idea-row,
+.archetype-power-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 8px;
+    align-items: start;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-input);
+}
+
+.archetype-power-item {
+    grid-template-columns: 1fr;
+}
+
+.archetype-shadow-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.archetype-shadow-table th,
+.archetype-shadow-table td {
+    padding: 8px;
+    border: 1px solid var(--border);
+    text-align: left;
+}
+
 .card-header {
     display: flex;
     justify-content: space-between;

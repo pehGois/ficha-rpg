@@ -1,5 +1,5 @@
 function setActiveSheetPane(pane, save = true) {
-  const normalizedPane = ['sword','book','magic'].includes(pane) ? pane : 'book';
+  const normalizedPane = ['sword','book','magic','archetype'].includes(pane) ? pane : 'book';
   activeSheetPane = normalizedPane;
 
   document.querySelectorAll('.sheet-section-tab').forEach(tab => {
@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
   setupImportInput();
   bindDerivedStats();
   setupAutoSave();
+  attachArchetypeEvents();
+  renderArchetypeSection();
   initSheetSectionTabs();
   initTabsSystem();
   initDocsView();
