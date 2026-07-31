@@ -14,8 +14,8 @@ function calcDerived() {
     };
   };
 
-  const pvCalc = 8 + 4 * toInt('corpo');
-  const psCalc = 2 * toInt('mente');
+  const pvCalc = 10 + 3 * toInt('corpo', 4);
+  const psCalc = 2 * toInt('mente', 4);
   const peCalc = 2 * toInt('espirito', 4);
 
   const pvLabel = document.getElementById('pvLabel');
