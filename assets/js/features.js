@@ -303,7 +303,12 @@ function renderTrainings() {
 }
 
 function addAbility(data = {}) {
-  abilities.push({ id: uid(), nome: '', fundament: '', custo: '', forma: '', duracao: '', alcance: '', intensidade: '', area: '', transfig: '', descricao: '', collapsed: false, ...data });
+  if (!effects.length) {
+    showToast('Cadastre um efeito antes de criar uma habilidade.');
+    return;
+  }
+
+  abilities.push({ id: uid(), nome: '', fundament: '', efeito: '', custo: '', forma: '', duracao: '', alcance: '', intensidade: '', area: '', transfig: '', descricao: '', collapsed: false, ...data });
   renderAbilities();
 }
 
@@ -313,6 +318,8 @@ function renderAbilities() {
 
   abilities.forEach((a, i) => {
     const fundament = a.fundament ?? a.fundamento ?? '';
+    const selectedEffect = effects.find(ef => ef.id === (a.efeito ?? '') || ef.nome === (a.efeito ?? ''));
+    const selectedEffectValue = selectedEffect ? selectedEffect.id : (a.efeito ?? '');
     const d = document.createElement('div');
     d.className = 'ability-card accordion-card' + (a.collapsed ? ' collapsed' : '');
     const abilityLabel = (a.nome && a.nome.trim()) ? esc(a.nome) : `Habilidade ${i + 1}`;
@@ -326,6 +333,10 @@ function renderAbilities() {
           <option value="Corpo"${fundament === 'Corpo' ? ' selected' : ''}>Corpo</option>
           <option value="Mente"${fundament === 'Mente' ? ' selected' : ''}>Mente</option>
           <option value="Espirito"${fundament === 'Espirito' ? ' selected' : ''}>Espirito</option>
+        </select></div>
+        <div class="field"><label>Efeito</label><select data-field="efeito">
+          <option value="">Selecione...</option>
+          ${effects.map(ef => `<option value="${esc(ef.id)}"${selectedEffectValue === ef.id ? ' selected' : ''}>${esc(ef.nome || 'Sem nome')}</option>`).join('')}
         </select></div>
         <div class="field"><label>Custo</label><input type="text" value="${esc(a.custo)}" placeholder="X PS" data-field="custo"></div>
         <div class="field"><label>Forma</label><input type="text" value="${esc(a.forma)}" placeholder="Gestual Duas Mãos, Ritual ..." data-field="forma"></div>
@@ -367,6 +378,7 @@ function renderAbilities() {
 function addEffect(data = {}) {
   effects.push({ id: uid(), nome: '', custo: '', intensidade: '', area: '', duracao: '', alcance: '', transfig: '', descricao: '', collapsed: false, ...data });
   renderEffects();
+  if (typeof renderAbilities === 'function') renderAbilities();
 }
 
 function renderEffects() {
@@ -396,6 +408,7 @@ function renderEffects() {
     d.querySelector('.btn-remove').addEventListener('click', () => {
       effects.splice(i, 1);
       renderEffects();
+      if (typeof renderAbilities === 'function') renderAbilities();
       _save();
     });
 
