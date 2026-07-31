@@ -31,7 +31,7 @@ function createDefaultSheetData() {
     clocks: [],
     counters: [],
     pericias: {
-      Corpo: { Forca: '0', Destreza: '0', Resistencia: '0', Furtividade: '0' },
+      Corpo: { Força: '0', Destreza: '0', Resistencia: '0', Furtividade: '0' },
       Mente: { Recordar: '0', Analisar: '0', Aprender: '0', Criar: '0' },
       Espirito: { Convencer: '0', Enganar: '0', Perceber: '0', Impor: '0' }
     },
