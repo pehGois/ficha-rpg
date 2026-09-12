@@ -63,7 +63,8 @@ function collectData() {
   const g = id => document.getElementById(id)?.value ?? '';
   return {
     nome: g('nome'),
-    xp: g('xp'),
+    xpAtual: g('xpAtual'),
+    xpTotal: g('xpTotal'),
     lema: g('lema'),
     sheetPane: activeSheetPane,
     corpo: g('corpo'),
@@ -119,7 +120,10 @@ function applyData(d) {
     if (el && v !== undefined) el.value = v;
   };
 
-  s('nome', d.nome); s('xp', d.xp); s('lema', d.lema);
+  s('nome', d.nome);
+  s('xpAtual', d.xpAtual ?? d.xp);
+  s('xpTotal', d.xpTotal);
+  s('lema', d.lema);
   s('corpo', d.corpo); s('mente', d.mente);
   s('pv', d.pv); s('ps', d.ps);
 

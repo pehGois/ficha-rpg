@@ -1,7 +1,8 @@
 function createDefaultSheetData() {
   return {
     nome: '',
-    xp: '',
+    xpAtual: '',
+    xpTotal: '',
     lema: '',
     sheetPane: 'book',
     corpo: '4',
