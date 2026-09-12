@@ -16,7 +16,6 @@ function calcDerived() {
 
   const pvCalc = 10 + 3 * toInt('corpo', 4);
   const psCalc = 2 * toInt('mente', 4);
-  const peCalc = 2 * toInt('espirito', 4);
 
   const pvLabel = document.getElementById('pvLabel');
   if (pvLabel) pvLabel.textContent = `PV [${pvCalc}]`;
@@ -24,27 +23,10 @@ function calcDerived() {
   const psLabel = document.getElementById('psLabel');
   if (psLabel) psLabel.textContent = `PS [${psCalc}]`;
 
-  const peLabel = document.getElementById('inspiracaoLabel');
-  if (peLabel) peLabel.textContent = `PE [${peCalc}]`;
-
-  const peInput = document.getElementById('inspiracao');
-  if (peInput) {
-    peInput.placeholder = `${peCalc}`;
-    const currentValue = String(peInput.value ?? '').trim();
-    if (!currentValue) {
-      peInput.value = `${peCalc}`;
-    } else {
-      const numericValue = parseInt(currentValue, 10);
-      if (!Number.isNaN(numericValue)) {
-        peInput.value = `${Math.min(peCalc, Math.max(0, numericValue))}`;
-      }
-    }
-  }
-
 }
 
 function bindDerivedStats() {
-  ['corpo', 'mente', 'espirito'].forEach(id => {
+  ['corpo', 'mente'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
       el.addEventListener('input', calcDerived);

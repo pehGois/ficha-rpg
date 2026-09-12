@@ -2,12 +2,10 @@ function createDefaultSheetData() {
   return {
     nome: '',
     xp: '',
-    inspiracao: '',
     lema: '',
     sheetPane: 'book',
     corpo: '4',
     mente: '4',
-    espirito: '4',
     pv: '',
     ps: '',
     armaduraNome: '',
@@ -31,9 +29,23 @@ function createDefaultSheetData() {
     clocks: [],
     counters: [],
     pericias: {
-      Corpo: { Força: '0', Destreza: '0', Resistencia: '0', Furtividade: '0' },
-      Mente: { Recordar: '0', Analisar: '0', Aprender: '0', Criar: '0' },
-      Espirito: { Convencer: '0', Enganar: '0', Perceber: '0', Impor: '0' }
+      Corpo: {
+        Força: '0',
+        Destreza: '0',
+        Resistência: '0',
+        Discrição: '0',
+        Percepção: '0',
+        Intimidação: '0'
+      },
+      Mente: {
+        Conhecimento: '0',
+        Análise: '0',
+        Aprendizado: '0',
+        Criação: '0',
+        Lábia: '0',
+        Sobrevivência: '0',
+        Empatia: '0'
+      }
     },
     antecedente: '',
     notas: '',

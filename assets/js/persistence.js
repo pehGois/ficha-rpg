@@ -5,7 +5,7 @@ function setupAutoSave() {
     el.addEventListener('change', _save);
     el.addEventListener('input', debounce(_save, 1200));
     // Update Perícias titles when attribute values change
-    if (['corpo', 'mente', 'espirito'].includes(el.id)) {
+    if (['corpo', 'mente'].includes(el.id)) {
       if (typeof renderPericias === 'function') {
         el.addEventListener('input', debounce(() => { try { renderPericias(); } catch (e) {} }, 150));
         el.addEventListener('change', () => { try { renderPericias(); } catch (e) {} });
@@ -64,12 +64,10 @@ function collectData() {
   return {
     nome: g('nome'),
     xp: g('xp'),
-    inspiracao: g('inspiracao'),
     lema: g('lema'),
     sheetPane: activeSheetPane,
     corpo: g('corpo'),
     mente: g('mente'),
-    espirito: g('espirito'),
     pv: g('pv'),
     ps: g('ps'),
     armaduraNome: g('armaduraNome'),
@@ -121,8 +119,8 @@ function applyData(d) {
     if (el && v !== undefined) el.value = v;
   };
 
-  s('nome', d.nome); s('xp', d.xp); s('inspiracao', d.inspiracao); s('lema', d.lema);
-  s('corpo', d.corpo); s('mente', d.mente); s('espirito', d.espirito);
+  s('nome', d.nome); s('xp', d.xp); s('lema', d.lema);
+  s('corpo', d.corpo); s('mente', d.mente);
   s('pv', d.pv); s('ps', d.ps);
 
   s('armaduraNome', d.armaduraNome); s('armaduraValor', d.armaduraValor); s('armaduraProps', d.armaduraProps);
@@ -209,9 +207,23 @@ function applyData(d) {
 
   // Perícias: normalize to default structure and coerce values to ints
   const defaultPericias = (typeof createDefaultSheetData === 'function' ? createDefaultSheetData().pericias : {
-    Corpo: { Força: 0, Destreza: 0, Resistencia: 0, Furtividade: 0 },
-    Mente: { Recordar: 0, Analisar: 0, Aprender: 0, Criar: 0 },
-    Espirito: { Convencer: 0, Enganar: 0, Perceber: 0, Impor: 0 }
+    Corpo: {
+      Força: 0,
+      Destreza: 0,
+      Resistência: 0,
+      Discrição: 0,
+      Percepção: 0,
+      Intimidação: 0
+    },
+    Mente: {
+      Conhecimento: 0,
+      Análise: 0,
+      Aprendizado: 0,
+      Criação: 0,
+      Lábia: 0,
+      Sobrevivência: 0,
+      Empatia: 0
+    }
   });
 
   const importedPericias = d.pericias && typeof d.pericias === 'object' ? d.pericias : {};
@@ -355,7 +367,7 @@ function clearData() {
     el.value = '';
   });
 
-  ['corpo', 'mente', 'espirito'].forEach(id => {
+  ['corpo', 'mente'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '4';
   });

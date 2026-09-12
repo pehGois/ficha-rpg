@@ -332,7 +332,6 @@ function renderAbilities() {
           <option value="">Selecione...</option>
           <option value="Corpo"${fundament === 'Corpo' ? ' selected' : ''}>Corpo</option>
           <option value="Mente"${fundament === 'Mente' ? ' selected' : ''}>Mente</option>
-          <option value="Espirito"${fundament === 'Espirito' ? ' selected' : ''}>Espirito</option>
         </select></div>
         <div class="field"><label>Efeito</label><select data-field="efeito">
           <option value="">Selecione...</option>
@@ -792,7 +791,7 @@ function renderWeapons() {
       const title = document.createElement('div');
       title.className = 'pericias-group-title';
       // show attribute die next to group name, e.g. "Corpo [1d4]"
-      const attrId = group === 'Corpo' ? 'corpo' : group === 'Mente' ? 'mente' : group === 'Espirito' ? 'espirito' : null;
+      const attrId = group === 'Corpo' ? 'corpo' : group === 'Mente' ? 'mente' : null;
       const attrVal = attrId ? (document.getElementById(attrId)?.value || '') : '';
       title.textContent = attrVal ? `${group} [1d${attrVal}]` : group;
       col.appendChild(title);
