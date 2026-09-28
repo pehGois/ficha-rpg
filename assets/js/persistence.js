@@ -37,10 +37,10 @@ function normalizeImportedData(d) {
       },
       ideaisMenores: Array.isArray(d.archetype?.ideaisMenores) ? d.archetype.ideaisMenores : [],
       poderes: Array.isArray(d.archetype?.poderes) ? d.archetype.poderes : [],
-      peculiaridade: {
-        nome: d.archetype?.peculiaridade?.nome ?? '',
-        custoXp: d.archetype?.peculiaridade?.custoXp ?? '',
-        descricao: d.archetype?.peculiaridade?.descricao ?? ''
+      dadiva: {
+        nome: d.archetype?.dadiva?.nome ?? '',
+        custoXp: d.archetype?.dadiva?.custoXp ?? '',
+        descricao: d.archetype?.dadiva?.descricao ?? ''
       },
       sombra: {
         marcacoes: Array.isArray(d.archetype?.sombra?.marcacoes) && d.archetype.sombra.marcacoes.length

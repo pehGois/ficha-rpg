@@ -44,7 +44,7 @@ nav {
 /* GRID */
 .sheet-content-layout {
     display: grid;
-    grid-template-columns: 52px 1fr;
+    grid-template-columns: 110px 1fr;
     gap: 12px;
     max-width: 980px;
     margin: 0 auto;
@@ -70,14 +70,14 @@ nav {
 
 .section-title {
     font-family: 'Montserrat', sans-serif;
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 600;
     color: var(--text-label);
-    letter-spacing: 3px;
+    letter-spacing: 3.5px;
     text-transform: uppercase;
-    margin-bottom: 14px;
+    margin-bottom: 18px;
     border-bottom: 1px solid var(--border);
-    padding-bottom: 6px;
+    padding-bottom: 8px;
 }
 
 .row2 {

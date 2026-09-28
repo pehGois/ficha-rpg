@@ -62,18 +62,18 @@ function renderArchetypeSection() {
     },
     ideaisMenores: Array.isArray(currentArchetype?.ideaisMenores) ? currentArchetype.ideaisMenores : [],
     poderes: Array.isArray(currentArchetype?.poderes) ? currentArchetype.poderes : [],
-    peculiaridade: {
-      nome: currentArchetype?.peculiaridade?.nome ?? '',
-      custoXp: currentArchetype?.peculiaridade?.custoXp ?? '',
-      descricao: currentArchetype?.peculiaridade?.descricao ?? ''
+    dadiva: {
+      nome: currentArchetype?.dadiva?.nome ?? '',
+      custoXp: currentArchetype?.dadiva?.custoXp ?? '',
+      descricao: currentArchetype?.dadiva?.descricao ?? ''
     },
     sombra: {
       marcacoes: Array.isArray(currentArchetype?.sombra?.marcacoes) && currentArchetype.sombra.marcacoes.length
         ? currentArchetype.sombra.marcacoes
         : [
-            { id: `${Date.now()}-0`, label: 'XP ≤ 0', descricao: '' },
-            { id: `${Date.now()}-1`, label: 'XP ≤ 5', descricao: '' },
-            { id: `${Date.now()}-2`, label: 'XP ≤ 10', descricao: '' }
+            { id: `${Date.now()}-0`, label: '1', descricao: '' },
+            { id: `${Date.now()}-1`, label: '2', descricao: '' },
+            { id: `${Date.now()}-2`, label: '3', descricao: '' }
           ]
     }
   };
@@ -81,11 +81,6 @@ function renderArchetypeSection() {
   const nameInput = document.getElementById('archetypeNome');
   if (nameInput && nameInput.value !== (archetype.nome ?? '')) {
     nameInput.value = archetype.nome ?? '';
-  }
-
-  const xpInput = document.getElementById('archetypeXp');
-  if (xpInput && xpInput.value !== (archetype.xp ?? '')) {
-    xpInput.value = archetype.xp ?? '';
   }
 
   document.querySelectorAll('.archetype-ideal-checkbox').forEach(cb => {
@@ -149,19 +144,19 @@ function renderArchetypeSection() {
     });
   }
 
-  const pecNome = document.getElementById('archetypePeculiaridadeNome');
-  if (pecNome && pecNome.value !== (archetype.peculiaridade?.nome ?? '')) {
-    pecNome.value = archetype.peculiaridade?.nome ?? '';
+  const pecNome = document.getElementById('archetypedadivaNome');
+  if (pecNome && pecNome.value !== (archetype.dadiva?.nome ?? '')) {
+    pecNome.value = archetype.dadiva?.nome ?? '';
   }
 
-  const pecCusto = document.getElementById('archetypePeculiaridadeCusto');
-  if (pecCusto && pecCusto.value !== (archetype.peculiaridade?.custoXp ?? '')) {
-    pecCusto.value = archetype.peculiaridade?.custoXp ?? '';
+  const pecCusto = document.getElementById('archetypedadivaCusto');
+  if (pecCusto && pecCusto.value !== (archetype.dadiva?.custoXp ?? '')) {
+    pecCusto.value = archetype.dadiva?.custoXp ?? '';
   }
 
-  const pecDescricao = document.getElementById('archetypePeculiaridadeDescricao');
-  if (pecDescricao && pecDescricao.value !== (archetype.peculiaridade?.descricao ?? '')) {
-    pecDescricao.value = archetype.peculiaridade?.descricao ?? '';
+  const pecDescricao = document.getElementById('archetypedadivaDescricao');
+  if (pecDescricao && pecDescricao.value !== (archetype.dadiva?.descricao ?? '')) {
+    pecDescricao.value = archetype.dadiva?.descricao ?? '';
   }
 
   const shadowBody = document.getElementById('archetypeShadowBody');
@@ -170,7 +165,7 @@ function renderArchetypeSection() {
     (archetype.sombra?.marcacoes || []).forEach((marcacao, index) => {
       const row = document.createElement('tr');
       row.innerHTML = `
-        <td>${esc(marcacao.label || `Marcação ${index + 1}`)}</td>
+        <td>${index + 1}</td>
         <td><input type="text" value="${esc(marcacao.descricao || '')}" placeholder="Descrição" data-index="${index}"></td>`;
       row.querySelector('input').addEventListener('input', e => {
         archetype.sombra.marcacoes[index].descricao = e.target.value;
@@ -186,14 +181,6 @@ function attachArchetypeEvents() {
   if (nameInput) {
     nameInput.addEventListener('input', e => {
       archetype.nome = e.target.value;
-      _save();
-    });
-  }
-
-  const xpInput = document.getElementById('archetypeXp');
-  if (xpInput) {
-    xpInput.addEventListener('input', e => {
-      archetype.xp = e.target.value;
       _save();
     });
   }
@@ -226,26 +213,26 @@ function attachArchetypeEvents() {
     });
   }
 
-  const pecNome = document.getElementById('archetypePeculiaridadeNome');
+  const pecNome = document.getElementById('archetypedadivaNome');
   if (pecNome) {
     pecNome.addEventListener('input', e => {
-      archetype.peculiaridade.nome = e.target.value;
+      archetype.dadiva.nome = e.target.value;
       _save();
     });
   }
 
-  const pecCusto = document.getElementById('archetypePeculiaridadeCusto');
+  const pecCusto = document.getElementById('archetypedadivaCusto');
   if (pecCusto) {
     pecCusto.addEventListener('input', e => {
-      archetype.peculiaridade.custoXp = e.target.value;
+      archetype.dadiva.custoXp = e.target.value;
       _save();
     });
   }
 
-  const pecDescricao = document.getElementById('archetypePeculiaridadeDescricao');
+  const pecDescricao = document.getElementById('archetypedadivaDescricao');
   if (pecDescricao) {
     pecDescricao.addEventListener('input', e => {
-      archetype.peculiaridade.descricao = e.target.value;
+      archetype.dadiva.descricao = e.target.value;
       _save();
     });
   }
@@ -747,7 +734,7 @@ function renderWeapons() {
       <div class="accordion-body">
         <div class="weapon-row">
           <div class="field"><label>Nome</label><input type="text" value="${esc(weapon.nome)}" placeholder="Nome da arma" data-field="nome"></div>
-          <div class="field"><label>Bônus de Dano</label><input type="text" value="${esc(weapon.bonus)}" placeholder="+0" data-field="bonus"></div>
+          <div class="field"><label>Bônus</label><input type="text" value="${esc(weapon.bonus)}" placeholder="+0" data-field="bonus"></div>
         </div>
         <div class="field"><label>Propriedades</label><input type="text" value="${esc(weapon.props)}" placeholder="Perfurante, Arremessável II..." data-field="props"></div>
       </div>`;

@@ -69,11 +69,19 @@ body {
 label {
     display: block;
     font-family: 'Montserrat', sans-serif;
-    font-size: 10px;
-    letter-spacing: 1.5px;
+    font-size: 12px;
+    letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--text-label);
-    margin-bottom: 3px;
+    margin-bottom: 5px;
+}
+
+label.subsection-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    color: var(--text-head);
+    margin-bottom: 10px;
 }
 option {
     background: var(--bg-input);
