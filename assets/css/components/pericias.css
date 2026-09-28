@@ -14,10 +14,11 @@
 }
 
 .pericias-group-title {
-    font-family: 'Spectral SC', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 10px;
     letter-spacing: 2px;
     color: var(--text-label);
+    text-transform: uppercase;
     margin-bottom: 8px;
     text-transform: uppercase;
 }

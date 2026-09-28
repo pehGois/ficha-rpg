@@ -16,18 +16,19 @@
 }
 
 .docs-head h2 {
-    font-family: 'Spectral SC', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     letter-spacing: 1.8px;
     color: var(--text-label);
     font-weight: 600;
+    text-transform: uppercase;
 }
 
 .docs-open-link {
     border: 1px solid #3b4f64;
     color: #9fc2dd;
     text-decoration: none;
-    font-family: 'Spectral SC', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 10px;
     letter-spacing: 1.6px;
     padding: 6px 10px;

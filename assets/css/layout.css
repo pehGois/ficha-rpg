@@ -26,11 +26,12 @@ nav {
 }
 
 .page-title {
-    font-family: 'Spectral SC', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: clamp(18px, 4vw, 26px);
     font-weight: 600;
     color: var(--text-head);
     letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 .page-subtitle {
@@ -68,7 +69,7 @@ nav {
 }
 
 .section-title {
-    font-family: 'Spectral SC', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 13px;
     font-weight: 600;
     color: var(--text-label);

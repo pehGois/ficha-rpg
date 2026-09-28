@@ -64,7 +64,7 @@
 }
 
 .cond-name {
-    font-family: 'Spectral SC', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 11px;
     color: var(--text-label);
     transition: color 0.15s;

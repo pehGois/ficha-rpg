@@ -33,7 +33,7 @@
     border-color: transparent;
     background: transparent;
     color: var(--text);
-    font-family: 'Spectral SC', serif;
+    font-family: 'Montserrat', sans-serif;
     letter-spacing: 1px;
 }
 
@@ -68,7 +68,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Spectral SC', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 13px;
     font-weight: 600;
     color: var(--text-label);
@@ -101,7 +101,7 @@
     background: none;
     border: 1px solid var(--border);
     color: var(--text-dim);
-    font-family: 'Spectral SC', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 9px;
     letter-spacing: 1px;
     padding: 3px 7px;

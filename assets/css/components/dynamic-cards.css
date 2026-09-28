@@ -57,7 +57,7 @@
     color: var(--text);
     font-size: 13px;
     line-height: 1.4;
-    font-family: 'Spectral', serif;
+    font-family: 'Montserrat', sans-serif;
     letter-spacing: normal;
     text-transform: none;
 }
@@ -108,7 +108,7 @@
 }
 
 .card-label {
-    font-family: 'Spectral SC', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 10px;
     color: var(--text-label);
     letter-spacing: 2px;

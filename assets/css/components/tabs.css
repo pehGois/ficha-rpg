@@ -44,9 +44,10 @@
 }
 
 .tab-label {
-    font-family: 'Spectral SC', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 10px;
     letter-spacing: 1.5px;
+    text-transform: uppercase;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -72,7 +73,7 @@
     background: none;
     border: 1px dashed var(--border);
     color: var(--text-dim);
-    font-family: 'Spectral SC', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 10px;
     letter-spacing: 1.5px;
     padding: 7px 12px;
