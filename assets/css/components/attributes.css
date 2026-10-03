@@ -7,8 +7,8 @@
 
 .attr-box {
     background: var(--bg-input);
-    border: 1px solid var(--border);
-    padding: 10px 6px;
+    border: 2px solid var(--text-head);
+    padding: 9px 6px 7px;
     text-align: center;
 }
 
@@ -21,13 +21,13 @@
 .attr-select input[type=radio] {
     width: 14px;
     height: 14px;
-    accent-color: #b55b4f;
+    accent-color: var(--accent);
     cursor: pointer;
 }
 
 .attr-box label {
     font-size: 10px;
-    color: var(--text-label);
+    color: var(--text-head);
     margin-bottom: 5px;
     text-align: center;
 }
@@ -38,7 +38,7 @@
     font-weight: 600;
     background: transparent;
     border: none;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--text-head);
     padding: 2px;
     width: 100%;
 }
@@ -49,6 +49,6 @@
 }
 
 .attr-box input[readonly] {
-    color: var(--text-label);
+    color: var(--text-head);
     cursor: default;
 }

@@ -256,7 +256,7 @@ function renderTrainings() {
       <div class="card-header accordion-header">
         <button class="accordion-toggle" type="button">${t.collapsed ? '▸' : '▾'}</button>
         <span class="card-label">${trainingLabel}</span>
-        <button class="btn-remove">× Remover</button>
+        <button class="btn-remove">× REMOVER</button>
       </div>
       <div class="accordion-body">
         <div class="spell-grid">
@@ -291,11 +291,11 @@ function renderTrainings() {
 
 function addAbility(data = {}) {
   if (!effects.length) {
-    showToast('Cadastre um efeito antes de criar uma habilidade.');
+    showToast('Cadastre um efeito antes de criar um PODER.');
     return;
   }
 
-  abilities.push({ id: uid(), nome: '', fundament: '', efeito: '', custo: '', forma: '', duracao: '', alcance: '', intensidade: '', area: '', transfig: '', descricao: '', collapsed: false, ...data });
+  abilities.push({ id: uid(), nome: '', atributo: '', efeito: '', custo: '', forma: '', duracao: '', alcance: '', intensidade: '', area: '', transfig: '', descricao: '', collapsed: false, ...data });
   renderAbilities();
 }
 
@@ -304,21 +304,21 @@ function renderAbilities() {
   list.innerHTML = '';
 
   abilities.forEach((a, i) => {
-    const fundament = a.fundament ?? a.fundamento ?? '';
+    const atributo = a.atributo ?? '';
     const selectedEffect = effects.find(ef => ef.id === (a.efeito ?? '') || ef.nome === (a.efeito ?? ''));
     const selectedEffectValue = selectedEffect ? selectedEffect.id : (a.efeito ?? '');
     const d = document.createElement('div');
     d.className = 'ability-card accordion-card' + (a.collapsed ? ' collapsed' : '');
-    const abilityLabel = (a.nome && a.nome.trim()) ? esc(a.nome) : `Habilidade ${i + 1}`;
+    const abilityLabel = (a.nome && a.nome.trim()) ? esc(a.nome) : `Poder ${i + 1}`;
     d.innerHTML = `
-      <div class="card-header accordion-header"><button class="accordion-toggle" type="button">${a.collapsed ? '▸' : '▾'}</button><span class="card-label">${abilityLabel}</span><button class="btn-remove">× Remover</button></div>
+      <div class="card-header accordion-header"><button class="accordion-toggle" type="button">${a.collapsed ? '▸' : '▾'}</button><span class="card-label">${abilityLabel}</span><button class="btn-remove">× REMOVER</button></div>
       <div class="accordion-body">
       <div class="spell-grid">
-        <div class="field"><label>Nome</label><input type="text" value="${esc(a.nome)}" placeholder="Nome da habilidade" data-field="nome"></div>
-        <div class="field"><label>Fundamento</label><select placeholder="Nome do Fundamento" data-field="fundament">
+        <div class="field"><label>Nome</label><input type="text" value="${esc(a.nome)}" placeholder="Nome do Poder" data-field="nome"></div>
+        <div class="field"><label>Atributo</label><select placeholder="Nome do Atributo" data-field="atributo">
           <option value="">Selecione...</option>
-          <option value="Corpo"${fundament === 'Corpo' ? ' selected' : ''}>Corpo</option>
-          <option value="Mente"${fundament === 'Mente' ? ' selected' : ''}>Mente</option>
+          <option value="FORÇA"${atributo === 'FORÇA' ? ' selected' : ''}>FORÇA</option>
+          <option value="INTELIGÊNCIA"${atributo === 'INTELIGÊNCIA' ? ' selected' : ''}>INTELIGÊNCIA</option>
         </select></div>
         <div class="field"><label>Efeito</label><select data-field="efeito">
           <option value="">Selecione...</option>
@@ -331,7 +331,7 @@ function renderAbilities() {
         <div class="field"><label>Intensidade</label><input type="text" value="${esc(a.intensidade)}" placeholder="Intensidade" data-field="intensidade"></div>
         <div class="field"><label>Área de Efeito</label><input type="text" value="${esc(a.area)}" placeholder="Área de efeito" data-field="area"></div>
         <div class="field"><label>Transfigurações</label><input type="text" value="${esc(a.transfig)}" placeholder="Modificadores" data-field="transfig"></div>
-        <div class="field full"><label>Descrição</label><textarea placeholder="Como esta habilidade funciona..." data-field="descricao">${esc(a.descricao)}</textarea></div>
+        <div class="field full"><label>Descrição</label><textarea placeholder="Como este Poder funciona..." data-field="descricao">${esc(a.descricao)}</textarea></div>
       </div>
       </div>`;
 
@@ -376,7 +376,7 @@ function renderEffects() {
     d.className = 'effect-item accordion-card' + (ef.collapsed ? ' collapsed' : '');
     const effectLabel = (ef.nome && ef.nome.trim()) ? esc(ef.nome) : `Efeito ${i + 1}`;
     d.innerHTML = `
-      <div class="card-header accordion-header"><button class="accordion-toggle" type="button">${ef.collapsed ? '▸' : '▾'}</button><span class="card-label">${effectLabel}</span><button class="btn-remove">× Remover</button></div>
+      <div class="card-header accordion-header"><button class="accordion-toggle" type="button">${ef.collapsed ? '▸' : '▾'}</button><span class="card-label">${effectLabel}</span><button class="btn-remove">× REMOVER</button></div>
       <div class="accordion-body">
       <div class="spell-grid">
         <div class="field"><label>Nome</label><input type="text" value="${esc(ef.nome)}" placeholder="Nome do efeito" data-field="nome"></div>
@@ -448,7 +448,7 @@ function renderClockCard(grid, c, i) {
   const removeBtn = document.createElement('button');
   removeBtn.className = 'btn-remove';
   removeBtn.textContent = '×';
-  removeBtn.title = 'Remover relógio';
+  removeBtn.title = 'REMOVER RELÓGIO';
   removeBtn.addEventListener('click', () => {
     clocks.splice(i, 1);
     renderClocks();
@@ -611,7 +611,7 @@ function renderCounters() {
       <div class="card-header accordion-header">
         <button class="accordion-toggle" type="button">${counter.collapsed ? '▸' : '▾'}</button>
         <span class="card-label">${counterLabel}</span>
-        <button class="btn-remove">× Remover</button>
+        <button class="btn-remove">× REMOVER</button>
       </div>
       <div class="accordion-body">
         <div class="counter-grid">
@@ -673,7 +673,7 @@ function renderInventory() {
       <div class="card-header accordion-header">
         <button class="accordion-toggle" type="button">${item.collapsed ? '▸' : '▾'}</button>
         <span class="card-label">${itemLabel}</span>
-        <button class="btn-remove">× Remover</button>
+        <button class="btn-remove">× REMOVER</button>
       </div>
       <div class="accordion-body">
         <div class="spell-grid">
@@ -724,12 +724,12 @@ function renderWeapons() {
   weapons.forEach((weapon, i) => {
     const d = document.createElement('div');
     d.className = 'weapon-item accordion-card' + (weapon.collapsed ? ' collapsed' : '');
-    const weaponLabel = (weapon.nome && weapon.nome.trim()) ? esc(weapon.nome) : `Arma ${i + 1}`;
+    const weaponLabel = (weapon.nome && weapon.nome.trim()) ? esc(weapon.nome) : `ARMA ${i + 1}`;
     d.innerHTML = `
       <div class="card-header accordion-header">
         <button class="accordion-toggle" type="button">${weapon.collapsed ? '▸' : '▾'}</button>
         <span class="card-label">${weaponLabel}</span>
-        <button class="btn-remove">× Remover</button>
+        <button class="btn-remove">× REMOVER</button>
       </div>
       <div class="accordion-body">
         <div class="weapon-row">
@@ -777,8 +777,8 @@ function renderWeapons() {
 
       const title = document.createElement('div');
       title.className = 'pericias-group-title';
-      // show attribute die next to group name, e.g. "Corpo [1d4]"
-      const attrId = group === 'Corpo' ? 'corpo' : group === 'Mente' ? 'mente' : null;
+      // show attribute die next to group name, e.g. "FORÇA [1d4]"
+      const attrId = group === 'FORÇA' ? 'FORÇA' : group === 'INTELIGÊNCIA' ? 'INTELIGÊNCIA' : null;
       const attrVal = attrId ? (document.getElementById(attrId)?.value || '') : '';
       title.textContent = attrVal ? `${group} [1d${attrVal}]` : group;
       col.appendChild(title);

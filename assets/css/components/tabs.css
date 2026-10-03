@@ -18,7 +18,7 @@
 }
 
 .tab-item {
-    background: var(--bg-card);
+    background: rgba(244, 240, 228, 0.62);
     border: 1px solid var(--border);
     color: var(--text-label);
     min-width: 140px;
@@ -38,9 +38,10 @@
 }
 
 .tab-item.active {
-    border-color: var(--accent-dim);
-    background: rgba(192, 57, 43, 0.12);
-    color: #e8c7c4;
+    border-color: var(--text-head);
+    border-bottom: 1px solid var(--text-head);
+    background: var(--bg-card);
+    color: var(--text-head);
 }
 
 .tab-label {
@@ -66,7 +67,7 @@
 }
 
 .tab-item.active .tab-close {
-    color: #d7a29c;
+    color: var(--accent);
 }
 
 .btn-tab-add {

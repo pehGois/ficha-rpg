@@ -11,36 +11,36 @@
 }
 
 .btn-save {
-    border-color: #555;
-    color: #999;
+    border-color: var(--border);
+    color: var(--text-label);
 }
 
 .btn-save:hover {
-    border-color: #888;
-    color: #ccc;
+    border-color: var(--text-head);
+    color: var(--text-head);
 }
 
 .btn-download {
-    border-color: #4a3a6a;
-    color: #9b7fd4;
+    border-color: var(--border);
+    color: var(--text-label);
 }
 
 .btn-download:hover {
-    background: rgba(90, 58, 138, 0.1);
+    background: rgba(124, 36, 29, 0.08);
 }
 
 .btn-import {
-    border-color: #2a4a3a;
-    color: #5a9a7a;
+    border-color: var(--border);
+    color: var(--text-label);
 }
 
 .btn-import:hover {
-    background: rgba(58, 138, 90, 0.08);
+    background: rgba(76, 74, 69, 0.08);
 }
 
 .btn-clear {
     border-color: var(--accent-dim);
-    color: #c05050;
+    color: var(--accent);
 }
 
 .btn-clear:hover {
@@ -48,16 +48,16 @@
 }
 
 .btn-docs {
-    border-color: #35516a;
-    color: #8bb3d1;
+    border-color: var(--border);
+    color: var(--text-label);
 }
 
 .btn-docs:hover {
-    background: rgba(53, 81, 106, 0.12);
+    background: rgba(76, 74, 69, 0.08);
 }
 
 .btn-docs.active {
-    border-color: #8bb3d1;
-    background: rgba(53, 81, 106, 0.22);
-    color: #d4e8f6;
+    border-color: var(--text-head);
+    background: var(--bg-card);
+    color: var(--text-head);
 }

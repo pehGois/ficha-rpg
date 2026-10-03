@@ -13,31 +13,31 @@
 
   <nav>
     <div class="actions-bar">
-      <button class="btn-action btn-docs" id="btnDocs" onclick="toggleDocsView()">Documentação</button>
-      <button class="btn-action btn-save" onclick="saveData()">Salvar Ficha</button>
-      <button class="btn-action btn-download" onclick="downloadJSON()">Exportar JSON</button>
-      <button class="btn-action btn-import" onclick="triggerImport()">Importar JSON (Nova Aba)</button>
+      <button class="btn-action btn-docs" id="btnDocs" onclick="toggleDocsView()">DOCUMENTAÇÃO</button>
+      <button class="btn-action btn-save" onclick="saveData()">SALVAR FICHA</button>
+      <button class="btn-action btn-download" onclick="downloadJSON()">EXPORTAR JSON</button>
+      <button class="btn-action btn-import" onclick="triggerImport()">IMPORTAR JSON (Nova Aba)</button>
       <input type="file" id="importInput" accept=".json,application/json" style="display:none">
-      <button class="btn-action btn-clear" onclick="clearData()">Limpar Tudo</button>
+      <button class="btn-action btn-clear" onclick="clearData()">LIMPAR</button>
     </div>
   </nav>
 
   <main>
     <section id="sheetWorkspace">
-      <header class="page-header">
+      <!-- <header class="page-header">
         <div class="page-title">Ficha de Personagem</div>
-        <div class="page-subtitle">Convergência RPG — 0.3.0</div>
-      </header>
-
+        <div class="page-subtitle">MONTE - RPG</div>
+      </header> -->
+      <br>
       <section class="tabs-wrap">
         <div class="tabs-list" id="tabsList"></div>
-        <button type="button" class="btn-tab-add" onclick="addSheetTab()">+ Nova Ficha</button>
+        <button type="button" class="btn-tab-add" onclick="addSheetTab()">+ NOVA FICHA</button>
       </section>
 
       <div class="sheet-content-layout">
         <aside class="sheet-section-tabs" aria-label="Organização da ficha">
-          <button type="button" class="sheet-section-tab active" data-sheet-pane="book" aria-pressed="true" title="Contadores, relógios, marcas e notas">NOTAS</button>
-          <button type="button" class="sheet-section-tab" data-sheet-pane="sword" aria-pressed="false" title="Condições, armadura e arsenal">COMBATE</button>
+          <button type="button" class="sheet-section-tab active" data-sheet-pane="book" aria-pressed="true" title="Contadores, relógios, marcas e notas">INTERAÇÃO</button>
+          <button type="button" class="sheet-section-tab" data-sheet-pane="sword" aria-pressed="false" title="Condições, armadura e arsenal">AÇÃO</button>
           <button type="button" class="sheet-section-tab" data-sheet-pane="magic" aria-pressed="false" title="Efeitos e habilidades">PODERES</button>
           <button type="button" class="sheet-section-tab" data-sheet-pane="archetype" aria-pressed="false" title="Arquétipo">ARQUÉTIPO</button>
         </aside>
@@ -50,7 +50,7 @@
       <div class="identity-grid">
         <div class="photo-upload" id="photoUpload" title="Clique para adicionar foto">
           <div class="photo-placeholder" id="photoPlaceholder">
-            <span class="icon">☽</span>
+            <span class="icon">📷</span>
             <span>Retrato</span>
           </div>
           <img id="photoImg" style="display:none">
@@ -74,21 +74,14 @@
       <div class="section-title">Atributos</div>
       <div class="attrs-grid">
         <div class="attr-box">
-          <label>Corpo</label><input type="number" id="corpo" placeholder="4" min="4" value="4">
+          <label>FORÇA</label><input type="number" id="FORÇA" placeholder="4" min="4" value="4">
         </div>
         <div class="attr-box">
-          <label>Mente</label><input type="number" id="mente" placeholder="4" min="4" value="4">
+          <label>INTELIGÊNCIA</label><input type="number" id="INTELIGÊNCIA" placeholder="4" min="4" value="4">
         </div>
         <div class="attr-box"><label id="pvLabel">PV [0]</label><input type="number" id="pv" placeholder="0"></div>
         <div class="attr-box"><label id="psLabel">PS [0]</label><input type="number" id="ps" placeholder="0"></div>
       </div>
-    </div>
-
-    <!-- PERÍCIAS -->
-    <div class="card full-width" data-sheet-pane="book">
-      <div class="section-title">Perícias</div>
-      <div id="periciasList"></div>
-      <div style="margin-top:8px;font-size:12px;color:#bdbdbd">Regra: máximo 3 pontos por perícia.</div>
     </div>
 
     <!-- CONTADORES -->
@@ -96,6 +89,12 @@
       <div class="section-title">Contadores</div>
       <div id="countersList"></div>
       <button class="btn-add" onclick="addCounter()">+ Adicionar Contador</button>
+    </div>
+
+    <!-- PERÍCIAS -->
+    <div class="card full-width" data-sheet-pane="sword">
+      <div class="section-title">Perícias</div>
+      <div id="periciasList"></div>
     </div>
 
     
@@ -145,9 +144,9 @@
       <button class="btn-add" type="button" onclick="addInventoryItem()">+ Adicionar Item</button>
     </div>
 
-    <!-- HABILIDADES -->
+    <!-- PODERES -->
     <div class="card full-width" data-sheet-pane="magic">
-      <div class="section-title">Habilidades</div>
+      <div class="section-title">PODERES</div>
       <div id="abilityList"></div>
       <button class="btn-add" onclick="addAbility()">+ Adicionar Habilidade</button>
     </div>
@@ -163,8 +162,8 @@
         <div class="field full">
           <label class="subsection-title">Ideais</label>
           <div class="archetype-ideals-maiores">
-            <label><input type="checkbox" class="archetype-ideal-checkbox" data-archetype-ideal="desafio"> Enfrentei um desafio de forma diferente do usual, mas seguindo os meus ideais.</label>
-            <label><input type="checkbox" class="archetype-ideal-checkbox" data-archetype-ideal="dificuldade"> Deixei meu Antecedente, Personalidade ou minha Falha tornar algo mais difícil para mim.</label>
+            <label><input type="checkbox" class="archetype-ideal-checkbox" data-archetype-ideal="desafio"> Enfrentei um desafio de forma diferente do usual, seguindo os meus ideais.</label>
+            <label><input type="checkbox" class="archetype-ideal-checkbox" data-archetype-ideal="dificuldade"> Deixei meu Antecedente, Personalidade ou Sombras tornarem algo mais difícil para mim.</label>
           </div>
         </div>
 
@@ -175,7 +174,7 @@
         </div>
 
         <div class="field full">
-          <label class="subsection-title">HABILIDADES</label>
+          <label class="subsection-title">PODERES</label>
           <div id="archetypePowersList"></div>
           <button type="button" class="btn-add" id="addArchetypePower">+ Adicionar Poder</button>
         </div>

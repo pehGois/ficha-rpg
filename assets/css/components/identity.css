@@ -1,15 +1,15 @@
 /* IDENTITY */
 .identity-grid {
     display: grid;
-    grid-template-columns: 100px 1fr;
-    gap: 14px;
+    grid-template-columns: 112px 1fr;
+    gap: 16px;
     align-items: start;
 }
 
 .photo-upload {
-    width: 100px;
-    height: 130px;
-    border: 1px solid var(--border);
+    width: 112px;
+    height: 136px;
+    border: 2px solid var(--text-head);
     background: var(--bg-input);
     display: flex;
     flex-direction: column;
@@ -23,7 +23,7 @@
 }
 
 .photo-upload:hover {
-    border-color: var(--border-focus);
+    border-color: var(--accent);
 }
 
 .photo-upload img {
@@ -43,14 +43,14 @@
 
 .photo-placeholder .icon {
     font-size: 22px;
-    color: #444;
+    color: var(--text-dim);
 }
 
 .photo-placeholder span {
     font-family: 'Montserrat', sans-serif;
     font-size: 9px;
     letter-spacing: 1px;
-    color: #444;
+    color: var(--text-dim);
     text-align: center;
 }
 

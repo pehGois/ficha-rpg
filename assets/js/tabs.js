@@ -5,8 +5,8 @@ function createDefaultSheetData() {
     xpTotal: '',
     lema: '',
     sheetPane: 'book',
-    corpo: '4',
-    mente: '4',
+    FORÇA: '4',
+    INTELIGÊNCIA: '4',
     pv: '',
     ps: '',
     armaduraNome: '',
@@ -30,15 +30,15 @@ function createDefaultSheetData() {
     clocks: [],
     counters: [],
     pericias: {
-      Corpo: {
-        Força: '0',
+      FORÇA: {
+        FORÇA: '0',
         Destreza: '0',
         Resistência: '0',
         Discrição: '0',
         Percepção: '0',
         Intimidação: '0'
       },
-      Mente: {
+      INTELIGÊNCIA: {
         Conhecimento: '0',
         Análise: '0',
         Aprendizado: '0',

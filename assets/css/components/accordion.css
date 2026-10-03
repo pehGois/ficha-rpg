@@ -1,10 +1,10 @@
 .accordion-card {
-    border-radius: 6px;
+    border-radius: 0;
     background: var(--bg-input);
     margin-bottom: 10px;
     padding: 0;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.03)
+    border: 1px solid var(--border)
 }
 
 .accordion-header {
@@ -19,7 +19,7 @@
 .accordion-header .accordion-toggle {
     background: transparent;
     border: 0;
-    color: #cfcfcf;
+    color: var(--text-label);
     font-size: 14px;
     width: 28px;
     text-align: center;
@@ -28,7 +28,7 @@
 
 .accordion-body {
     padding: 8px 10px;
-    border-top: 1px solid rgba(255, 255, 255, 0.03)
+    border-top: 1px solid var(--border)
 }
 
 .accordion-card.collapsed .accordion-body {

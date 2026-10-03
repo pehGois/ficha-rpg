@@ -3,9 +3,9 @@ nav {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    padding: 10px 16px;
+    background: rgba(26, 26, 26, 0.94);
+    border-bottom: 2px solid var(--text-head);
+    padding: 8px 16px;
 }
 
 .actions-bar {
@@ -19,10 +19,36 @@ nav {
 
 /* HEADER */
 .page-header {
-    max-width: 900px;
-    margin: 24px auto 20px;
-    padding: 0 16px 14px;
+    max-width: 980px;
+    margin: 20px auto 16px;
+    padding: 14px 20px 12px;
+    border: 2px solid var(--text-head);
+    background: var(--bg-card);
+    box-shadow: 5px 5px 0 var(--paper-shadow);
+    position: relative;
+}
+
+.page-header::before,
+.page-header::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    width: 8px;
+    border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
+}
+
+.page-header::before {
+    left: 6px;
+    border-left: 1px solid var(--border);
+    transform: skewY(-18deg);
+}
+
+.page-header::after {
+    right: 6px;
+    border-right: 1px solid var(--border);
+    transform: skewY(18deg);
 }
 
 .page-title {
@@ -44,8 +70,8 @@ nav {
 /* GRID */
 .sheet-content-layout {
     display: grid;
-    grid-template-columns: 110px 1fr;
-    gap: 12px;
+    grid-template-columns: 104px 1fr;
+    gap: 14px;
     max-width: 980px;
     margin: 0 auto;
     padding: 0 16px;
@@ -55,7 +81,7 @@ nav {
 .sheet-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 10px;
 }
 
 .full-width {
@@ -65,19 +91,44 @@ nav {
 .card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    padding: 16px;
+    padding: 15px 17px;
+    box-shadow: 3px 3px 0 var(--paper-shadow);
+    position: relative;
+}
+
+.card::before,
+.card::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-color: var(--text-head);
+    border-style: solid;
+    pointer-events: none;
+}
+
+.card::before {
+    top: -1px;
+    left: -1px;
+    border-width: 2px 0 0 2px;
+}
+
+.card::after {
+    right: -1px;
+    bottom: -1px;
+    border-width: 0 2px 2px 0;
 }
 
 .section-title {
     font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     font-weight: 600;
-    color: var(--text-label);
+    color: var(--text-head);
     letter-spacing: 3.5px;
     text-transform: uppercase;
-    margin-bottom: 18px;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 8px;
+    margin-bottom: 14px;
+    border-bottom: 2px solid var(--text-head);
+    padding-bottom: 6px;
 }
 
 .row2 {

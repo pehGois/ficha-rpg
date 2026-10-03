@@ -14,8 +14,8 @@ function calcDerived() {
     };
   };
 
-  const pvCalc = 10 + 3 * toInt('corpo', 4);
-  const psCalc = 2 * toInt('mente', 4);
+  const pvCalc = 10 + 3 * toInt('FORÇA', 4);
+  const psCalc = 2 * toInt('INTELIGÊNCIA', 4);
 
   const pvLabel = document.getElementById('pvLabel');
   if (pvLabel) pvLabel.textContent = `PV [${pvCalc}]`;
@@ -26,7 +26,7 @@ function calcDerived() {
 }
 
 function bindDerivedStats() {
-  ['corpo', 'mente'].forEach(id => {
+  ['FORÇA', 'INTELIGÊNCIA'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
       el.addEventListener('input', calcDerived);

@@ -5,7 +5,7 @@ function setupAutoSave() {
     el.addEventListener('change', _save);
     el.addEventListener('input', debounce(_save, 1200));
     // Update Perícias titles when attribute values change
-    if (['corpo', 'mente'].includes(el.id)) {
+    if (['FORÇA', 'INTELIGÊNCIA'].includes(el.id)) {
       if (typeof renderPericias === 'function') {
         el.addEventListener('input', debounce(() => { try { renderPericias(); } catch (e) {} }, 150));
         el.addEventListener('change', () => { try { renderPericias(); } catch (e) {} });
@@ -67,8 +67,8 @@ function collectData() {
     xpTotal: g('xpTotal'),
     lema: g('lema'),
     sheetPane: activeSheetPane,
-    corpo: g('corpo'),
-    mente: g('mente'),
+    FORÇA: g('FORÇA'),
+    INTELIGÊNCIA: g('INTELIGÊNCIA'),
     pv: g('pv'),
     ps: g('ps'),
     armaduraNome: g('armaduraNome'),
@@ -124,7 +124,7 @@ function applyData(d) {
   s('xpAtual', d.xpAtual ?? d.xp);
   s('xpTotal', d.xpTotal);
   s('lema', d.lema);
-  s('corpo', d.corpo); s('mente', d.mente);
+  s('FORÇA', d.FORÇA); s('INTELIGÊNCIA', d.INTELIGÊNCIA);
   s('pv', d.pv); s('ps', d.ps);
 
   s('armaduraNome', d.armaduraNome); s('armaduraValor', d.armaduraValor); s('armaduraProps', d.armaduraProps);
@@ -151,7 +151,7 @@ function applyData(d) {
 
   abilities = (d.abilities ?? []).map(a => ({
     ...a,
-    fundament: a?.fundament ?? a?.fundamento ?? '',
+    atributo: a?.atributo ?? '',
     collapsed: a?.collapsed ?? false
   }));
   effects = (d.effects ?? []).map(ef => ({
@@ -211,15 +211,15 @@ function applyData(d) {
 
   // Perícias: normalize to default structure and coerce values to ints
   const defaultPericias = (typeof createDefaultSheetData === 'function' ? createDefaultSheetData().pericias : {
-    Corpo: {
-      Força: 0,
+    FORÇA: {
+      FORÇA: 0,
       Destreza: 0,
       Resistência: 0,
       Discrição: 0,
       Percepção: 0,
       Intimidação: 0
     },
-    Mente: {
+    INTELIGÊNCIA: {
       Conhecimento: 0,
       Análise: 0,
       Aprendizado: 0,
@@ -371,7 +371,7 @@ function clearData() {
     el.value = '';
   });
 
-  ['corpo', 'mente'].forEach(id => {
+  ['FORÇA', 'INTELIGÊNCIA'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '4';
   });

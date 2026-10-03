@@ -21,8 +21,8 @@
 }
 
 .condition-item.active {
-    background: rgba(192, 57, 43, 0.12);
-    border-color: var(--accent-dim);
+    background: rgba(124, 36, 29, 0.1);
+    border-color: var(--accent);
 }
 
 .condition-main {
@@ -71,7 +71,7 @@
 }
 
 .condition-item.active .cond-name {
-    color: #e07060;
+    color: var(--accent);
 }
 
 .cond-remove {

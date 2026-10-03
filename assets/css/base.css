@@ -26,6 +26,7 @@
     --text-label: #aaa;
     --text-head: #e8e8e8;
     --text-dim: #555;
+    --paper-shadow: rgba(0, 0, 0, 0.22);
 }
 
 * {
@@ -46,7 +47,8 @@ input[type=number] {
 }
 
 body {
-    background: var(--bg);
+    background-color: var(--bg);
+    background-image: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.018) 0, rgba(255, 255, 255, 0.018) 1px, transparent 1px, transparent 4px);
     color: var(--text);
     font-family: 'Montserrat', sans-serif;
     font-size: 15px;
@@ -110,6 +112,7 @@ input[type=text]:focus,
 input[type=number]:focus,
 textarea:focus {
     border-color: var(--border-focus);
+    background: var(--bg-input);
 }
 
 textarea {
