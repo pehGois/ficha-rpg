@@ -330,7 +330,7 @@ function renderAbilities() {
         <div class="field"><label>Alcance</label><input type="text" value="${esc(a.alcance)}" placeholder="Alcance" data-field="alcance"></div>
         <div class="field"><label>Intensidade</label><input type="text" value="${esc(a.intensidade)}" placeholder="Intensidade" data-field="intensidade"></div>
         <div class="field"><label>Área de Efeito</label><input type="text" value="${esc(a.area)}" placeholder="Área de efeito" data-field="area"></div>
-        <div class="field"><label>Transfigurações</label><input type="text" value="${esc(a.transfig)}" placeholder="Modificadores" data-field="transfig"></div>
+        <div class="field"><label>Modificadores</label><input type="text" value="${esc(a.transfig)}" placeholder="Modificadores" data-field="transfig"></div>
         <div class="field full"><label>Descrição</label><textarea placeholder="Como este Poder funciona..." data-field="descricao">${esc(a.descricao)}</textarea></div>
       </div>
       </div>`;

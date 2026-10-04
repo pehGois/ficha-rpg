@@ -1,4 +1,4 @@
-const DOCS_URL = 'https://docs.google.com/document/d/1oZHkT9sgJaXpW4pNNO2tsLp0rCAOQd-7JFTNv0t9AKM/edit?usp=sharing';
+const DOCS_URL = 'https://docs.google.com/document/d/11zkDsloIzp714qQ1lMLK5nEoxWHg_sMEVqiKtc1qJrI/edit?usp=sharing';
 const DOCS_EMBED_URL = DOCS_URL;
 const DOCS_VIEW_KEY = 'ficha_rpg_docs_view';
 
@@ -14,7 +14,7 @@ function setDocsView(isDocs) {
   sheetWorkspace.style.display = isDocs ? 'none' : '';
   docsPanel.style.display = isDocs ? '' : 'none';
   btnDocs.classList.toggle('active', isDocs);
-  btnDocs.textContent = isDocs ? 'Voltar para Ficha' : 'Documentação';
+  btnDocs.textContent = isDocs ? 'VOLTAR PARA A FICHA' : 'LIVRO DO SISTEMA';
 
   if (isDocs) {
     if (!docsFrame.src) {
