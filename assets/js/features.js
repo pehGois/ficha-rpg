@@ -52,29 +52,24 @@ function renderArchetypeSection() {
   if (!document.getElementById('archetypeSection')) return;
 
   const currentArchetype = archetype && typeof archetype === 'object' ? archetype : createDefaultArchetypeData();
+  const currentObjective = typeof currentArchetype?.objetivo === 'string'
+    ? { texto: currentArchetype.objetivo, concluido: false }
+    : currentArchetype?.objetivo;
   archetype = {
-    ...createDefaultArchetypeData(),
-    ...currentArchetype,
-    ideaisMaiores: {
-      desafio: !!currentArchetype?.ideaisMaiores?.desafio,
-      antecedente: !!currentArchetype?.ideaisMaiores?.antecedente,
-      dificuldade: !!currentArchetype?.ideaisMaiores?.dificuldade
+    nome: currentArchetype?.nome ?? '',
+    objetivo: {
+      texto: currentObjective?.texto ?? '',
+      concluido: !!currentObjective?.concluido
     },
-    ideaisMenores: Array.isArray(currentArchetype?.ideaisMenores) ? currentArchetype.ideaisMenores : [],
-    poderes: Array.isArray(currentArchetype?.poderes) ? currentArchetype.poderes : [],
+    talentos: Array.isArray(currentArchetype?.talentos) ? currentArchetype.talentos.map(talent => ({
+      id: talent?.id ?? uid(),
+      nome: talent?.nome ?? '',
+      descricao: talent?.descricao ?? ''
+    })) : [],
     dadiva: {
       nome: currentArchetype?.dadiva?.nome ?? '',
       custoXp: currentArchetype?.dadiva?.custoXp ?? '',
       descricao: currentArchetype?.dadiva?.descricao ?? ''
-    },
-    sombra: {
-      marcacoes: Array.isArray(currentArchetype?.sombra?.marcacoes) && currentArchetype.sombra.marcacoes.length
-        ? currentArchetype.sombra.marcacoes
-        : [
-            { id: `${Date.now()}-0`, label: '1', descricao: '' },
-            { id: `${Date.now()}-1`, label: '2', descricao: '' },
-            { id: `${Date.now()}-2`, label: '3', descricao: '' }
-          ]
     }
   };
 
@@ -83,64 +78,41 @@ function renderArchetypeSection() {
     nameInput.value = archetype.nome ?? '';
   }
 
-  document.querySelectorAll('.archetype-ideal-checkbox').forEach(cb => {
-    const key = cb.dataset.archetypeIdeal;
-    cb.checked = !!archetype.ideaisMaiores?.[key];
-  });
-
-  const minorList = document.getElementById('archetypeMinorIdealsList');
-  if (minorList) {
-    minorList.innerHTML = '';
-    archetype.ideaisMenores.forEach((item, index) => {
-      const row = document.createElement('div');
-      row.className = 'archetype-idea-row';
-      row.innerHTML = `
-        <input type="checkbox" class="archetype-minor-checkbox" ${item.checked ? 'checked' : ''}>
-        <input type="text" value="${esc(item.texto || '')}" placeholder="Ideal menor ${index + 1}" data-field="texto">
-        <button type="button" class="btn-remove" data-action="remove-minor">×</button>`;
-
-      row.querySelector('.archetype-minor-checkbox').addEventListener('change', e => {
-        archetype.ideaisMenores[index].checked = e.target.checked;
-        _save();
-      });
-      row.querySelector('[data-field="texto"]').addEventListener('input', e => {
-        archetype.ideaisMenores[index].texto = e.target.value;
-        _save();
-      });
-      row.querySelector('[data-action="remove-minor"]').addEventListener('click', () => {
-        archetype.ideaisMenores.splice(index, 1);
-        renderArchetypeSection();
-        _save();
-      });
-      minorList.appendChild(row);
-    });
+  const objectiveInput = document.getElementById('archetypeObjetivo');
+  if (objectiveInput && objectiveInput.value !== archetype.objetivo.texto) {
+    objectiveInput.value = archetype.objetivo.texto;
   }
 
-  const powersList = document.getElementById('archetypePowersList');
-  if (powersList) {
-    powersList.innerHTML = '';
-    archetype.poderes.forEach((power, index) => {
+  const objectiveCompletedInput = document.getElementById('archetypeObjetivoConcluido');
+  if (objectiveCompletedInput) {
+    objectiveCompletedInput.checked = archetype.objetivo.concluido;
+  }
+
+  const talentsList = document.getElementById('archetypeTalentsList');
+  if (talentsList) {
+    talentsList.innerHTML = '';
+    archetype.talentos.forEach((talent, index) => {
       const item = document.createElement('div');
       item.className = 'archetype-power-item';
       item.innerHTML = `
-        <div class="field full"><label>Nome</label><input type="text" value="${esc(power.nome || '')}" placeholder="Nome do poder" data-field="nome"></div>
-        <div class="field full"><label>Descrição</label><textarea placeholder="Descrição do poder..." data-field="descricao">${esc(power.descricao || '')}</textarea></div>
-        <button type="button" class="btn-remove" data-action="remove-power">×</button>`;
+        <div class="field full"><label>Nome</label><input type="text" value="${esc(talent.nome)}" placeholder="Nome do talento" data-field="nome"></div>
+        <div class="field full"><label>Descrição</label><textarea placeholder="Descrição do talento..." data-field="descricao">${esc(talent.descricao)}</textarea></div>
+        <button type="button" class="btn-remove" data-action="remove-talent">×</button>`;
 
       item.querySelector('[data-field="nome"]').addEventListener('input', e => {
-        archetype.poderes[index].nome = e.target.value;
+        archetype.talentos[index].nome = e.target.value;
         _save();
       });
       item.querySelector('[data-field="descricao"]').addEventListener('input', e => {
-        archetype.poderes[index].descricao = e.target.value;
+        archetype.talentos[index].descricao = e.target.value;
         _save();
       });
-      item.querySelector('[data-action="remove-power"]').addEventListener('click', () => {
-        archetype.poderes.splice(index, 1);
+      item.querySelector('[data-action="remove-talent"]').addEventListener('click', () => {
+        archetype.talentos.splice(index, 1);
         renderArchetypeSection();
         _save();
       });
-      powersList.appendChild(item);
+      talentsList.appendChild(item);
     });
   }
 
@@ -159,21 +131,6 @@ function renderArchetypeSection() {
     pecDescricao.value = archetype.dadiva?.descricao ?? '';
   }
 
-  const shadowBody = document.getElementById('archetypeShadowBody');
-  if (shadowBody) {
-    shadowBody.innerHTML = '';
-    (archetype.sombra?.marcacoes || []).forEach((marcacao, index) => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${index + 1}</td>
-        <td><input type="text" value="${esc(marcacao.descricao || '')}" placeholder="Descrição" data-index="${index}"></td>`;
-      row.querySelector('input').addEventListener('input', e => {
-        archetype.sombra.marcacoes[index].descricao = e.target.value;
-        _save();
-      });
-      shadowBody.appendChild(row);
-    });
-  }
 }
 
 function attachArchetypeEvents() {
@@ -185,29 +142,26 @@ function attachArchetypeEvents() {
     });
   }
 
-  document.querySelectorAll('.archetype-ideal-checkbox').forEach(cb => {
-    cb.addEventListener('change', e => {
-      const key = e.target.dataset.archetypeIdeal;
-      if (key) {
-        archetype.ideaisMaiores[key] = e.target.checked;
-        _save();
-      }
-    });
-  });
-
-  const addMinorBtn = document.getElementById('addArchetypeMinorIdeal');
-  if (addMinorBtn) {
-    addMinorBtn.addEventListener('click', () => {
-      archetype.ideaisMenores.push({ id: `arq-${Date.now()}-${Math.random().toString(16).slice(2)}`, texto: '', checked: false });
-      renderArchetypeSection();
+  const objectiveInput = document.getElementById('archetypeObjetivo');
+  if (objectiveInput) {
+    objectiveInput.addEventListener('input', e => {
+      archetype.objetivo.texto = e.target.value;
       _save();
     });
   }
 
-  const addPowerBtn = document.getElementById('addArchetypePower');
-  if (addPowerBtn) {
-    addPowerBtn.addEventListener('click', () => {
-      archetype.poderes.push({ id: `arq-${Date.now()}-${Math.random().toString(16).slice(2)}`, nome: '', descricao: '' });
+  const objectiveCompletedInput = document.getElementById('archetypeObjetivoConcluido');
+  if (objectiveCompletedInput) {
+    objectiveCompletedInput.addEventListener('change', e => {
+      archetype.objetivo.concluido = e.target.checked;
+      _save();
+    });
+  }
+
+  const addTalentBtn = document.getElementById('addArchetypeTalent');
+  if (addTalentBtn) {
+    addTalentBtn.addEventListener('click', () => {
+      archetype.talentos.push({ id: uid(), nome: '', descricao: '' });
       renderArchetypeSection();
       _save();
     });
@@ -238,134 +192,9 @@ function attachArchetypeEvents() {
   }
 }
 
-function addTraining(data = {}) {
-  trainings.push({ id: uid(), nome: '', descricao: '', collapsed: false, ...data });
-  renderTrainings();
-  _save();
-}
-
-function renderTrainings() {
-  const list = document.getElementById('trainingList');
-  if (!list) return;
-  list.innerHTML = '';
-
-  trainings.forEach((t, i) => {
-    const d = document.createElement('div');
-    d.className = 'training-card accordion-card' + (t.collapsed ? ' collapsed' : '');
-    const trainingLabel = (t.nome && t.nome.trim()) ? esc(t.nome) : `Treinamento ${i + 1}`;
-    d.innerHTML = `
-      <div class="card-header accordion-header">
-        <button class="accordion-toggle" type="button">${t.collapsed ? '▸' : '▾'}</button>
-        <span class="card-label">${trainingLabel}</span>
-        <button class="btn-remove">× REMOVER</button>
-      </div>
-      <div class="accordion-body">
-        <div class="spell-grid">
-          <div class="field full"><label>Nome</label><input type="text" value="${esc(t.nome)}" placeholder="Nome do treinamento..." data-field="nome"></div>
-          <div class="field full"><label>Descrição</label><textarea placeholder="Detalhes do treinamento..." data-field="descricao" style="min-height:70px;">${esc(t.descricao)}</textarea></div>
-        </div>
-      </div>`;
-
-    const toggleBtn = d.querySelector('.accordion-toggle');
-    toggleBtn.addEventListener('click', () => {
-      trainings[i].collapsed = !trainings[i].collapsed;
-      renderTrainings();
-      _save();
-    });
-
-    d.querySelector('.btn-remove').addEventListener('click', () => {
-      trainings.splice(i, 1);
-      renderTrainings();
-      _save();
-    });
-
-    d.querySelectorAll('[data-field]').forEach(el => {
-      el.addEventListener('input', e => {
-        trainings[i][e.target.dataset.field] = e.target.value;
-        _save();
-      });
-    });
-
-    list.appendChild(d);
-  });
-}
-
-function addAbility(data = {}) {
-  if (!effects.length) {
-    showToast('Cadastre um efeito antes de criar um PODER.');
-    return;
-  }
-
-  abilities.push({ id: uid(), nome: '', atributo: '', efeito: '', custo: '', forma: '', duracao: '', alcance: '', intensidade: '', area: '', transfig: '', descricao: '', collapsed: false, ...data });
-  renderAbilities();
-}
-
-function renderAbilities() {
-  const list = document.getElementById('abilityList');
-  list.innerHTML = '';
-
-  abilities.forEach((a, i) => {
-    const atributo = a.atributo ?? '';
-    const selectedEffect = effects.find(ef => ef.id === (a.efeito ?? '') || ef.nome === (a.efeito ?? ''));
-    const selectedEffectValue = selectedEffect ? selectedEffect.id : (a.efeito ?? '');
-    const d = document.createElement('div');
-    d.className = 'ability-card accordion-card' + (a.collapsed ? ' collapsed' : '');
-    const abilityLabel = (a.nome && a.nome.trim()) ? esc(a.nome) : `Poder ${i + 1}`;
-    d.innerHTML = `
-      <div class="card-header accordion-header"><button class="accordion-toggle" type="button">${a.collapsed ? '▸' : '▾'}</button><span class="card-label">${abilityLabel}</span><button class="btn-remove">× REMOVER</button></div>
-      <div class="accordion-body">
-      <div class="spell-grid">
-        <div class="field"><label>Nome</label><input type="text" value="${esc(a.nome)}" placeholder="Nome do Poder" data-field="nome"></div>
-        <div class="field"><label>Atributo</label><select placeholder="Nome do Atributo" data-field="atributo">
-          <option value="">Selecione...</option>
-          <option value="FORÇA"${atributo === 'FORÇA' ? ' selected' : ''}>FORÇA</option>
-          <option value="INTELIGÊNCIA"${atributo === 'INTELIGÊNCIA' ? ' selected' : ''}>INTELIGÊNCIA</option>
-        </select></div>
-        <div class="field"><label>Efeito</label><select data-field="efeito">
-          <option value="">Selecione...</option>
-          ${effects.map(ef => `<option value="${esc(ef.id)}"${selectedEffectValue === ef.id ? ' selected' : ''}>${esc(ef.nome || 'Sem nome')}</option>`).join('')}
-        </select></div>
-        <div class="field"><label>Custo</label><input type="text" value="${esc(a.custo)}" placeholder="X PS" data-field="custo"></div>
-        <div class="field"><label>Forma</label><input type="text" value="${esc(a.forma)}" placeholder="Gestual Duas Mãos, Ritual ..." data-field="forma"></div>
-        <div class="field"><label>Duração</label><input type="text" value="${esc(a.duracao)}" placeholder="Duração" data-field="duracao"></div>
-        <div class="field"><label>Alcance</label><input type="text" value="${esc(a.alcance)}" placeholder="Alcance" data-field="alcance"></div>
-        <div class="field"><label>Intensidade</label><input type="text" value="${esc(a.intensidade)}" placeholder="Intensidade" data-field="intensidade"></div>
-        <div class="field"><label>Área de Efeito</label><input type="text" value="${esc(a.area)}" placeholder="Área de efeito" data-field="area"></div>
-        <div class="field"><label>Modificadores</label><input type="text" value="${esc(a.transfig)}" placeholder="Modificadores" data-field="transfig"></div>
-        <div class="field full"><label>Descrição</label><textarea placeholder="Como este Poder funciona..." data-field="descricao">${esc(a.descricao)}</textarea></div>
-      </div>
-      </div>`;
-
-    const toggleBtn = d.querySelector('.accordion-toggle');
-    toggleBtn.addEventListener('click', () => {
-      abilities[i].collapsed = !abilities[i].collapsed;
-      renderAbilities();
-      _save();
-    });
-
-    d.querySelector('.btn-remove').addEventListener('click', () => {
-      abilities.splice(i, 1);
-      renderAbilities();
-      _save();
-    });
-
-    d.querySelectorAll('[data-field]').forEach(el => {
-      const syncField = e => {
-        abilities[i][e.target.dataset.field] = e.target.value;
-        _save();
-      };
-      el.addEventListener('input', syncField);
-      el.addEventListener('change', syncField);
-    });
-
-    list.appendChild(d);
-  });
-}
-
 function addEffect(data = {}) {
   effects.push({ id: uid(), nome: '', custo: '', intensidade: '', area: '', duracao: '', alcance: '', transfig: '', descricao: '', collapsed: false, ...data });
   renderEffects();
-  if (typeof renderAbilities === 'function') renderAbilities();
 }
 
 function renderEffects() {
@@ -395,7 +224,6 @@ function renderEffects() {
     d.querySelector('.btn-remove').addEventListener('click', () => {
       effects.splice(i, 1);
       renderEffects();
-      if (typeof renderAbilities === 'function') renderAbilities();
       _save();
     });
 
@@ -641,63 +469,6 @@ function renderCounters() {
       });
       el.addEventListener('change', e => {
         counters[i][e.target.dataset.field] = e.target.value;
-        _save();
-      });
-    });
-
-    list.appendChild(d);
-  });
-}
-
-function addInventoryItem(data = {}) {
-  const source = (data && typeof data === 'object' && !Array.isArray(data)) ? data : {};
-  if (!Array.isArray(inventory)) inventory = [];
-  inventory.push({ id: uid(), nome: '', descricao: '', collapsed: false, ...source });
-  renderInventory();
-  _save();
-}
-
-function renderInventory() {
-  const list = document.getElementById('inventoryList');
-  if (!list) return;
-
-  list.innerHTML = '';
-
-  if (!Array.isArray(inventory)) inventory = [];
-
-  inventory.forEach((item, i) => {
-    const d = document.createElement('div');
-    d.className = 'accordion-card' + (item.collapsed ? ' collapsed' : '');
-
-    const itemLabel = (item.nome && item.nome.trim()) ? esc(item.nome) : `Item ${i + 1}`;
-    d.innerHTML = `
-      <div class="card-header accordion-header">
-        <button class="accordion-toggle" type="button">${item.collapsed ? '▸' : '▾'}</button>
-        <span class="card-label">${itemLabel}</span>
-        <button class="btn-remove">× REMOVER</button>
-      </div>
-      <div class="accordion-body">
-        <div class="spell-grid">
-          <div class="field full"><label>Nome</label><input type="text" value="${esc(item.nome)}" placeholder="Nome do item" data-field="nome"></div>
-          <div class="field full"><label>Descrição</label><textarea placeholder="Descrição do item..." data-field="descricao" style="min-height:70px;">${esc(item.descricao)}</textarea></div>
-        </div>
-      </div>`;
-
-    d.querySelector('.accordion-toggle').addEventListener('click', () => {
-      inventory[i].collapsed = !inventory[i].collapsed;
-      renderInventory();
-      _save();
-    });
-
-    d.querySelector('.btn-remove').addEventListener('click', () => {
-      inventory.splice(i, 1);
-      renderInventory();
-      _save();
-    });
-
-    d.querySelectorAll('[data-field]').forEach(el => {
-      el.addEventListener('input', e => {
-        inventory[i][e.target.dataset.field] = e.target.value;
         _save();
       });
     });
@@ -1053,19 +824,15 @@ function renderWeapons() {
     const grid = document.createElement('div');
     grid.className = 'pericias-grid';
 
-    Object.keys(pericias || {}).forEach(group => {
-      const col = document.createElement('div');
-      col.className = 'pericias-group';
+    const col = document.createElement('div');
+    col.className = 'pericias-group';
 
-      const title = document.createElement('div');
-      title.className = 'pericias-group-title';
-      // show attribute die next to group name, e.g. "FORÇA [1d4]"
-      const attrId = group === 'FORÇA' ? 'FORÇA' : group === 'INTELIGÊNCIA' ? 'INTELIGÊNCIA' : null;
-      const attrVal = attrId ? (document.getElementById(attrId)?.value || '') : '';
-      title.textContent = attrVal ? `${group} [1d${attrVal}]` : group;
-      col.appendChild(title);
+    const title = document.createElement('div');
+    title.className = 'pericias-group-title';
+    title.textContent = 'PERÍCIAS';
+    col.appendChild(title);
 
-      Object.keys(pericias[group] || {}).forEach(skill => {
+    Object.keys(pericias || {}).forEach(skill => {
         const row = document.createElement('div');
         row.className = 'pericia-item';
 
@@ -1076,21 +843,19 @@ function renderWeapons() {
         inp.type = 'number';
         inp.min = 0;
         inp.max = 3;
-        inp.value = pericias[group][skill] ?? 0;
+        inp.value = pericias[skill] ?? 0;
         inp.addEventListener('input', e => {
           const v = Math.min(3, Math.max(0, parseInt(e.target.value, 10) || 0));
           e.target.value = v;
-          pericias[group][skill] = v;
+          pericias[skill] = v;
           _save();
         });
 
         row.appendChild(lbl);
         row.appendChild(inp);
         col.appendChild(row);
-      });
-
-      grid.appendChild(col);
     });
+    grid.appendChild(col);
 
     container.appendChild(grid);
   }

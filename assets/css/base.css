@@ -48,12 +48,33 @@ input[type=number] {
 
 body {
     background-color: var(--bg);
-    background-image: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.018) 0, rgba(255, 255, 255, 0.018) 1px, transparent 1px, transparent 4px);
+    background-image:
+        url('https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/27f60d30942431.563a0d237e592.png');
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
     color: var(--text);
     font-family: 'Montserrat', sans-serif;
     font-size: 15px;
     line-height: 1.5;
     padding-bottom: 48px;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.018) 0, rgba(255, 255, 255, 0.018) 1px, transparent 1px, transparent 4px),
+        linear-gradient(rgba(18, 18, 18, 0.58), rgba(18, 18, 18, 0.72));
+    pointer-events: none;
+    z-index: 0;
+}
+
+body > * {
+    position: relative;
+    z-index: 1;
 }
 
 ::-webkit-scrollbar {

@@ -24,10 +24,6 @@
 
   <main>
     <section id="sheetWorkspace">
-      <!-- <header class="page-header">
-        <div class="page-title">Ficha de Personagem</div>
-        <div class="page-subtitle">MONTE - RPG</div>
-      </header> -->
       <br>
       <section class="tabs-wrap">
         <div class="tabs-list" id="tabsList"></div>
@@ -38,8 +34,7 @@
         <aside class="sheet-section-tabs" aria-label="Organização da ficha">
           <button type="button" class="sheet-section-tab active" data-sheet-pane="book" aria-pressed="true" title="Contadores, relógios, marcas e notas">INTERAÇÃO</button>
           <button type="button" class="sheet-section-tab" data-sheet-pane="sword" aria-pressed="false" title="Condições, armadura e arsenal">AÇÃO</button>
-          <button type="button" class="sheet-section-tab" data-sheet-pane="magic" aria-pressed="false" title="Efeitos e habilidades">PODERES</button>
-          <button type="button" class="sheet-section-tab" data-sheet-pane="repertoire" aria-pressed="false" title="Treinamentos de Força e Inteligência">REPERTÓRIO</button>
+          <button type="button" class="sheet-section-tab" data-sheet-pane="repertoire" aria-pressed="false" title="Treinamentos e efeitos aprendidos">REPERTÓRIO</button>
           <button type="button" class="sheet-section-tab" data-sheet-pane="archetype" aria-pressed="false" title="Arquétipo">ARQUÉTIPO</button>
         </aside>
 
@@ -92,8 +87,19 @@
       <button class="btn-add" onclick="addCounter()">+ Adicionar Contador</button>
     </div>
 
-    <!-- PERÍCIAS -->
+    <!-- ARMADURA -->
     <div class="card full-width" data-sheet-pane="sword">
+      <div class="section-title">Armadura</div>
+      <div class="row2">
+        <div class="field"><label>Nome</label><input type="text" id="armaduraNome" placeholder="Nome da armadura"></div>
+        <div class="field"><label>Dado de Armadura</label><input type="text" id="armaduraValor" placeholder="1d4"></div>
+      </div>
+      <div class="field"><label>Efeito</label><textarea id="armaduraProps"
+          placeholder="Efeito da armadura..." style="min-height:72px;"></textarea></div>
+    </div>
+
+    <!-- PERÍCIAS -->
+    <div class="card" data-sheet-pane="sword">
       <div class="section-title">Perícias</div>
       <div id="periciasList"></div>
     </div>
@@ -113,19 +119,8 @@
       <button class="btn-add" type="button" onclick="addWeapon()">+ Adicionar Arma</button>
     </div>
 
-    <!-- ARMADURA -->
-    <div class="card full-width" data-sheet-pane="sword">
-      <div class="section-title">Armadura</div>
-      <div class="row2">
-        <div class="field"><label>Nome</label><input type="text" id="armaduraNome" placeholder="Nome da armadura"></div>
-        <div class="field"><label>Dado de Armadura</label><input type="text" id="armaduraValor" placeholder="1d4"></div>
-      </div>
-      <div class="field"><label>Efeito</label><textarea id="armaduraProps"
-          placeholder="Efeito da armadura..." style="min-height:72px;"></textarea></div>
-    </div>
-
     <!-- EFEITOS -->
-    <div class="card full-width" data-sheet-pane="magic">
+    <div class="card full-width" data-sheet-pane="repertoire">
       <div class="section-title">Efeitos Aprendidos</div>
       <div id="effectsList"></div>
       <button class="btn-add" onclick="addEffect()">+ Adicionar Efeito</button>
@@ -166,13 +161,6 @@
       </div>
     </div>
 
-    <!-- PODERES -->
-    <div class="card full-width" data-sheet-pane="magic">
-      <div class="section-title">PODERES</div>
-      <div id="abilityList"></div>
-      <button class="btn-add" onclick="addAbility()">+ Adicionar Habilidade</button>
-    </div>
-
     <!-- ARQUÉTIPO -->
     <div class="card full-width" id="archetypeSection" data-sheet-pane="archetype">
       <div class="section-title">Arquétipo</div>
@@ -180,23 +168,11 @@
         <div class="field full"><label>Nome do Arquétipo</label><input type="text" id="archetypeNome" placeholder="Nome do arquétipo"></div>
 
         <div class="field full">
-          <label class="subsection-title">Ideais</label>
-          <div class="archetype-ideals-maiores">
-            <label><input type="checkbox" class="archetype-ideal-checkbox" data-archetype-ideal="desafio"> Enfrentei um desafio de forma diferente do usual, seguindo os meus ideais.</label>
-            <label><input type="checkbox" class="archetype-ideal-checkbox" data-archetype-ideal="dificuldade"> Deixei meu Antecedente, Personalidade ou Sombras tornarem algo mais difícil para mim.</label>
+          <label class="subsection-title">OBJETIVO</label>
+          <div class="archetype-objective">
+            <input type="checkbox" id="archetypeObjetivoConcluido" aria-label="Marcar objetivo como concluído">
+            <input type="text" id="archetypeObjetivo" placeholder="Objetivo do arquétipo...">
           </div>
-        </div>
-
-        <div class="field full">
-          <label class="subsection-title">OBJETIVOS</label>
-          <div id="archetypeMinorIdealsList"></div>
-          <button type="button" class="btn-add" id="addArchetypeMinorIdeal">+ Adicionar Ideal Menor</button>
-        </div>
-
-        <div class="field full">
-          <label class="subsection-title">PODERES</label>
-          <div id="archetypePowersList"></div>
-          <button type="button" class="btn-add" id="addArchetypePower">+ Adicionar Poder</button>
         </div>
 
         <div class="field full">
@@ -209,14 +185,11 @@
         </div>
 
         <div class="field full">
-          <label class="subsection-title">TRAUMAS</label>
-          <table class="archetype-shadow-table">
-            <thead>
-              <tr><th>Número de Traumas</th><th>Descrição</th></tr>
-            </thead>
-            <tbody id="archetypeShadowBody"></tbody>
-          </table>
+          <label class="subsection-title">TALENTOS</label>
+          <div id="archetypeTalentsList"></div>
+          <button type="button" class="btn-add" id="addArchetypeTalent">+ Adicionar Talento</button>
         </div>
+
       </div>
     </div>
 

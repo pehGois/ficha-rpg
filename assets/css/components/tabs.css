@@ -71,9 +71,9 @@
 }
 
 .btn-tab-add {
-    background: none;
-    border: 1px dashed var(--border);
-    color: var(--text-dim);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-label);
     font-family: 'Montserrat', sans-serif;
     font-size: 10px;
     letter-spacing: 1.5px;
@@ -84,6 +84,7 @@
 }
 
 .btn-tab-add:hover {
-    border-color: var(--border-focus);
-    color: var(--text-label);
+    border-color: var(--text-head);
+    background: var(--bg-input);
+    color: var(--text-head);
 }

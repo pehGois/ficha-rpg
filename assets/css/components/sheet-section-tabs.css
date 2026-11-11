@@ -26,7 +26,7 @@
 
 .sheet-section-tab:hover {
     border-color: var(--border-focus);
-    color: var(--text-label);
+    /* color: var(--text-label); */
     transform: translateX(1px);
 }
 

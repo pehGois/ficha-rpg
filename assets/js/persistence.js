@@ -22,44 +22,16 @@ function setupAutoSave() {
 function normalizeImportedData(d) {
   if (!d || typeof d !== 'object') return {};
 
-  const toArray = v => (Array.isArray(v) ? v : []);
-  const toObject = v => (v && typeof v === 'object' && !Array.isArray(v) ? v : {});
-
   return {
     ...d,
-    archetype: {
-      ...createDefaultArchetypeData(),
-      ...(d.archetype || {}),
-      ideaisMaiores: {
-        desafio: !!(d.archetype?.ideaisMaiores?.desafio),
-        antecedente: !!(d.archetype?.ideaisMaiores?.antecedente),
-        dificuldade: !!(d.archetype?.ideaisMaiores?.dificuldade)
-      },
-      ideaisMenores: Array.isArray(d.archetype?.ideaisMenores) ? d.archetype.ideaisMenores : [],
-      poderes: Array.isArray(d.archetype?.poderes) ? d.archetype.poderes : [],
-      dadiva: {
-        nome: d.archetype?.dadiva?.nome ?? '',
-        custoXp: d.archetype?.dadiva?.custoXp ?? '',
-        descricao: d.archetype?.dadiva?.descricao ?? ''
-      },
-      sombra: {
-        marcacoes: Array.isArray(d.archetype?.sombra?.marcacoes) && d.archetype.sombra.marcacoes.length
-          ? d.archetype.sombra.marcacoes
-          : createDefaultArchetypeData().sombra.marcacoes
-      }
-    },
-    pericias: toObject(d.pericias),
-    weapons: toArray(d.weapons),
-    inventory: toArray(d.inventory),
-    trainings: toArray(d.trainings),
-    abilities: toArray(d.abilities),
-    effects: toArray(d.effects),
-    clocks: toArray(d.clocks),
-    counters: toArray(d.counters),
-    repertoires: {
-      FORÇA: toArray(d.repertoires?.FORÇA),
-      INTELIGÊNCIA: toArray(d.repertoires?.INTELIGÊNCIA)
-    }
+    archetype: d.archetype || createDefaultArchetypeData(),
+    pericias: d.pericias || createDefaultSheetData().pericias,
+    weapons: Array.isArray(d.weapons) ? d.weapons : [],
+    effects: Array.isArray(d.effects) ? d.effects : [],
+    clocks: Array.isArray(d.clocks) ? d.clocks : [],
+    counters: Array.isArray(d.counters) ? d.counters : [],
+    gridItems: Array.isArray(d.gridItems) ? d.gridItems : [],
+    repertoires: d.repertoires || { FORÇA: [], INTELIGÊNCIA: [] }
   };
 }
 
@@ -85,12 +57,6 @@ function collectData() {
       props: w.props ?? '',
       collapsed: w.collapsed ?? false
     })) : [],
-    inventory: Array.isArray(gridItems) ? gridItems.map(item => ({
-      id: item.id ?? uid(),
-      nome: item.nome ?? '',
-      descricao: item.descricao ?? '',
-      collapsed: item.collapsed ?? false
-    })) : [],
     gridItems: Array.isArray(gridItems) ? gridItems.map(item => ({
       id: item.id ?? uid(),
       type: 'item',
@@ -113,23 +79,11 @@ function collectData() {
         span: Math.min(4, Math.max(1, parseInt(training.span, 10) || 1))
       })) : []
     },
-    arma1: {
-      nome: weapons?.[0]?.nome ?? '',
-      bonus: weapons?.[0]?.bonus ?? '',
-      props: weapons?.[0]?.props ?? ''
-    },
-    arma2: {
-      nome: weapons?.[1]?.nome ?? '',
-      bonus: weapons?.[1]?.bonus ?? '',
-      props: weapons?.[1]?.props ?? ''
-    },
     markXp: g('mark-xp'),
     falhasFilled,
     marcaDesc: g('marcaDesc'),
     falhasTexto: g('falhasTexto'),
     archetype,
-    trainings,
-    abilities,
     effects,
     clocks,
     counters,
@@ -147,7 +101,7 @@ function applyData(d) {
   };
 
   s('nome', d.nome);
-  s('xpAtual', d.xpAtual ?? d.xp);
+  s('xpAtual', d.xpAtual);
   s('xpTotal', d.xpTotal);
   s('lema', d.lema);
   s('FORÇA', d.FORÇA); s('INTELIGÊNCIA', d.INTELIGÊNCIA);
@@ -169,17 +123,6 @@ function applyData(d) {
   archetype = normalizeImportedData(d).archetype || createDefaultArchetypeData();
   renderArchetypeSection();
 
-  trainings = (d.trainings ?? []).map(t => {
-    if (typeof t === 'string') return { id: uid(), nome: t, descricao: '', collapsed: false };
-    if (t.value !== undefined) return { id: uid(), nome: t.value, descricao: '', collapsed: false };
-    return { ...t, collapsed: t.collapsed ?? false };
-  });
-
-  abilities = (d.abilities ?? []).map(a => ({
-    ...a,
-    atributo: a?.atributo ?? '',
-    collapsed: a?.collapsed ?? false
-  }));
   effects = (d.effects ?? []).map(ef => ({
     id: ef?.id ?? uid(),
     nome: ef?.nome ?? '',
@@ -205,15 +148,7 @@ function applyData(d) {
     collapsed: c.collapsed ?? false
   }));
 
-  inventory = (d.inventory ?? []).map(item => ({
-    id: item.id ?? uid(),
-    nome: item.nome ?? '',
-    descricao: item.descricao ?? '',
-    collapsed: item.collapsed ?? false
-  }));
-
-  const savedGridItems = Array.isArray(d.gridItems) ? d.gridItems : [];
-  gridItems = (savedGridItems.length ? savedGridItems : (d.inventory ?? [])).map(item => ({
+  gridItems = d.gridItems.map(item => ({
     id: item.id ?? uid(),
     type: 'item',
     nome: item.nome ?? '',
@@ -237,15 +172,7 @@ function applyData(d) {
     }))
   };
 
-  const legacyWeapons = [];
-  if (d.arma1 && (d.arma1.nome || d.arma1.bonus || d.arma1.props)) {
-    legacyWeapons.push({ id: uid(), nome: d.arma1.nome ?? '', bonus: d.arma1.bonus ?? '', props: d.arma1.props ?? '', collapsed: false });
-  }
-  if (d.arma2 && (d.arma2.nome || d.arma2.bonus || d.arma2.props)) {
-    legacyWeapons.push({ id: uid(), nome: d.arma2.nome ?? '', bonus: d.arma2.bonus ?? '', props: d.arma2.props ?? '', collapsed: false });
-  }
-
-  weapons = (d.weapons ?? legacyWeapons).map(w => ({
+  weapons = d.weapons.map(w => ({
     id: w.id ?? uid(),
     nome: w.nome ?? '',
     bonus: w.bonus ?? '',
@@ -253,51 +180,43 @@ function applyData(d) {
     collapsed: w.collapsed ?? false
   }));
 
-  if (!weapons.length) {
-    weapons = [
-      { id: uid(), nome: '', bonus: '', props: '', collapsed: false },
-      { id: uid(), nome: '', bonus: '', props: '', collapsed: false }
-    ];
-  }
+  if (!weapons.length) weapons = [{ id: uid(), nome: '', bonus: '', props: '', collapsed: false }];
 
   // Perícias: normalize to default structure and coerce values to ints
-  const defaultPericias = (typeof createDefaultSheetData === 'function' ? createDefaultSheetData().pericias : {
-    FORÇA: {
-      FORÇA: 0,
-      Destreza: 0,
-      Resistência: 0,
-      Discrição: 0,
-      Percepção: 0,
-      Intimidação: 0
-    },
-    INTELIGÊNCIA: {
-      Conhecimento: 0,
-      Análise: 0,
-      Aprendizado: 0,
-      Criação: 0,
-      Lábia: 0,
-      Sobrevivência: 0,
-      Empatia: 0
-    }
-  });
+  const defaultPericias = {
+    FORÇA: 0,
+    Destreza: 0,
+    Resistência: 0,
+    Discrição: 0,
+    Percepção: 0,
+    Intimidação: 0,
+    Conhecimento: 0,
+    Análise: 0,
+    Aprendizado: 0,
+    Criação: 0,
+    Lábia: 0,
+    Sobrevivência: 0,
+    Empatia: 0
+  };
 
   const importedPericias = d.pericias && typeof d.pericias === 'object' ? d.pericias : {};
-  pericias = JSON.parse(JSON.stringify(defaultPericias));
-  Object.keys(defaultPericias).forEach(group => {
-    Object.keys(defaultPericias[group]).forEach(skill => {
-      let v = importedPericias?.[group]?.[skill];
-      if (v === undefined) v = importedPericias?.[skill];
-      pericias[group][skill] = Math.min(3, Math.max(0, parseInt(v, 10) || 0));
-    });
-  });
+  const flatPericias = {
+    ...(importedPericias.FORÇA && typeof importedPericias.FORÇA === 'object' ? importedPericias.FORÇA : {}),
+    ...(importedPericias.INTELIGÊNCIA && typeof importedPericias.INTELIGÊNCIA === 'object' ? importedPericias.INTELIGÊNCIA : {}),
+    ...Object.keys(importedPericias).reduce((flat, key) => {
+      if (!['FORÇA', 'INTELIGÊNCIA'].includes(key)) flat[key] = importedPericias[key];
+      return flat;
+    }, {})
+  };
+  pericias = Object.keys(defaultPericias).reduce((normalized, skill) => {
+    normalized[skill] = Math.min(3, Math.max(0, parseInt(flatPericias[skill], 10) || 0));
+    return normalized;
+  }, {});
 
   renderArchetypeSection();
-  renderTrainings();
-  renderAbilities();
   renderEffects();
   renderClocks();
   renderCounters();
-  renderInventory();
   renderGridItems();
   renderRepertoires();
   renderWeapons();
@@ -320,7 +239,6 @@ function _save() {
     persistSheets();
     return;
   }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(collectData()));
 }
 
 function saveData() {
@@ -337,14 +255,8 @@ function loadData() {
     }
   }
 
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return;
-
-  try {
-    applyData(JSON.parse(raw));
-  } catch (e) {
-    console.error('Erro ao carregar ficha:', e);
-  }
+  const active = sheets.find(sheet => sheet.id === activeSheetId);
+  if (active?.data) applyData(active.data);
 }
 
 function downloadJSON() {
@@ -390,7 +302,6 @@ function setupImportInput() {
           showToast('Ficha importada em nova aba');
         } else {
           applyData(d);
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
           showToast('Ficha importada');
         }
       } catch (err) {
@@ -405,12 +316,11 @@ function setupImportInput() {
 function clearData() {
   if (!confirm('Apagar toda a ficha? Esta ação não pode ser desfeita.')) return;
 
-  trainings = [];
-  abilities = [];
   effects = [];
   clocks = [];
   counters = [];
-  inventory = [];
+  gridItems = [];
+  repertoires = { FORÇA: [], INTELIGÊNCIA: [] };
   weapons = [
     { id: uid(), nome: '', bonus: '', props: '', collapsed: false },
     { id: uid(), nome: '', bonus: '', props: '', collapsed: false }
@@ -432,12 +342,11 @@ function clearData() {
   calcDerived();
   renderFalhasMarks();
   renderArchetypeSection();
-  renderTrainings();
-  renderAbilities();
   renderEffects();
   renderClocks();
   renderCounters();
-  renderInventory();
+  renderGridItems();
+  renderRepertoires();
   renderWeapons();
   clearPhoto();
 

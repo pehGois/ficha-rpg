@@ -1,5 +1,4 @@
 /* DYNAMIC CARDS */
-.training-card,
 .ability-card,
 .effect-item {
     border: 1px solid var(--border);
@@ -39,6 +38,19 @@
 .archetype-section-grid {
     display: grid;
     gap: 12px;
+}
+
+.archetype-objective {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px;
+    align-items: center;
+}
+
+.archetype-objective input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent);
 }
 
 .archetype-ideals-maiores {

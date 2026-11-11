@@ -16,42 +16,33 @@ function createDefaultSheetData() {
       { id: uid(), nome: '', bonus: '', props: '', collapsed: false },
       { id: uid(), nome: '', bonus: '', props: '', collapsed: false }
     ],
-    inventory: [],
     repertoires: {
       FORÇA: [],
       INTELIGÊNCIA: []
     },
     gridItems: [],
-    arma1: { nome: '', bonus: '', props: '' },
-    arma2: { nome: '', bonus: '', props: '' },
     markXp: '',
     falhasFilled: 0,
     marcaDesc: '',
     falhasTexto: '',
     archetype: createDefaultArchetypeData(),
-    trainings: [],
-    abilities: [],
     effects: [],
     clocks: [],
     counters: [],
     pericias: {
-      FORÇA: {
-        FORÇA: '0',
-        Destreza: '0',
-        Resistência: '0',
-        Discrição: '0',
-        Percepção: '0',
-        Intimidação: '0'
-      },
-      INTELIGÊNCIA: {
-        Conhecimento: '0',
-        Análise: '0',
-        Aprendizado: '0',
-        Criação: '0',
-        Lábia: '0',
-        Sobrevivência: '0',
-        Empatia: '0'
-      }
+      FORÇA: '0',
+      Destreza: '0',
+      Resistência: '0',
+      Discrição: '0',
+      Percepção: '0',
+      Intimidação: '0',
+      Conhecimento: '0',
+      Análise: '0',
+      Aprendizado: '0',
+      Criação: '0',
+      Lábia: '0',
+      Sobrevivência: '0',
+      Empatia: '0'
     },
     antecedente: '',
     notas: '',
@@ -71,12 +62,7 @@ function persistSheets() {
     sheets
   };
 
-  // Persist full tabs payload under the tabs key
   localStorage.setItem(STORAGE_TABS_KEY, JSON.stringify(payload));
-
-  // For compatibility and to ensure all open sheets are saved,
-  // also store the full payload under the legacy STORAGE_KEY.
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
 }
 
 function updateActiveSheetFromForm() {
@@ -197,33 +183,9 @@ function initTabsSystem() {
   }
 
   if (!sheets.length) {
-    const oldRaw = localStorage.getItem(STORAGE_KEY);
-    let initialData = createDefaultSheetData();
-
-    if (oldRaw) {
-      try {
-        const parsed = JSON.parse(oldRaw);
-        // If the legacy STORAGE_KEY contains a full payload with sheets, restore from it
-        if (parsed && Array.isArray(parsed.sheets)) {
-          sheets = parsed.sheets.map(sheet => ({ id: sheet.id, data: sheet.data || createDefaultSheetData() }));
-          activeSheetId = parsed.activeSheetId || (sheets[0] && sheets[0].id) || null;
-        } else {
-          initialData = parsed;
-          const firstSheet = { id: uid(), data: initialData };
-          sheets = [firstSheet];
-          activeSheetId = firstSheet.id;
-        }
-      } catch {
-        const firstSheet = { id: uid(), data: createDefaultSheetData() };
-        sheets = [firstSheet];
-        activeSheetId = firstSheet.id;
-      }
-    } else {
-      const firstSheet = { id: uid(), data: createDefaultSheetData() };
-      sheets = [firstSheet];
-      activeSheetId = firstSheet.id;
-    }
-
+    const firstSheet = { id: uid(), data: createDefaultSheetData() };
+    sheets = [firstSheet];
+    activeSheetId = firstSheet.id;
     persistSheets();
   }
 
