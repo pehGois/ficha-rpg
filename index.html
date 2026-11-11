@@ -39,6 +39,7 @@
           <button type="button" class="sheet-section-tab active" data-sheet-pane="book" aria-pressed="true" title="Contadores, relógios, marcas e notas">INTERAÇÃO</button>
           <button type="button" class="sheet-section-tab" data-sheet-pane="sword" aria-pressed="false" title="Condições, armadura e arsenal">AÇÃO</button>
           <button type="button" class="sheet-section-tab" data-sheet-pane="magic" aria-pressed="false" title="Efeitos e habilidades">PODERES</button>
+          <button type="button" class="sheet-section-tab" data-sheet-pane="repertoire" aria-pressed="false" title="Treinamentos de Força e Inteligência">REPERTÓRIO</button>
           <button type="button" class="sheet-section-tab" data-sheet-pane="archetype" aria-pressed="false" title="Arquétipo">ARQUÉTIPO</button>
         </aside>
 
@@ -112,13 +113,6 @@
       <button class="btn-add" type="button" onclick="addWeapon()">+ Adicionar Arma</button>
     </div>
 
-    <!-- TREINAMENTOS -->
-    <div class="card" data-sheet-pane="sword">
-      <div class="section-title">Treinamentos</div>
-      <div id="trainingList"></div>
-      <button class="btn-add" onclick="addTraining()">+ Adicionar Treinamento</button>
-    </div>
-
     <!-- ARMADURA -->
     <div class="card full-width" data-sheet-pane="sword">
       <div class="section-title">Armadura</div>
@@ -138,10 +132,38 @@
     </div>
 
     <!-- INVENTÁRIO -->
-    <div class="card full-width" data-sheet-pane="book">
+    <div class="card full-width" data-sheet-pane="book" id="gridItemsSection">
       <div class="section-title">Inventário</div>
-      <div id="inventoryList"></div>
-      <button class="btn-add" type="button" onclick="addInventoryItem()">+ Adicionar Item</button>
+      <p class="grid-help">Arraste os itens para reorganizar. O inventário possui 8 espaços e cada item pode ocupar de 1 a 4 deles.</p>
+      <div class="grid-item-toolbar">
+        <button class="btn-add" type="button" onclick="addGridItem('item')">+ Adicionar Item</button>
+      </div>
+      <div class="items-grid" id="itemsGrid" aria-live="polite"></div>
+      <p class="grid-empty" id="itemsGridEmpty">Nenhum item no inventário.</p>
+    </div>
+
+    <!-- REPERTÓRIO -->
+    <div class="card full-width" data-sheet-pane="repertoire" id="repertoireSection">
+      <div class="section-title">Repertório</div>
+      <p class="grid-help">Cada repertório possui uma quantidade de slots igual ao atributo dividido por 2.</p>
+      <div class="repertoire-layout">
+        <section class="repertoire-block">
+          <div class="repertoire-heading">
+            <h3>Força</h3>
+            <span id="strengthRepertoireCapacity">0 slots</span>
+          </div>
+          <div class="repertoire-grid" id="strengthRepertoireGrid"></div>
+          <button class="btn-add" type="button" onclick="addRepertoireTraining('FORÇA')">+ Adicionar Treinamento</button>
+        </section>
+        <section class="repertoire-block">
+          <div class="repertoire-heading">
+            <h3>Inteligência</h3>
+            <span id="intelligenceRepertoireCapacity">0 slots</span>
+          </div>
+          <div class="repertoire-grid" id="intelligenceRepertoireGrid"></div>
+          <button class="btn-add" type="button" onclick="addRepertoireTraining('INTELIGÊNCIA')">+ Adicionar Treinamento</button>
+        </section>
+      </div>
     </div>
 
     <!-- PODERES -->
@@ -226,6 +248,26 @@
   </main>
 
   <div class="toast" id="toast"></div>
+
+  <div class="grid-editor-modal" id="gridEditorModal" hidden>
+    <div class="grid-editor-backdrop" data-modal-close></div>
+    <section class="grid-editor-dialog" role="dialog" aria-modal="true" aria-labelledby="gridEditorTitle">
+      <div class="grid-editor-header">
+        <h2 id="gridEditorTitle">Editar cartão</h2>
+        <button type="button" class="grid-editor-close" data-modal-close aria-label="Fechar edição">×</button>
+      </div>
+      <div class="grid-editor-fields">
+        <div class="field"><label>Nome</label><input type="text" id="gridEditorName"></div>
+        <div class="field"><label>Descrição</label><textarea id="gridEditorDescription"></textarea></div>
+        <div class="field" id="gridEditorQuantityField"><label>Quantidade</label><input type="number" id="gridEditorQuantity" min="0"></div>
+        <div class="field"><label>Espaço ocupado</label><select id="gridEditorSpan"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+      </div>
+      <div class="grid-editor-actions">
+        <button type="button" class="btn-remove" id="gridEditorRemove">× REMOVER</button>
+        <button type="button" class="btn-add" id="gridEditorSave">SALVAR</button>
+      </div>
+    </section>
+  </div>
 
   <script src="assets/js/state.js"></script>
   <script src="assets/js/utils.js"></script>

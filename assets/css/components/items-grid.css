@@ -1,0 +1,344 @@
+.grid-help {
+    color: var(--text-label);
+    font-size: 12px;
+    margin: -4px 0 12px;
+}
+
+.grid-item-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 42px;
+    padding: 8px 10px;
+    cursor: pointer;
+}
+
+.grid-item-summary strong {
+    overflow: hidden;
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.grid-item-summary span {
+    flex-shrink: 0;
+    color: var(--text-label);
+    font-size: 12px;
+}
+
+.grid-item-toolbar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.repertoire-slot .grid-item-summary {
+    min-height: 52px;
+}
+
+.grid-editor-modal[hidden] {
+    display: none;
+}
+
+.grid-editor-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+}
+
+.grid-editor-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.72);
+}
+
+.grid-editor-dialog {
+    position: relative;
+    width: min(460px, calc(100% - 28px));
+    margin: 10vh auto 0;
+    padding: 16px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+
+.grid-editor-header,
+.grid-editor-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.grid-editor-header {
+    margin-bottom: 14px;
+}
+
+.grid-editor-header h2 {
+    color: var(--text-head);
+    font-size: 15px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.grid-editor-close {
+    border: 0;
+    background: transparent;
+    color: var(--text-label);
+    cursor: pointer;
+    font-size: 24px;
+    line-height: 1;
+}
+
+.grid-editor-fields {
+    display: grid;
+    gap: 8px;
+}
+
+.grid-editor-actions {
+    margin-top: 12px;
+}
+
+.grid-editor-actions .btn-add,
+.grid-editor-actions .btn-remove {
+    margin: 0;
+}
+
+.grid-item-toolbar .btn-add {
+    margin: 0;
+}
+
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 10px;
+    align-items: start;
+    min-height: 20px;
+}
+
+.repertoire-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.repertoire-block {
+    border: 1px solid var(--border);
+    padding: 10px;
+    background: var(--bg-input);
+}
+
+.repertoire-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.repertoire-heading h3 {
+    color: var(--text-head);
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.repertoire-heading span {
+    color: var(--text-label);
+    font-size: 11px;
+}
+
+.repertoire-grid {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-bottom: 10px;
+}
+
+.repertoire-slot {
+    grid-column: span min(var(--item-span, 1), 4);
+    min-height: 90px;
+    border: 1px dashed var(--border);
+    background: var(--bg);
+}
+
+.repertoire-slot-filled {
+    border-style: solid;
+}
+
+.repertoire-slot-empty {
+    display: block;
+    color: var(--text-dim);
+    font-size: 11px;
+    padding: 12px;
+    text-align: center;
+}
+
+.repertoire-slot .grid-item-header,
+.repertoire-slot .grid-item-body {
+    padding: 8px;
+}
+
+.grid-item-card {
+    grid-column: span var(--item-span, 1);
+    min-width: 0;
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--accent-dim);
+    background: var(--bg-input);
+    animation: fadeIn 0.2s;
+    transition: opacity 0.15s, border-color 0.15s, transform 0.15s;
+}
+
+.inventory-empty-slot {
+    min-height: 34px;
+    border: 1px dashed var(--border);
+    color: var(--text-dim);
+    font-size: 9px;
+    letter-spacing: 1px;
+    padding: 8px 4px;
+    text-align: center;
+}
+
+.grid-item-training {
+    border-left-color: var(--text-label);
+}
+
+.grid-item-card.is-dragging {
+    opacity: 0.35;
+}
+
+.grid-item-card.is-drag-target {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.grid-item-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+}
+
+.grid-item-drag {
+    color: var(--text-label);
+    cursor: grab;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.grid-item-type {
+    color: var(--text-label);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    flex: 1;
+}
+
+.grid-item-remove {
+    margin-left: auto;
+}
+
+.grid-item-body {
+    padding: 10px;
+}
+
+.grid-item-body .field {
+    margin-bottom: 8px;
+}
+
+.grid-item-body textarea {
+    min-height: 64px;
+}
+
+.grid-item-footer {
+    display: flex;
+    align-items: end;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.grid-span-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 auto 0 0;
+    letter-spacing: 1px;
+    font-size: 10px;
+}
+
+.grid-span-label select {
+    width: 52px;
+    padding: 4px;
+    font-size: 12px;
+}
+
+.grid-move-button {
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-label);
+    cursor: pointer;
+    min-width: 28px;
+    height: 28px;
+}
+
+.grid-move-button:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--text);
+}
+
+.grid-move-button:disabled {
+    cursor: default;
+    opacity: 0.3;
+}
+
+.grid-empty {
+    color: var(--text-dim);
+    border: 1px dashed var(--border);
+    padding: 14px;
+    text-align: center;
+    font-size: 12px;
+}
+
+@media (max-width: 700px) {
+    .items-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .grid-item-card {
+        grid-column: span min(var(--item-span, 1), 4);
+    }
+
+    .repertoire-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .repertoire-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .repertoire-slot {
+        grid-column: span min(var(--item-span, 1), 2);
+    }
+}
+
+@media (max-width: 480px) {
+    .items-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .grid-item-card {
+        grid-column: span 1;
+    }
+
+    .repertoire-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .repertoire-slot {
+        grid-column: span 1;
+    }
+}

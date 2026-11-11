@@ -30,7 +30,13 @@ function bindDerivedStats() {
     const el = document.getElementById(id);
     if (el) {
       el.addEventListener('input', calcDerived);
+      el.addEventListener('input', () => {
+        if (typeof renderRepertoires === 'function') renderRepertoires();
+      });
       el.addEventListener('change', calcDerived);
+      el.addEventListener('change', () => {
+        if (typeof renderRepertoires === 'function') renderRepertoires();
+      });
     }
   });
 

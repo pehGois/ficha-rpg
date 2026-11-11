@@ -55,7 +55,11 @@ function normalizeImportedData(d) {
     abilities: toArray(d.abilities),
     effects: toArray(d.effects),
     clocks: toArray(d.clocks),
-    counters: toArray(d.counters)
+    counters: toArray(d.counters),
+    repertoires: {
+      FORÇA: toArray(d.repertoires?.FORÇA),
+      INTELIGÊNCIA: toArray(d.repertoires?.INTELIGÊNCIA)
+    }
   };
 }
 
@@ -81,12 +85,34 @@ function collectData() {
       props: w.props ?? '',
       collapsed: w.collapsed ?? false
     })) : [],
-    inventory: Array.isArray(inventory) ? inventory.map(item => ({
+    inventory: Array.isArray(gridItems) ? gridItems.map(item => ({
       id: item.id ?? uid(),
       nome: item.nome ?? '',
       descricao: item.descricao ?? '',
       collapsed: item.collapsed ?? false
     })) : [],
+    gridItems: Array.isArray(gridItems) ? gridItems.map(item => ({
+      id: item.id ?? uid(),
+      type: 'item',
+      nome: item.nome ?? '',
+      descricao: item.descricao ?? '',
+      quantidade: item.quantidade ?? '',
+      span: Math.min(4, Math.max(1, parseInt(item.span, 10) || 1))
+    })) : [],
+    repertoires: {
+      FORÇA: Array.isArray(repertoires?.FORÇA) ? repertoires.FORÇA.map(training => ({
+        id: training.id ?? uid(),
+        nome: training.nome ?? '',
+        descricao: training.descricao ?? '',
+        span: Math.min(4, Math.max(1, parseInt(training.span, 10) || 1))
+      })) : [],
+      INTELIGÊNCIA: Array.isArray(repertoires?.INTELIGÊNCIA) ? repertoires.INTELIGÊNCIA.map(training => ({
+        id: training.id ?? uid(),
+        nome: training.nome ?? '',
+        descricao: training.descricao ?? '',
+        span: Math.min(4, Math.max(1, parseInt(training.span, 10) || 1))
+      })) : []
+    },
     arma1: {
       nome: weapons?.[0]?.nome ?? '',
       bonus: weapons?.[0]?.bonus ?? '',
@@ -186,6 +212,31 @@ function applyData(d) {
     collapsed: item.collapsed ?? false
   }));
 
+  const savedGridItems = Array.isArray(d.gridItems) ? d.gridItems : [];
+  gridItems = (savedGridItems.length ? savedGridItems : (d.inventory ?? [])).map(item => ({
+    id: item.id ?? uid(),
+    type: 'item',
+    nome: item.nome ?? '',
+    descricao: item.descricao ?? '',
+    quantidade: item.quantidade ?? '',
+    span: Math.min(4, Math.max(1, parseInt(item.span, 10) || 1))
+  })).slice(0, 8);
+
+  repertoires = {
+    FORÇA: (d.repertoires?.FORÇA ?? []).map(training => ({
+      id: training.id ?? uid(),
+      nome: training.nome ?? '',
+      descricao: training.descricao ?? '',
+      span: Math.min(4, Math.max(1, parseInt(training.span, 10) || 1))
+    })),
+    INTELIGÊNCIA: (d.repertoires?.INTELIGÊNCIA ?? []).map(training => ({
+      id: training.id ?? uid(),
+      nome: training.nome ?? '',
+      descricao: training.descricao ?? '',
+      span: Math.min(4, Math.max(1, parseInt(training.span, 10) || 1))
+    }))
+  };
+
   const legacyWeapons = [];
   if (d.arma1 && (d.arma1.nome || d.arma1.bonus || d.arma1.props)) {
     legacyWeapons.push({ id: uid(), nome: d.arma1.nome ?? '', bonus: d.arma1.bonus ?? '', props: d.arma1.props ?? '', collapsed: false });
@@ -247,6 +298,8 @@ function applyData(d) {
   renderClocks();
   renderCounters();
   renderInventory();
+  renderGridItems();
+  renderRepertoires();
   renderWeapons();
   renderPericias();
 

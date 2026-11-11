@@ -8,6 +8,11 @@ let clocks = [];
 let counters = [];
 let weapons = [];
 let inventory = [];
+let gridItems = [];
+let repertoires = {
+  FORÇA: [],
+  INTELIGÊNCIA: []
+};
 let pericias = {};
 let falhasFilled = 0;
 let photoData = null;

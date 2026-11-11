@@ -17,6 +17,11 @@ function createDefaultSheetData() {
       { id: uid(), nome: '', bonus: '', props: '', collapsed: false }
     ],
     inventory: [],
+    repertoires: {
+      FORÇA: [],
+      INTELIGÊNCIA: []
+    },
+    gridItems: [],
     arma1: { nome: '', bonus: '', props: '' },
     arma2: { nome: '', bonus: '', props: '' },
     markXp: '',

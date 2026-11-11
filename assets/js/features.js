@@ -246,6 +246,7 @@ function addTraining(data = {}) {
 
 function renderTrainings() {
   const list = document.getElementById('trainingList');
+  if (!list) return;
   list.innerHTML = '';
 
   trainings.forEach((t, i) => {
@@ -704,6 +705,287 @@ function renderInventory() {
     list.appendChild(d);
   });
 }
+
+function addGridItem(type = 'item') {
+  if (!Array.isArray(gridItems)) gridItems = [];
+  if (type !== 'item' || getGridItemsUsedSlots() >= 8) {
+    showToast(type === 'item' ? 'Inventário cheio' : 'Apenas itens podem ocupar o inventário');
+    return;
+  }
+  gridItems.push({
+    id: uid(),
+    type: 'item',
+    nome: '',
+    descricao: '',
+    quantidade: 1,
+    span: 1
+  });
+  renderGridItems();
+  _save();
+}
+
+function renderGridItems() {
+  const grid = document.getElementById('itemsGrid');
+  const empty = document.getElementById('itemsGridEmpty');
+  if (!grid || !empty) return;
+
+  gridItems = fitGridItemsToCapacity(gridItems);
+  grid.innerHTML = '';
+  empty.hidden = gridItems.length > 0;
+  grid.classList.toggle('is-full', getGridItemsUsedSlots() >= 8);
+
+  gridItems.forEach((item, index) => {
+    const card = document.createElement('article');
+    const title = item.nome && item.nome.trim()
+      ? item.nome
+      : `Item ${index + 1}`;
+    const safeSpan = Math.min(4, Math.max(1, parseInt(item.span, 10) || 1));
+    card.className = 'grid-item-card';
+    card.style.setProperty('--item-span', safeSpan);
+    card.draggable = true;
+    card.dataset.itemId = item.id;
+    card.innerHTML = `
+      <div class="grid-item-header">
+        <span class="grid-item-drag" title="Arraste para reorganizar" aria-label="Arraste para reorganizar">⠿</span>
+        <span class="grid-item-type">ITEM</span>
+        <button type="button" class="btn-remove grid-item-remove" aria-label="Remover ${escAttr(title)}">×</button>
+      </div>
+      <div class="grid-item-summary" title="Clique para editar">
+        <strong>${esc(title)}</strong>
+        <span>${esc(item.quantidade ?? 0)}x</span>
+      </div>`;
+
+    card.querySelector('.grid-item-remove').addEventListener('click', () => {
+      gridItems.splice(index, 1);
+      renderGridItems();
+      _save();
+    });
+
+    card.querySelector('.grid-item-summary').addEventListener('click', () => openGridEditor('item', index));
+
+    card.addEventListener('dragstart', event => {
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('text/plain', item.id);
+      card.classList.add('is-dragging');
+    });
+    card.addEventListener('dragend', () => card.classList.remove('is-dragging'));
+    card.addEventListener('dragover', event => {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = 'move';
+      card.classList.add('is-drag-target');
+    });
+    card.addEventListener('dragleave', () => card.classList.remove('is-drag-target'));
+    card.addEventListener('drop', event => {
+      event.preventDefault();
+      card.classList.remove('is-drag-target');
+      reorderGridItems(event.dataTransfer.getData('text/plain'), item.id);
+    });
+
+    grid.appendChild(card);
+  });
+
+  const emptySlots = 8 - getGridItemsUsedSlots();
+  for (let index = 0; index < emptySlots; index += 1) {
+    const slot = document.createElement('div');
+    slot.className = 'inventory-empty-slot';
+    slot.textContent = 'Vazio';
+    grid.appendChild(slot);
+  }
+}
+
+function updateGridItem(index, field) {
+  const value = field.dataset.field === 'span'
+    ? Math.min(4, Math.max(1, parseInt(field.value, 10) || 1))
+    : field.value;
+  if (field.dataset.field === 'span') {
+    const currentSpan = parseInt(gridItems[index].span, 10) || 1;
+    if (getGridItemsUsedSlots() - currentSpan + value > 8) {
+      showToast('O item não cabe nos espaços restantes');
+      renderGridItems();
+      return;
+    }
+  }
+  gridItems[index][field.dataset.field] = value;
+  if (field.dataset.field === 'span') renderGridItems();
+  _save();
+}
+
+function moveGridItem(index, offset) {
+  const target = index + offset;
+  if (target < 0 || target >= gridItems.length) return;
+  [gridItems[index], gridItems[target]] = [gridItems[target], gridItems[index]];
+  renderGridItems();
+  _save();
+}
+
+function reorderGridItems(sourceId, targetId) {
+  if (!sourceId || sourceId === targetId) return;
+  const sourceIndex = gridItems.findIndex(item => String(item.id) === sourceId);
+  const targetIndex = gridItems.findIndex(item => String(item.id) === String(targetId));
+  if (sourceIndex < 0 || targetIndex < 0) return;
+  const [moved] = gridItems.splice(sourceIndex, 1);
+  gridItems.splice(targetIndex, 0, moved);
+  renderGridItems();
+  _save();
+}
+
+function getGridItemsUsedSlots() {
+  return gridItems.reduce((total, item) => total + Math.min(4, Math.max(1, parseInt(item.span, 10) || 1)), 0);
+}
+
+function fitGridItemsToCapacity(items) {
+  let remaining = 8;
+  return (Array.isArray(items) ? items : []).reduce((fitted, item) => {
+    const span = Math.min(4, Math.max(1, parseInt(item.span, 10) || 1));
+    if (span > remaining) return fitted;
+    fitted.push({ ...item, type: 'item', span });
+    remaining -= span;
+    return fitted;
+  }, []);
+}
+
+function getAttributeValue(attribute) {
+  return Math.max(0, parseInt(document.getElementById(attribute)?.value, 10) || 0);
+}
+
+function getRepertoireCapacity(attribute) {
+  return Math.floor(getAttributeValue(attribute) / 2);
+}
+
+function addRepertoireTraining(attribute) {
+  const capacity = getRepertoireCapacity(attribute);
+  if (getRepertoireUsedSlots(attribute) >= capacity) {
+    showToast(`Repertório de ${attribute} cheio`);
+    return;
+  }
+  repertoires[attribute].push({ id: uid(), nome: '', descricao: '', span: 1 });
+  renderRepertoires();
+  _save();
+}
+
+function renderRepertoires() {
+  const definitions = [
+    { attribute: 'FORÇA', gridId: 'strengthRepertoireGrid', capacityId: 'strengthRepertoireCapacity' },
+    { attribute: 'INTELIGÊNCIA', gridId: 'intelligenceRepertoireGrid', capacityId: 'intelligenceRepertoireCapacity' }
+  ];
+
+  definitions.forEach(({ attribute, gridId, capacityId }) => {
+    const grid = document.getElementById(gridId);
+    const capacityLabel = document.getElementById(capacityId);
+    if (!grid || !capacityLabel) return;
+
+    const capacity = getRepertoireCapacity(attribute);
+    repertoires[attribute] = fitRepertoireToCapacity(repertoires[attribute], capacity);
+    capacityLabel.textContent = `${getRepertoireUsedSlots(attribute)}/${capacity} slots`;
+    grid.innerHTML = '';
+
+    repertoires[attribute].forEach((training, index) => {
+      const slot = document.createElement('article');
+      const safeSpan = Math.min(4, Math.max(1, parseInt(training.span, 10) || 1));
+      slot.className = 'repertoire-slot repertoire-slot-filled';
+      slot.style.setProperty('--item-span', safeSpan);
+
+      slot.innerHTML = `
+        <div class="grid-item-header">
+          <span class="grid-item-drag">⠿</span>
+          <span class="grid-item-type">TREINAMENTO</span>
+          <button type="button" class="btn-remove repertoire-remove" aria-label="Remover treinamento">×</button>
+        </div>
+        <div class="grid-item-summary" title="Clique para editar">
+          <strong>${esc(training.nome || `Treinamento ${index + 1}`)}</strong>
+        </div>`;
+
+      slot.querySelector('.repertoire-remove').addEventListener('click', () => {
+        repertoires[attribute].splice(index, 1);
+        renderRepertoires();
+        _save();
+      });
+      slot.querySelector('.grid-item-summary').addEventListener('click', () => openGridEditor('training', index, attribute));
+      grid.appendChild(slot);
+    });
+
+    for (let index = getRepertoireUsedSlots(attribute); index < capacity; index += 1) {
+      const slot = document.createElement('article');
+      slot.className = 'repertoire-slot';
+      slot.innerHTML = '<span class="repertoire-slot-empty">Slot vazio</span>';
+      grid.appendChild(slot);
+    }
+  });
+}
+
+function getRepertoireUsedSlots(attribute) {
+  return repertoires[attribute].reduce((total, training) => total + Math.min(4, Math.max(1, parseInt(training.span, 10) || 1)), 0);
+}
+
+function fitRepertoireToCapacity(items, capacity) {
+  let remaining = capacity;
+  return items.reduce((fitted, training) => {
+    const span = Math.min(4, Math.max(1, parseInt(training.span, 10) || 1));
+    if (span <= remaining) {
+      fitted.push({ ...training, span });
+      remaining -= span;
+    }
+    return fitted;
+  }, []);
+}
+
+let activeGridEditor = null;
+
+function openGridEditor(type, index, attribute = null) {
+  const modal = document.getElementById('gridEditorModal');
+  const data = type === 'item' ? gridItems[index] : repertoires[attribute][index];
+  if (!modal || !data) return;
+  activeGridEditor = { type, index, attribute };
+  document.getElementById('gridEditorTitle').textContent = type === 'item' ? 'Editar item' : 'Editar treinamento';
+  document.getElementById('gridEditorName').value = data.nome ?? '';
+  document.getElementById('gridEditorDescription').value = data.descricao ?? '';
+  document.getElementById('gridEditorQuantityField').hidden = type !== 'item';
+  document.getElementById('gridEditorQuantity').value = data.quantidade ?? 1;
+  document.getElementById('gridEditorSpan').value = Math.min(4, Math.max(1, parseInt(data.span, 10) || 1));
+  modal.hidden = false;
+  document.getElementById('gridEditorName').focus();
+}
+
+function closeGridEditor() {
+  const modal = document.getElementById('gridEditorModal');
+  if (modal) modal.hidden = true;
+  activeGridEditor = null;
+}
+
+function saveGridEditor() {
+  if (!activeGridEditor) return;
+  const { type, index, attribute } = activeGridEditor;
+  const data = type === 'item' ? gridItems[index] : repertoires[attribute][index];
+  const span = Math.min(4, Math.max(1, parseInt(document.getElementById('gridEditorSpan').value, 10) || 1));
+  const used = type === 'item' ? getGridItemsUsedSlots() - (parseInt(data.span, 10) || 1) : getRepertoireUsedSlots(attribute) - (parseInt(data.span, 10) || 1);
+  const capacity = type === 'item' ? 8 : getRepertoireCapacity(attribute);
+  if (used + span > capacity) {
+    showToast('O cartão não cabe nos espaços disponíveis');
+    return;
+  }
+  data.nome = document.getElementById('gridEditorName').value;
+  data.descricao = document.getElementById('gridEditorDescription').value;
+  data.span = span;
+  if (type === 'item') data.quantidade = document.getElementById('gridEditorQuantity').value;
+  closeGridEditor();
+  renderGridItems();
+  renderRepertoires();
+  _save();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[data-modal-close]').forEach(element => element.addEventListener('click', closeGridEditor));
+  document.getElementById('gridEditorSave')?.addEventListener('click', saveGridEditor);
+  document.getElementById('gridEditorRemove')?.addEventListener('click', () => {
+    if (!activeGridEditor) return;
+    if (activeGridEditor.type === 'item') gridItems.splice(activeGridEditor.index, 1);
+    else repertoires[activeGridEditor.attribute].splice(activeGridEditor.index, 1);
+    closeGridEditor();
+    renderGridItems();
+    renderRepertoires();
+    _save();
+  });
+});
 
 function addWeapon(data = {}) {
   const source = (data && typeof data === 'object' && !Array.isArray(data)) ? data : {};

@@ -18,10 +18,14 @@ function uid() {
 }
 
 function esc(s) {
-  if (!s) return '';
+  if (s === null || s === undefined) return '';
   return String(s)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+function escAttr(s) {
+  return esc(s).replace(/'/g, '&#39;');
 }
