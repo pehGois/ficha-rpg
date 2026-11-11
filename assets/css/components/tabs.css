@@ -20,7 +20,7 @@
 .tab-item {
     background: rgba(244, 240, 228, 0.62);
     border: 1px solid var(--border);
-    color: var(--text-label);
+    color: var(--text);
     min-width: 140px;
     max-width: 220px;
     padding: 6px 8px;
@@ -30,11 +30,12 @@
     gap: 8px;
     cursor: pointer;
     transition: all 0.15s;
+    text-align: center;
 }
 
 .tab-item:hover {
     border-color: var(--border-focus);
-    color: var(--text);
+    color: var(--text-label);
 }
 
 .tab-item.active {
